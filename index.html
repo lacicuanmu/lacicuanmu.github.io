@@ -176,6 +176,71 @@ nav .plus{display:grid;width:60px;height:60px;min-width:60px;place-items:center;
  .sheet>div{padding-right:16px;padding-left:16px}
 }
 @media(min-width:540px){body{padding-top:26px}}
+
+/* Balanced typography override */
+body{font-size:14px;line-height:1.5}
+h1{font-size:30px;letter-spacing:-1px}
+h2{font-size:19px}
+.page-title{font-size:29px;letter-spacing:-.9px}
+.page-kicker{font-size:11px}
+.page-subtitle{font-size:13px}
+.section-title h2,.home-section-head h2{font-size:18px}
+.section-title small,.home-section-head small{font-size:12px}
+.home-greet{font-size:14px}
+.home-brand{font-size:31px;letter-spacing:-1.1px}
+.home-month{font-size:12px;padding:9px 12px}
+.home-eyebrow{font-size:11px}
+.home-month-name{font-size:15px}
+.home-hero{padding:23px 20px 20px}
+.home-hero-label{font-size:15px}
+.home-amount{font-size:clamp(32px,8vw,39px);letter-spacing:-1.3px}
+.home-hero-note{font-size:13px}
+.home-hero-metric span{font-size:12px}
+.home-hero-metric b{font-size:18px}
+.home-action{min-height:100px;padding:14px 12px}
+.home-action-icon{width:44px;height:44px;flex-basis:44px;font-size:21px}
+.home-action strong{font-size:14px}
+.home-action small{font-size:12px}
+.home-today-top{font-size:12px}
+.home-today-card b{font-size:20px}
+.home-recent-name{font-size:13px}
+.home-recent-meta{font-size:11px}
+.home-recent-amount{font-size:13px}
+.metric-label{font-size:12px}
+.metric-value{font-size:20px}
+.tx-title{font-size:14px}
+.tx-meta{font-size:12px}
+.tx-amount{font-size:14px}
+.manage-copy b{font-size:14px}
+.manage-copy small{font-size:12px}
+.manage-group{font-size:11px}
+.manage-item{padding:14px 0}
+.manage-icon{width:44px;height:44px;flex-basis:44px;font-size:20px}
+.page-tab{font-size:13px;min-height:42px;padding:10px 15px}
+.report-hero .value{font-size:34px}
+.report-hero .eyebrow{font-size:12px}
+.report-hero .hint{font-size:13px}
+.breakdown-row{font-size:13px;padding:13px 2px}
+.breakdown-row.total{font-size:14px}
+.sheet .row:first-child h2{font-size:21px}
+.sheet label{font-size:13px}
+.sheet .chip{font-size:13px}
+.sheet #prev .li{font-size:14px}
+.sheet .btn.full{font-size:14px}
+nav button{font-size:11px}
+@media(max-width:390px){
+ .page-title{font-size:27px}
+ .home-brand{font-size:29px}
+ .home-amount{font-size:32px}
+ .home-action{min-height:94px;padding:12px 9px}
+ .home-action strong{font-size:13px}
+ .home-action small{font-size:11px}
+ .home-today-card b{font-size:18px}
+ .metric-value{font-size:18px}
+ .manage-copy b{font-size:13px}
+ .manage-copy small{font-size:11px}
+}
+
 </style>
 </head>
 <body>
@@ -524,6 +589,33 @@ window.cloudInit=function(){
  document.addEventListener('visibilitychange',()=>{if(!document.hidden&&ses)syncNow()});
  if(ses){stat('wait');syncNow()}else{stat('none');if(!ls(XK))showLogin()}
 };
+})();
+
+
+/* Touch navigation between main sections */
+(function(){
+ const order=["home","list","rep","mgr"];
+ let sx=0,sy=0,started=false;
+ const app=document.getElementById("app");
+ if(!app)return;
+ app.addEventListener("touchstart",function(e){
+  if(!e.touches||e.touches.length!==1||document.getElementById("sheet").classList.contains("show")){started=false;return}
+  const t=e.touches[0];
+  if(e.target.closest("input,textarea,select,[contenteditable='true']")){started=false;return}
+  sx=t.clientX;sy=t.clientY;started=true;
+ },{passive:true});
+ app.addEventListener("touchend",function(e){
+  if(!started||!e.changedTouches||!e.changedTouches.length)return;
+  started=false;
+  if(document.getElementById("sheet").classList.contains("show"))return;
+  const t=e.changedTouches[0],dx=t.clientX-sx,dy=t.clientY-sy;
+  if(Math.abs(dx)<65||Math.abs(dx)<Math.abs(dy)*1.25)return;
+  const current=order.indexOf(tab);
+  if(current<0)return;
+  const next=current+(dx<0?1:-1);
+  if(next<0||next>=order.length)return;
+  tab=order[next];render();
+ },{passive:true});
 })();
 
 render();
