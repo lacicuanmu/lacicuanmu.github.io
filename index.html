@@ -614,7 +614,12 @@ function openCapture(){
 function drawCapture(){
  open('<div class="row"><h2 style="margin:0">Smart Transaction Capture</h2><button class="btn sec" onclick="close()">✕</button></div>'+
  '<p class="filter-note">Pilih foto nota, bukti transfer, invoice, atau PDF. Hasil OCR harus diperiksa sebelum disimpan.</p>'+
- '<label>Dokumen (JPG, PNG, WEBP, PDF)</label><input id="captureFile" type="file" accept="image/*,application/pdf" onchange="readCapture(this.files&&this.files[0])">'+
+ '<div class="grid" style="margin:14px 0">'+
+ '<button class="btn full" type="button" onclick="document.getElementById(\'captureCamera\').click()">📷 Buka kamera</button>'+
+ '<button class="btn sec full" type="button" onclick="document.getElementById(\'captureGallery\').click()">🖼️ Galeri / screenshot</button></div>'+
+ '<input id="captureCamera" type="file" accept="image/*" capture="environment" style="display:none" onchange="readCapture(this.files&&this.files[0])">'+
+ '<input id="captureGallery" type="file" accept="image/*,application/pdf" style="display:none" onchange="readCapture(this.files&&this.files[0])">'+
+ '<p class="filter-note">Kamera untuk memotret bukti langsung. Galeri untuk screenshot mobile banking, e-wallet, marketplace, foto, atau PDF.</p>'+
  '<div id="captureStatus" class="empty" style="margin:10px 0">'+(CAP.status||"Belum ada dokumen dipilih.")+'</div>'+
  '<div id="captureReview"></div>'+
  '<div id="captureRaw" style="display:none"></div>');
