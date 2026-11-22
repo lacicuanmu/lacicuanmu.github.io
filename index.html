@@ -586,6 +586,7 @@ function drawAdd(){
   <label>Keterangan transaksi (opsional)</label><input value="${esc(F.note||"")}" oninput="F.note=this.value">`;
  }
  open(`<div class="row"><h2 style="margin:0">Catat transaksi</h2><button class="btn sec" onclick="close()">✕</button></div>
+ <button class="btn sec full" style="margin:10px 0" onclick="openCapture()">📷 Scan nota / invoice</button>
  <div class="seg" style="margin-top:12px"><button class="${sale?"on":""}" onclick="F.type='sale';drawAdd()">Penjualan</button><button class="${!sale?"on":""}" onclick="F.type='buy';drawAdd()">Belanja</button></div>
  ${body}<label>Tanggal</label><input type="date" value="${F.date}" onchange="F.date=this.value">
  <button class="btn full" style="margin-top:18px" onclick="saveTx()">Simpan</button>`);
@@ -597,6 +598,124 @@ function upd(){
  const price=F.price!=null?F.price:p.price,g=price*F.qty,fee=Math.round(g*pl.fee/100),tax=F.taxMode==="percent"?Math.round(g*Math.min(100,F.taxValue||0)/100):F.taxMode==="fixed"?Math.min(g,Math.round(F.taxValue||0)):0;
  e.innerHTML=`<div class="li"><span>Penjualan kotor</span><span>${rp(g)}</span></div><div class="li"><span>Potongan platform</span><span>−${rp(fee)}</span></div><div class="li"><span>Pajak dipotong</span><span>−${rp(tax)}</span></div><div class="li sum"><span>Uang diterima</span><span>${rp(g-fee-tax)}</span></div><div class="li"><span>Laba sebelum belanja lain</span><span class="pos">${rp(g-fee-p.cost*F.qty)}</span></div>`;
 }
+
+let CAP={file:null,text:"",hash:"",kind:"buy",merchant:"",date:today(),gross:0,discount:0,tax:0,fee:0,total:0,category:"Bahan baku",platform:"",status:""};
+function loadScript(src){
+ return new Promise((resolve,reject)=>{
+  const found=[...document.scripts].find(x=>x.src===src);
+  if(found){if(found.dataset.loaded==="1")return resolve();found.addEventListener("load",resolve,{once:true});found.addEventListener("error",reject,{once:true});return}
+  const el=document.createElement("script");el.src=src;el.async=true;el.onload=()=>{el.dataset.loaded="1";resolve()};el.onerror=()=>reject(new Error("Gagal memuat pustaka OCR"));document.head.appendChild(el);
+ });
+}
+function openCapture(){
+ CAP={file:null,text:"",hash:"",kind:"buy",merchant:"",date:today(),gross:0,discount:0,tax:0,fee:0,total:0,category:S.cats[0]||"Operasional",platform:S.platforms[0]?.name||"",status:""};
+ drawCapture();
+}
+function drawCapture(){
+ open('<div class="row"><h2 style="margin:0">Smart Transaction Capture</h2><button class="btn sec" onclick="close()">✕</button></div>'+
+ '<p class="filter-note">Pilih foto nota, bukti transfer, invoice, atau PDF. Hasil OCR harus diperiksa sebelum disimpan.</p>'+
+ '<label>Dokumen (JPG, PNG, WEBP, PDF)</label><input id="captureFile" type="file" accept="image/*,application/pdf" onchange="readCapture(this.files&&this.files[0])">'+
+ '<div id="captureStatus" class="empty" style="margin:10px 0">'+(CAP.status||"Belum ada dokumen dipilih.")+'</div>'+
+ '<div id="captureReview"></div>'+
+ '<div id="captureRaw" style="display:none"></div>');
+}
+function captureStatus(msg){const e=$("#captureStatus");if(e)e.textContent=msg}
+function captureHash(t){
+ let h=2166136261;for(let i=0;i<t.length;i++){h^=t.charCodeAt(i);h=Math.imul(h,16777619)}
+ return (h>>>0).toString(16);
+}
+function moneyFromLine(line){
+ const m=line.match(/(?:rp\.?\s*)?([0-9][0-9.,]{1,})/i);if(!m)return 0;
+ const digits=m[1].replace(/[^0-9]/g,"");return Number(digits)||0;
+}
+function parseCapture(text){
+ const lines=text.split(/\n+/).map(x=>x.replace(/\s+/g," ").trim()).filter(Boolean);
+ const find=(re)=>{for(let i=lines.length-1;i>=0;i--)if(re.test(lines[i])){const v=moneyFromLine(lines[i]);if(v)return v}return 0};
+ let date=today();
+ const dm=text.match(/\b(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{2,4})\b/);
+ if(dm){let y=Number(dm[3]);if(y<100)y+=2000;const d=String(Number(dm[1])).padStart(2,"0"),m=String(Number(dm[2])).padStart(2,"0");if(Number(m)<=12&&Number(d)<=31)date=y+"-"+m+"-"+d}
+ const gross=find(/(subtotal|sub total|total belanja|total penjualan|jumlah barang|gross)/i);
+ const discount=find(/(diskon|discount|potongan harga|voucher)/i);
+ const tax=find(/(ppn|pajak|tax)/i);
+ const fee=find(/(biaya layanan|biaya admin|admin fee|service fee|platform fee|komisi)/i);
+ let total=find(/(grand total|total bayar|total pembayaran|jumlah bayar|amount paid|total transfer|total akhir|total)/i);
+ if(!total)total=Math.max(0,gross-discount+tax+fee);
+ if(!gross)gross=Math.max(0,total+discount-tax-fee);
+ let merchant="";
+ for(const line of lines.slice(0,7)){if(line.length>2&&!/(invoice|receipt|struk|tanggal|date|telp|phone|www\.)/i.test(line)){merchant=line.slice(0,90);break}}
+ return{merchant,date,gross,discount,tax,fee,total};
+}
+async function readCapture(file){
+ if(!file)return;
+ if(file.size>15*1024*1024){captureStatus("Ukuran file maksimal 15 MB.");return}
+ if(!/^image\/(jpeg|png|webp|bmp|tiff)$/i.test(file.type)&&file.type!=="application/pdf"){captureStatus("Format belum didukung. Gunakan JPG, PNG, WEBP, atau PDF.");return}
+ CAP.file=file;captureStatus("Menyiapkan OCR…");
+ try{
+  await loadScript("https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js");
+  let pages=[];
+  if(file.type==="application/pdf"){
+   await loadScript("https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js");
+   if(!window.pdfjsLib)throw new Error("PDF reader tidak tersedia");
+   pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+   const buf=await file.arrayBuffer(),pdf=await pdfjsLib.getDocument({data:buf}).promise;
+   for(let p=1;p<=Math.min(pdf.numPages,3);p++){
+    const page=await pdf.getPage(p),vp=page.getViewport({scale:1.5}),canvas=document.createElement("canvas"),ctx=canvas.getContext("2d");
+    canvas.width=vp.width;canvas.height=vp.height;await page.render({canvasContext:ctx,viewport:vp}).promise;pages.push(canvas);
+   }
+  }else pages=[file];
+  const worker=await Tesseract.createWorker("ind+eng",1,{logger:m=>{if(m.status==="recognizing text")captureStatus("Membaca dokumen… "+Math.round((m.progress||0)*100)+"%")}});
+  let out="";for(let i=0;i<pages.length;i++){const res=await worker.recognize(pages[i]);out+="\n"+(res.data.text||"")}
+  await worker.terminate();
+  CAP.text=out.trim();CAP.hash=captureHash(CAP.text.toLowerCase().replace(/\s+/g," "));
+  const parsed=parseCapture(CAP.text);Object.assign(CAP,parsed);
+  const duplicate=S.tx.some(t=>t.captureHash===CAP.hash);
+  CAP.status=duplicate?"Dokumen ini mirip dengan bukti yang pernah disimpan. Periksa kemungkinan duplikat.":"OCR selesai. Periksa semua nilai sebelum menyimpan.";
+  captureStatus(CAP.status);drawCaptureReview(duplicate);
+ }catch(e){captureStatus("OCR gagal: "+(e.message||"Kesalahan tidak diketahui")+". Coba foto lebih jelas atau catat manual.");}
+}
+function drawCaptureReview(duplicate){
+ const e=$("#captureReview");if(!e)return;
+ e.innerHTML='<div class="chips"><button class="chip '+(CAP.kind==="buy"?"on":"")+'" onclick="CAP.kind=\'buy\';drawCaptureReview('+duplicate+')">Belanja / pembelian</button><button class="chip '+(CAP.kind==="sale"?"on":"")+'" onclick="CAP.kind=\'sale\';drawCaptureReview('+duplicate+')">Penjualan</button></div>'+
+ (duplicate?'<div class="empty" style="color:var(--neg)">⚠️ Ada transaksi dengan fingerprint dokumen yang sama. Jangan simpan ulang jika ini bukti yang sama.</div>':'')+
+ '<label>Nama toko / pihak</label><input id="capMerchant" value="'+esc(CAP.merchant)+'">'+
+ '<label>Tanggal transaksi</label><input id="capDate" type="date" value="'+esc(CAP.date)+'">'+
+ '<label>Subtotal / nilai kotor (Rp)</label><input id="capGross" type="number" inputmode="numeric" value="'+CAP.gross+'">'+
+ '<label>Diskon (Rp)</label><input id="capDiscount" type="number" inputmode="numeric" value="'+CAP.discount+'">'+
+ '<label>Pajak (Rp)</label><input id="capTax" type="number" inputmode="numeric" value="'+CAP.tax+'">'+
+ (CAP.kind==="sale"?'<label>Potongan platform / admin (Rp)</label><input id="capFee" type="number" inputmode="numeric" value="'+CAP.fee+'">':'<label>Kategori belanja</label><select id="capCategory">'+S.cats.map(c=>'<option '+(CAP.category===c?'selected':'')+'>'+esc(c)+'</option>').join("")+'</select>')+
+ '<label>Total pada dokumen (Rp)</label><input id="capTotal" type="number" inputmode="numeric" value="'+CAP.total+'">'+
+ (CAP.kind==="sale"?'<label>Platform</label><select id="capPlatform">'+S.platforms.map(p=>'<option '+(CAP.platform===p.name?'selected':'')+'>'+esc(p.name)+'</option>').join("")+'</select>':'')+
+ '<div class="card" style="margin:12px 0"><div class="li"><span>Estimasi uang diterima / dibayar</span><b id="capNet">'+rp(CAP.kind==="sale"?CAP.gross-CAP.discount-CAP.tax-CAP.fee:CAP.total)+'</b></div><small>Nilai ini dihitung dari kolom di atas. Cocokkan dengan dokumen asli.</small></div>'+
+ '<label>Teks hasil OCR (bisa diperiksa)</label><textarea id="capText" rows="5" style="width:100%;min-height:110px;padding:12px;border:1px solid var(--pl);border-radius:14px;background:var(--card);color:var(--tx);font:inherit">'+esc(CAP.text)+'</textarea>'+
+ '<button class="btn full" style="margin-top:14px" onclick="saveCapture()">Periksa & simpan transaksi</button>'+
+ '<p class="filter-note">OCR bisa salah membaca angka, tanggal, dan nama. Data hanya disimpan setelah tombol ini ditekan.</p>';
+ ["capGross","capDiscount","capTax","capFee","capTotal"].forEach(id=>{const x=$("#"+id);if(x)x.addEventListener("input",updateCaptureNet)});
+}
+function updateCaptureNet(){
+ const val=id=>num($("#"+id)?.value||0),n=CAP.kind==="sale"?val("capGross")-val("capDiscount")-val("capTax")-val("capFee"):val("capTotal");
+ const e=$("#capNet");if(e)e.textContent=rp(Math.max(0,n));
+}
+function saveCapture(){
+ const v=id=>$("#"+id)?.value||"";
+ const merchant=v("capMerchant").trim(),date=v("capDate"),gross=num(v("capGross")),discount=num(v("capDiscount")),tax=num(v("capTax")),total=num(v("capTotal"));
+ const fee=CAP.kind==="sale"?num(v("capFee")):0;
+ const net=CAP.kind==="sale"?Math.max(0,gross-discount-tax-fee):total;
+ const raw=v("capText").trim(),hash=captureHash(raw.toLowerCase().replace(/\s+/g," "));
+ if(!date||!net)return alert("Tanggal dan nominal transaksi wajib diperiksa.");
+ if(!raw)return alert("Teks bukti kosong. Silakan periksa dokumen atau catat manual.");
+ if(S.tx.some(t=>t.captureHash===hash))return alert("Bukti ini terdeteksi sebagai duplikat. Transaksi tidak disimpan.");
+ if(CAP.kind==="sale"){
+  if(!S.platforms.length)return alert("Tambahkan platform penjualan terlebih dahulu.");
+  const platform=v("capPlatform")||S.platforms[0].name;
+  const amount=gross||net+discount+tax+fee;
+  S.tx.push({id:uid(),type:"sale",date,name:merchant||"Penjualan dari dokumen",qty:1,price:Math.max(0,amount-discount),cost:0,platform,fee,tax,discount,originalGross:amount,source:"ocr",captureHash:hash,note:"Hasil scan dokumen · "+merchant});
+ }else{
+  const category=v("capCategory")||S.cats[0]||"Operasional";
+  S.tx.push({id:uid(),type:"buy",date,cat:category,amount:net,gross:gross||total,discount,tax,merchant,source:"ocr",captureHash:hash,note:"Hasil scan dokumen · "+merchant});
+ }
+ save();close();render();alert("Transaksi hasil scan berhasil disimpan. Periksa kembali di Riwayat.");
+}
+
 function saveTx(){
  if(!F.date)return alert("Pilih tanggal");
  if(F.type==="sale"){
