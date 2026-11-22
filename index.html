@@ -190,7 +190,8 @@ function openCsv(){const Q=String.fromCharCode(34),q=v=>Q+String(v==null?'':v).s
  $('#csv').value=rows.map(r=>r.map(q).join(',')).join(String.fromCharCode(10))}
 function openBackup(){open(hd('Cadangkan')+`<label>Salin kode ini dan simpan di tempat aman</label><textarea id='bk' readonly style='${TA}'></textarea><button class='btn full' style='margin-top:12px' data-i='bk' onclick='copyEl(this.dataset.i)'>Salin kode cadangan</button><label style='margin-top:26px'>Pulihkan: tempel kode cadangan</label><textarea id='rs' style='${TA}'></textarea><button class='btn sec full' style='margin-top:12px' onclick='doRestore()'>Pulihkan data</button><div style='font-size:13px;opacity:.7;margin-top:10px'>Memulihkan mengganti semua data di perangkat ini.</div>`);$('#bk').value=JSON.stringify(S)}
 function doRestore(){let d;try{d=JSON.parse($('#rs').value.trim())}catch(e){return alert('Kode tidak valid')}if(!d||!Array.isArray(d.tx)||!Array.isArray(d.products))return alert('Kode tidak valid');if(!confirm('Ganti semua data sekarang dengan cadangan ini?'))return;S=d;norm();save();shut();render();alert('Data berhasil dipulihkan')}
-function setTheme(t){document.documentElement.dataset.theme=t==="auto"?"":t}
+function setTheme(t){localStorage.setItem("lcm-theme",t);document.documentElement.dataset.theme=t==="auto"?"":t;const e=$("#th");if(e)e.querySelectorAll("button").forEach((b,i)=>b.classList.toggle("on",["auto","light","dark"][i]===t))}
+function initTheme(){const t=localStorage.getItem("lcm-theme")||"light";document.documentElement.dataset.theme=t==="auto"?"":t;const e=$("#th");if(e)e.querySelectorAll("button").forEach((b,i)=>b.classList.toggle("on",["auto","light","dark"][i]===t))}
 function addCat(){const n=prompt("Nama kategori baru");if(n&&n.trim()){S.cats.push(n.trim());save();render()}}
 function open(h){$("#sheetBody").innerHTML=h;$("#sheet").classList.add("show")}
 function close(){$("#sheet").classList.remove("show")}
@@ -357,6 +358,7 @@ window.cloudInit=function(){
 })();
 
 render();
+initTheme();
 cloudInit();
 </script>
 </body>
