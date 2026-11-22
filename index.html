@@ -666,25 +666,25 @@ async function readCapture(file){
  if(!file)return;if(file.size>15*1024*1024){captureStatus("Ukuran file maksimal 15 MB.");return}
  const isPdf=file.type==="application/pdf"||/\.pdf$/i.test(file.name||"");
  if(!isPdf&&!/^image\/(jpeg|png|webp|bmp|tiff|heic|heif)$/i.test(file.type)){captureStatus("Format belum didukung. Gunakan JPG, PNG, WEBP, atau PDF.");return}
- CAP.file=file;captureStatus("Menyiapkan OCR…");let worker=null;
+ CAP.file=file;captureStatus("Menyiapkan OCR…");let worker=null,ocrStage="memeriksa koneksi";
  try{
   if(!navigator.onLine)throw new Error("Perangkat sedang offline. Koneksi internet diperlukan untuk memuat OCR pertama kali.");
-  await loadScript("https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js");if(!window.Tesseract)throw new Error("Mesin OCR tidak berhasil dimuat");
+  ocrStage="memuat library Tesseract.js";await loadScript("https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js");if(!window.Tesseract)throw new Error("Mesin OCR tidak berhasil dimuat");
   let pages=[];
   if(isPdf){
-   await loadScript("https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js");if(!window.pdfjsLib)throw new Error("PDF reader tidak tersedia");
+   ocrStage="memuat PDF reader";await loadScript("https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js");if(!window.pdfjsLib)throw new Error("PDF reader tidak tersedia");
    pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
    const buf=await file.arrayBuffer(),pdf=await pdfjsLib.getDocument({data:buf}).promise;
    for(let p=1;p<=Math.min(pdf.numPages,3);p++){const page=await pdf.getPage(p),vp=page.getViewport({scale:1.35}),canvas=document.createElement("canvas"),ctx=canvas.getContext("2d");canvas.width=vp.width;canvas.height=vp.height;await page.render({canvasContext:ctx,viewport:vp}).promise;pages.push(canvas)}
-  }else pages=[await prepareCaptureImage(file)];
+  }else{ocrStage="menyiapkan gambar";pages=[await prepareCaptureImage(file)]}
   const logger=m=>{if(m.status==="recognizing text")captureStatus("Membaca dokumen… "+Math.round((m.progress||0)*100)+"%")};
-  try{worker=await Tesseract.createWorker("ind+eng",1,{logger})}catch(first){captureStatus("Menyiapkan OCR bahasa alternatif…");worker=await Tesseract.createWorker("eng",1,{logger})}
-  let out="";for(let i=0;i<pages.length;i++){captureStatus("Membaca halaman "+(i+1)+" dari "+pages.length+"…");const res=await worker.recognize(pages[i]);out+="\n"+(res.data.text||"")}
+  ocrStage="membuat worker OCR bahasa Indonesia dan Inggris";try{worker=await Tesseract.createWorker("ind+eng",1,{logger})}catch(first){ocrStage="membuat worker OCR bahasa Inggris";captureStatus("Menyiapkan OCR bahasa alternatif…");worker=await Tesseract.createWorker("eng",1,{logger})}
+  let out="";for(let i=0;i<pages.length;i++){ocrStage="mengenali teks halaman "+(i+1);captureStatus("Membaca halaman "+(i+1)+" dari "+pages.length+"…");const res=await worker.recognize(pages[i]);out+="\n"+(res.data.text||"")}
   CAP.text=out.trim();if(!CAP.text)throw new Error("Teks tidak terbaca. Coba foto lebih terang, tidak miring, dan lebih dekat.");
   CAP.hash=captureHash(CAP.text.toLowerCase().replace(/\s+/g," "));const parsed=parseCapture(CAP.text);Object.assign(CAP,parsed);
   const duplicate=S.tx.some(t=>t.captureHash===CAP.hash);CAP.status=duplicate?"Dokumen ini mirip dengan bukti yang pernah disimpan. Periksa kemungkinan duplikat.":"OCR selesai. Periksa semua nilai sebelum menyimpan.";
   captureStatus(CAP.status);drawCaptureReview(duplicate);
- }catch(e){const msg=e&&e.message?e.message:String(e||"Kesalahan tidak diketahui");captureStatus("OCR gagal: "+msg+". Periksa koneksi, lalu coba lagi atau catat transaksi manual.")}
+ }catch(e){const msg=e&&e.message?e.message:String(e||"Kesalahan tidak diketahui");const detail=e&&e.stack?String(e.stack).split("\n").slice(0,3).join(" | "):"";captureStatus("OCR gagal pada tahap: "+ocrStage+". Error: "+msg+(detail?" · "+detail:"")+". Coba lagi atau catat transaksi manual.")}
  finally{if(worker)try{await worker.terminate()}catch(e){}}
 }
 function drawCaptureReview(duplicate){
