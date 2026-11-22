@@ -631,22 +631,30 @@ function captureHash(t){
  return (h>>>0).toString(16);
 }
 function moneyFromLine(line){
- const marked=[...line.matchAll(/rp\.?\s*([0-9][0-9.,]*)/gi)];
+ const marked=[...line.matchAll(/(?:rp\.?|idr)\s*([0-9][0-9.,]*)/gi)];
  const all=[...line.matchAll(/([0-9][0-9.,]{1,})/g)];
  const m=marked.length?marked[marked.length-1]:all[all.length-1];if(!m)return 0;
  const digits=m[1].replace(/[^0-9]/g,"");return Number(digits)||0;
 }
 function parseCapture(text){
  const lines=text.split(/\n+/).map(x=>x.replace(/\s+/g," ").trim()).filter(Boolean);
- const find=(re)=>{for(let i=lines.length-1;i>=0;i--)if(re.test(lines[i])){const v=moneyFromLine(lines[i]);if(v)return v}return 0};
+ const find=(re)=>{for(let i=lines.length-1;i>=0;i--)if(re.test(lines[i])){
+  const direct=moneyFromLine(lines[i]);if(direct)return direct;
+  for(let j=i+1;j<Math.min(lines.length,i+3);j++){if(/^(tanggal|date|nama|rekening|dari rekening|jenis transfer|berita)/i.test(lines[j]))break;const next=moneyFromLine(lines[j]);if(next)return next}
+ }return 0};
  let date=today();
  const dm=text.match(/\b(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{2,4})\b/);
  if(dm){let y=Number(dm[3]);if(y<100)y+=2000;const d=String(Number(dm[1])).padStart(2,"0"),m=String(Number(dm[2])).padStart(2,"0");if(Number(m)<=12&&Number(d)<=31)date=y+"-"+m+"-"+d}
+ else{
+  const months={jan:"01",januari:"01",feb:"02",februari:"02",mar:"03",maret:"03",apr:"04",april:"04",mei:"05",may:"05",jun:"06",juni:"06",jul:"07",juli:"07",agu:"08",agt:"08",agustus:"08",sep:"09",sept:"09",september:"09",okt:"10",oktober:"10",nov:"11",november:"11",des:"12",desember:"12"};
+  const dmText=text.match(/\b(\d{1,2})\s+(Jan(?:uari)?|Feb(?:ruari)?|Mar(?:et)?|Apr(?:il)?|Mei|May|Jun(?:i)?|Jul(?:i)?|Agu(?:stus)?|Agt|Sep(?:t(?:ember)?)?|Okt(?:ober)?|Nov(?:ember)?|Des(?:ember)?)\s+(\d{4})\b/i);
+  if(dmText){const month=months[dmText[2].toLowerCase()];if(month)date=dmText[3]+"-"+month+"-"+String(Number(dmText[1])).padStart(2,"0")}
+ }
  let gross=find(/(subtotal|sub total|total belanja|total penjualan|jumlah barang|gross)/i);
  const discount=find(/(diskon|discount|potongan harga|voucher)/i);
  const tax=find(/(ppn|pajak|tax)/i);
  const fee=find(/(biaya layanan|biaya admin|admin fee|service fee|platform fee|komisi)/i);
- let total=find(/(grand total|total bayar|total pembayaran|jumlah bayar|amount paid|total transfer|total akhir|total)/i);
+ let total=find(/(grand total|total bayar|total pembayaran|jumlah bayar|amount paid|total transfer|total akhir|total|nominal)/i);
  if(!total)total=Math.max(0,gross-discount+tax+fee);
  if(!gross)gross=Math.max(0,total+discount-tax-fee);
  let merchant="";
