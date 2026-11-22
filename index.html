@@ -145,6 +145,7 @@ function manage(){
  <button class="btn sec full" style="margin-top:12px" onclick="addCat()">＋ Tambah kategori</button></div>
  ${extraHtml()}<h2>Tampilan</h2><div class="card"><div class="seg" id="th"><button onclick="setTheme('auto')">Otomatis</button><button onclick="setTheme('light')">Terang</button><button onclick="setTheme('dark')">Gelap</button></div></div>
  <button class="btn del full" onclick="if(confirm('Hapus semua data?')){S=JSON.parse(JSON.stringify(def));save();render()}">Hapus semua data</button>`;
+ const th=$("#th"),saved=localStorage.getItem("lcm-theme")||"light";if(th)th.querySelectorAll("button").forEach((b,i)=>b.classList.toggle("on",["auto","light","dark"][i]===saved));
 }
 function shut(){$('#sheet').classList.remove('show')}
 document.close=()=>shut();
