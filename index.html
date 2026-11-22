@@ -267,14 +267,14 @@ const MONF=["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","
 let tab="home",rep=today().slice(0,7),listFilter="all";
 
 function calc(list){
- let gross=0,fee=0,porsi=0,buy=0,by={};
+ let gross=0,fee=0,tax=0,porsi=0,buy=0,by={};
  S.cats.forEach(c=>by[c]=0);
  list.forEach(t=>{
-  if(t.type==="sale"){gross+=t.qty*t.price;fee+=t.fee;porsi+=t.qty}
+  if(t.type==="sale"){gross+=t.qty*t.price;fee+=t.fee||0;tax+=t.tax||0;porsi+=t.qty}
   else{buy+=t.amount;by[t.cat]=(by[t.cat]||0)+t.amount}
  });
- const net=gross-fee;
- return{gross,fee,net,porsi,buy,by,profit:net-buy};
+ const net=gross-fee,cash=net-tax;
+ return{gross,fee,tax,net,cash,porsi,buy,by,profit:net-buy};
 }
 const inMonth=m=>S.tx.filter(t=>t.date.slice(0,7)===m);
 
@@ -332,15 +332,21 @@ function list(){
  const tabs=[["all","Semua"],["sale","Penjualan"],["buy","Belanja"]].map(x=>'<button class="page-tab '+(listFilter===x[0]?"active":"")+'" onclick="listFilter=\''+x[0]+'\';render()">'+x[1]+'</button>').join("");
  const rows=a.length?a.map(t=>{
   const sale=t.type==="sale",title=sale?(t.qty+"× "+esc(t.name)):esc(t.cat);
-  const meta=esc(t.date)+" · "+(sale?esc(t.platform)+(t.fee?" · potongan "+rp(t.fee):""):esc(t.note||"Belanja usaha"));
-  const amount=sale?t.qty*t.price-(t.fee||0):t.amount;
-  return '<div class="tx-row"><div class="tx-symbol">'+(sale?"↗":"↙")+'</div><div class="tx-main"><div class="tx-title">'+title+'</div><div class="tx-meta">'+meta+'</div></div><div class="tx-side"><div class="tx-amount '+(sale?"pos":"neg")+'">'+(sale?"+":"−")+rp(amount)+'</div><button class="btn del" onclick="delTx(\''+t.id+'\')">Hapus</button></div></div>';
+  const meta=esc(t.date)+" · "+(sale?esc(t.platform)+(t.fee?" · platform "+rp(t.fee):"")+(t.tax?" · pajak "+rp(t.tax):""):esc(t.note||"Belanja usaha"));
+  const amount=sale?t.qty*t.price-(t.fee||0)-(t.tax||0):t.amount;
+  return '<div class="tx-row"><div class="tx-symbol">'+(sale?"↗":"↙")+'</div><div class="tx-main"><div class="tx-title">'+title+'</div><div class="tx-meta">'+meta+'</div><button class="btn del" style="margin:5px 0 0;padding:2px 0" onclick="editRemark(\''+t.id+'\')">Keterangan · '+(t.note?'Edit':'Tambah')+'</button></div><div class="tx-side"><div class="tx-amount '+(sale?"pos":"neg")+'">'+(sale?"+":"−")+rp(amount)+'</div><button class="btn del" onclick="delTx(\''+t.id+'\')">Hapus</button></div></div>';
  }).join(""):'<div class="empty-state"><strong>Belum ada transaksi di kategori ini</strong>Transaksi yang kamu catat akan muncul di sini.</div>';
  $("#app").innerHTML='<header class="page-head"><div><span class="page-kicker">AKTIVITAS USAHA</span><h1 class="page-title">Riwayat</h1><div class="page-subtitle">Pantau semua transaksi yang sudah dicatat.</div></div><span class="page-pill">'+all.length+' transaksi</span></header>'+
  '<div class="metric-grid"><div class="metric-card"><div class="metric-label"><span class="metric-icon">↗</span>Penjualan kotor</div><b class="metric-value">'+rp(sales)+'</b></div><div class="metric-card"><div class="metric-label"><span class="metric-icon">↙</span>Total belanja</div><b class="metric-value">'+rp(buys)+'</b></div></div>'+
  '<div class="section-title"><h2>Semua aktivitas</h2><small>Terbaru dahulu</small></div><div class="page-tabs">'+tabs+'</div><section class="panel-flat">'+rows+'</section>';
 }
 function delTx(id){if(confirm('Hapus transaksi ini?')){const t=S.tx.find(x=>x.id===id);if(t&&t.rid){const r=S.rec.find(x=>x.id===t.rid)||S.staff.find(x=>x.id===t.rid);if(r){r.skip=r.skip||[];r.skip.push(t.rm)}}S.tx=S.tx.filter(x=>x.id!==id);save();render()}}
+function editRemark(id){
+ const t=S.tx.find(x=>x.id===id);if(!t)return;
+ open(hd('Keterangan transaksi')+`<label>Keterangan (opsional)</label><textarea id="remark" rows="4" style="width:100%;min-height:110px;padding:13px;border:1px solid var(--line);border-radius:16px;background:var(--card);color:var(--tx);font:inherit">${esc(t.note||"")}</textarea><button class="btn full" style="margin-top:16px" onclick="saveRemark('${id}')">Simpan keterangan</button>`);
+}
+function saveRemark(id){const t=S.tx.find(x=>x.id===id);if(!t)return;t.note=$("#remark").value.trim();save();close();render()}
+
 function report(){
  const [y,mo]=rep.split("-").map(Number),months=[];
  for(let i=5;i>=0;i--){const d=new Date(y,mo-1-i,1);months.push(d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0"))}
@@ -419,7 +425,7 @@ function savePrice(){const n=P.name.trim();if(!n||!P.price||!P.date)return alert
 function delPrice(){if(confirm('Hapus bahan ini?')){S.prices=S.prices.filter(x=>x.id!==P.id);save();shut();render()}}
 const TA='width:100%;height:200px;background:var(--card);color:var(--tx);border:1.5px solid var(--pl);border-radius:14px;padding:10px;font:12px monospace';
 function copyEl(id){const e=$('#'+id);e.select();const ok=()=>alert('Tersalin');try{navigator.clipboard.writeText(e.value).then(ok,()=>{try{document.execCommand('copy');ok()}catch(x){alert('Tahan teks lalu pilih Salin')}})}catch(x){try{document.execCommand('copy');ok()}catch(y){alert('Tahan teks lalu pilih Salin')}}}
-function openCsv(){const Q=String.fromCharCode(34),q=v=>Q+String(v==null?'':v).split(Q).join(Q+Q)+Q;const rows=[['Tanggal','Jenis','Produk/Kategori','Jumlah','Platform','Nominal','Potongan platform','Catatan'],...[...S.tx].sort((a,b)=>a.date.localeCompare(b.date)).map(t=>t.type==='sale'?[t.date,'Penjualan',t.name,t.qty,t.platform,t.qty*t.price,t.fee,'']:[t.date,'Belanja',t.cat,'','',t.amount,'',t.note])];
+function openCsv(){const Q=String.fromCharCode(34),q=v=>Q+String(v==null?'':v).split(Q).join(Q+Q)+Q;const rows=[['Tanggal','Jenis','Produk/Kategori','Jumlah','Platform','Nominal kotor','Potongan platform','Pajak dipotong','Uang diterima','Keterangan'],...[...S.tx].sort((a,b)=>a.date.localeCompare(b.date)).map(t=>t.type==='sale'?[t.date,'Penjualan',t.name,t.qty,t.platform,t.qty*t.price,t.fee||0,t.tax||0,t.qty*t.price-(t.fee||0)-(t.tax||0),t.note||'']:[t.date,'Belanja',t.cat,'','',t.amount,'', '',t.amount,t.note||''])];
  open(hd('Ekspor CSV')+`<label>Semua transaksi (${S.tx.length})</label><textarea id='csv' readonly style='${TA}'></textarea><button class='btn full' style='margin-top:12px' data-i='csv' onclick='copyEl(this.dataset.i)'>Salin ke clipboard</button><div style='font-size:13px;opacity:.7;margin-top:10px'>Tempel ke Excel atau Google Sheets.</div>`);
  $('#csv').value=rows.map(r=>r.map(q).join(',')).join(String.fromCharCode(10))}
 function openBackup(){open(hd('Cadangkan')+`<label>Salin kode ini dan simpan di tempat aman</label><textarea id='bk' readonly style='${TA}'></textarea><button class='btn full' style='margin-top:12px' data-i='bk' onclick='copyEl(this.dataset.i)'>Salin kode cadangan</button><label style='margin-top:26px'>Pulihkan: tempel kode cadangan</label><textarea id='rs' style='${TA}'></textarea><button class='btn sec full' style='margin-top:12px' onclick='doRestore()'>Pulihkan data</button><div style='font-size:13px;opacity:.7;margin-top:10px'>Memulihkan mengganti semua data di perangkat ini.</div>`);$('#bk').value=JSON.stringify(S)}
@@ -461,7 +467,7 @@ function savePlat(id){
 }
 
 let F={};
-function openAdd(type){F={type:type||"sale",pid:S.products[0]?.id,plat:S.platforms[0]?.id,cat:S.cats[0],qty:1,date:today()};drawAdd()}
+function openAdd(type){F={type:type||"sale",pid:S.products[0]?.id,plat:S.platforms[0]?.id,cat:S.cats[0],qty:1,date:today(),taxMode:"none",taxValue:0,note:""};drawAdd()}
 function drawAdd(){
  const sale=F.type==="sale";
  let body;
@@ -472,12 +478,19 @@ function drawAdd(){
   <label>Jumlah porsi</label><div class="row"><button class="btn sec" onclick="F.qty=Math.max(1,F.qty-1);drawAdd()">−</button><b style="font-size:22px">${F.qty}</b><button class="btn sec" onclick="F.qty++;drawAdd()">＋</button></div>
   <label>Harga jual per porsi (bisa diubah)</label><input type="number" inputmode="numeric" value="${price}" oninput="F.price=num(this.value);upd()">
   <label>Platform</label><div class="chips">${S.platforms.map(x=>`<button class="chip ${x.id===F.plat?"on":""}" onclick="F.plat='${x.id}';drawAdd()">${esc(x.name)} · ${x.fee}%</button>`).join("")}</div>
+  <label>Pajak dipotong dari penjualan</label><div class="chips">
+   <button class="chip ${F.taxMode==="none"?"on":""}" onclick="F.taxMode='none';F.taxValue=0;drawAdd()">Tanpa pajak</button>
+   <button class="chip ${F.taxMode==="percent"?"on":""}" onclick="F.taxMode='percent';drawAdd()">Persentase</button>
+   <button class="chip ${F.taxMode==="fixed"?"on":""}" onclick="F.taxMode='fixed';drawAdd()">Nominal</button>
+  </div>
+  ${F.taxMode==="none"?"":`<label>${F.taxMode==="percent"?"Persentase pajak (%)":"Nominal pajak (Rp)"}</label><input type="number" inputmode="decimal" value="${F.taxValue||""}" oninput="F.taxValue=num(this.value);upd()">`}
+  <label>Keterangan transaksi (opsional)</label><input value="${esc(F.note||"")}" oninput="F.note=this.value">
   <div class="card" style="margin-top:14px" id="prev"></div>`
   :`<div class="empty">Tambahkan produk dulu di menu Kelola.</div>`;
  }else{
   body=`<label>Nominal (Rp)</label><input id="am" type="number" inputmode="numeric" placeholder="0" value="${F.amount||""}" oninput="F.amount=num(this.value)">
   <label>Kategori</label><div class="chips">${S.cats.map(c=>`<button class="chip ${c===F.cat?"on":""}" onclick="F.cat='${esc(c)}';drawAdd()">${esc(c)}</button>`).join("")}</div>
-  <label>Catatan (opsional)</label><input value="${esc(F.note||"")}" oninput="F.note=this.value">`;
+  <label>Keterangan transaksi (opsional)</label><input value="${esc(F.note||"")}" oninput="F.note=this.value">`;
  }
  open(`<div class="row"><h2 style="margin:0">Catat transaksi</h2><button class="btn sec" onclick="close()">✕</button></div>
  <div class="seg" style="margin-top:12px"><button class="${sale?"on":""}" onclick="F.type='sale';drawAdd()">Penjualan</button><button class="${!sale?"on":""}" onclick="F.type='buy';drawAdd()">Belanja</button></div>
@@ -488,8 +501,8 @@ function drawAdd(){
 function upd(){
  const e=$("#prev");if(!e)return;
  const p=S.products.find(x=>x.id===F.pid),pl=S.platforms.find(x=>x.id===F.plat);if(!p||!pl)return;
- const price=F.price!=null?F.price:p.price,g=price*F.qty,fee=g*pl.fee/100;
- e.innerHTML=`<div class="li"><span>Penjualan kotor</span><span>${rp(g)}</span></div><div class="li"><span>Potongan ${pl.fee}%</span><span>−${rp(fee)}</span></div><div class="li sum"><span>Diterima</span><span>${rp(g-fee)}</span></div><div class="li"><span>Laba kotor (setelah modal)</span><span class="pos">${rp(g-fee-p.cost*F.qty)}</span></div>`;
+ const price=F.price!=null?F.price:p.price,g=price*F.qty,fee=Math.round(g*pl.fee/100),tax=F.taxMode==="percent"?Math.round(g*Math.min(100,F.taxValue||0)/100):F.taxMode==="fixed"?Math.min(g,Math.round(F.taxValue||0)):0;
+ e.innerHTML=`<div class="li"><span>Penjualan kotor</span><span>${rp(g)}</span></div><div class="li"><span>Potongan platform</span><span>−${rp(fee)}</span></div><div class="li"><span>Pajak dipotong</span><span>−${rp(tax)}</span></div><div class="li sum"><span>Uang diterima</span><span>${rp(g-fee-tax)}</span></div><div class="li"><span>Laba sebelum belanja lain</span><span class="pos">${rp(g-fee-p.cost*F.qty)}</span></div>`;
 }
 function saveTx(){
  if(!F.date)return alert("Pilih tanggal");
@@ -497,7 +510,8 @@ function saveTx(){
   const p=S.products.find(x=>x.id===F.pid),pl=S.platforms.find(x=>x.id===F.plat);
   if(!p||!pl)return alert("Lengkapi produk dan platform dulu");
   const price=F.price!=null?F.price:p.price;
-  S.tx.push({id:uid(),type:"sale",date:F.date,name:p.name,qty:F.qty,price,cost:p.cost,platform:pl.name,fee:Math.round(price*F.qty*pl.fee/100)});
+  const gross=price*F.qty,fee=Math.round(gross*pl.fee/100),tax=F.taxMode==="percent"?Math.round(gross*Math.min(100,F.taxValue||0)/100):F.taxMode==="fixed"?Math.min(gross,Math.round(F.taxValue||0)):0;
+  S.tx.push({id:uid(),type:"sale",date:F.date,name:p.name,qty:F.qty,price,cost:p.cost,platform:pl.name,fee,tax,taxMode:F.taxMode||"none",taxRate:F.taxMode==="percent"?Math.min(100,F.taxValue||0):0,note:F.note||""});
  }else{
   if(!F.amount)return alert("Isi nominal belanja");
   S.tx.push({id:uid(),type:"buy",date:F.date,cat:F.cat,amount:F.amount,note:F.note||""});
