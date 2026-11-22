@@ -255,7 +255,7 @@ const def={name:"Usaha Saya",hide:false,
  cats:["Bahan baku","Kemasan & perlengkapan","Operasional"],tx:[]};
 let S;try{S=JSON.parse(localStorage.getItem(KEY))||def}catch(e){S=def}
 norm();
-const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}if(window.cloudPush)window.cloudPush()};
+const save=()=>{localRevision++;try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}if(window.cloudPush)window.cloudPush()};
 const $=s=>document.querySelector(s);
 const rp=n=>"Rp"+Math.round(n).toLocaleString("id-ID");
 const mask=n=>S.hide?"Rp ••••••":rp(n);
@@ -264,7 +264,7 @@ const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",
 const today=()=>{const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")};
 const MON=["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Agu","Sep","Okt","Nov","Des"];
 const MONF=["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
-let tab="home",rep=today().slice(0,7),listFilter="all";
+let tab="home",rep=today().slice(0,7),listFilter="all",localRevision=0;
 
 function calc(list){
  let gross=0,fee=0,tax=0,porsi=0,buy=0,by={};
@@ -277,6 +277,7 @@ function calc(list){
  return{gross,fee,tax,net,cash,porsi,buy,by,profit:net-buy};
 }
 const inMonth=m=>S.tx.filter(t=>t.date.slice(0,7)===m);
+function newestFirst(list){return list.map((t,i)=>({t,i})).sort((a,b)=>b.t.date.localeCompare(a.t.date)||String(b.t.createdAt||"").localeCompare(String(a.t.createdAt||""))||b.i-a.i).map(x=>x.t)}
 
 function render(){
  applyRec();
@@ -287,7 +288,7 @@ function render(){
 function home(){
  const m=today().slice(0,7),M=calc(inMonth(m)),T=calc(S.tx.filter(t=>t.date===today()));
  const mi=+m.slice(5)-1;
- const recent=[...S.tx].sort((a,b)=>b.date.localeCompare(a.date)||String(b.id).localeCompare(String(a.id))).slice(0,3);
+ const recent=newestFirst(S.tx).slice(0,3);
  const recentHtml=recent.length?recent.map(t=>{
   const sale=t.type==="sale",title=sale?(String(t.qty)+"× "+esc(t.name)):esc(t.cat);
   const meta=esc(t.date)+(sale?" · "+esc(t.platform):t.note?" · "+esc(t.note):"");
@@ -325,7 +326,7 @@ function home(){
  <section class="home-recent">${recentHtml}</section>`;
 }
 function list(){
- const all=[...S.tx].sort((x,y)=>y.date.localeCompare(x.date)||String(y.id).localeCompare(String(x.id)));
+ const all=newestFirst(S.tx);
  const a=listFilter==="all"?all:all.filter(t=>t.type===listFilter);
  const sales=all.filter(t=>t.type==="sale").reduce((n,t)=>n+t.qty*t.price,0);
  const buys=all.filter(t=>t.type==="buy").reduce((n,t)=>n+t.amount,0);
@@ -735,8 +736,9 @@ async function saveCapture(){
  if(btn){btn.disabled=true;btn.textContent=archive?"Mengunggah bukti…":"Menyimpan transaksi…"}
  try{
   if(archive){if(!CAP.file)throw new Error("File bukti asli tidak ditemukan. Scan ulang dokumen sebelum mengarsipkan.");if(typeof window.archiveEvidence!=="function")throw new Error("Fitur arsip belum siap. Muat ulang aplikasi.");evidence=await window.archiveEvidence(CAP.file,txId)}
-  if(CAP.kind==="sale"){const platform=v("capPlatform")||S.platforms[0].name,amount=gross||net+discount+tax+fee;S.tx.push({id:txId,type:"sale",date,name:merchant||"Penjualan dari dokumen",qty:1,price:Math.max(0,amount-discount),cost:0,platform,fee,tax,discount,originalGross:amount,source:"ocr",captureHash:hash,evidence,note:"Hasil scan dokumen · "+merchant})}
-  else{const category=v("capCategory")||S.cats[0]||"Operasional";S.tx.push({id:txId,type:"buy",date,cat:category,amount:net,gross:gross||total,discount,tax,merchant,source:"ocr",captureHash:hash,evidence,note:"Hasil scan dokumen · "+merchant})}
+  const createdAt=new Date().toISOString();
+  if(CAP.kind==="sale"){const platform=v("capPlatform")||S.platforms[0].name,amount=gross||net+discount+tax+fee;S.tx.push({id:txId,type:"sale",date,createdAt,name:merchant||"Penjualan dari dokumen",qty:1,price:Math.max(0,amount-discount),cost:0,platform,fee,tax,discount,originalGross:amount,source:"ocr",captureHash:hash,evidence,note:"Hasil scan dokumen · "+merchant})}
+  else{const category=v("capCategory")||S.cats[0]||"Operasional";S.tx.push({id:txId,type:"buy",date,createdAt,cat:category,amount:net,gross:gross||total,discount,tax,merchant,source:"ocr",captureHash:hash,evidence,note:"Hasil scan dokumen · "+merchant})}
   save();close();render();alert(evidence?"Transaksi dan bukti asli berhasil disimpan ke cloud. Buka Riwayat untuk melihat bukti.":"Transaksi hasil scan berhasil disimpan. Periksa kembali di Riwayat.")
  }catch(e){if(btn){btn.disabled=false;btn.textContent="Periksa & simpan transaksi"}alert("Transaksi belum disimpan. "+(e.message||"Terjadi kesalahan."))}
 }
@@ -747,10 +749,10 @@ function saveTx(){
   if(!p||!pl)return alert("Lengkapi produk dan platform dulu");
   const price=F.price!=null?F.price:p.price;
   const gross=price*F.qty,fee=Math.round(gross*pl.fee/100),tax=F.taxMode==="percent"?Math.round(gross*Math.min(100,F.taxValue||0)/100):F.taxMode==="fixed"?Math.min(gross,Math.round(F.taxValue||0)):0;
-  S.tx.push({id:uid(),type:"sale",date:F.date,name:p.name,qty:F.qty,price,cost:p.cost,platform:pl.name,fee,tax,taxMode:F.taxMode||"none",taxRate:F.taxMode==="percent"?Math.min(100,F.taxValue||0):0,note:F.note||""});
+  S.tx.push({id:uid(),type:"sale",date:F.date,createdAt:new Date().toISOString(),name:p.name,qty:F.qty,price,cost:p.cost,platform:pl.name,fee,tax,taxMode:F.taxMode||"none",taxRate:F.taxMode==="percent"?Math.min(100,F.taxValue||0):0,note:F.note||""});
  }else{
   if(!F.amount)return alert("Isi nominal belanja");
-  S.tx.push({id:uid(),type:"buy",date:F.date,cat:F.cat,amount:F.amount,note:F.note||""});
+  S.tx.push({id:uid(),type:"buy",date:F.date,createdAt:new Date().toISOString(),cat:F.cat,amount:F.amount,note:F.note||""});
  }
  save();close();render();
 }
@@ -779,16 +781,17 @@ async function ensure(){
 }
 async function pull(){const r=await api('/rest/v1/books?app=eq.'+APP+'&select=data,updated_at',{},true);return r&&r[0]||null}
 async function push(){
- const at=new Date().toISOString();
- await api('/rest/v1/books',{method:'POST',headers:{Prefer:'resolution=merge-duplicates,return=minimal'},body:JSON.stringify({user_id:ses.uid,app:APP,data:S,updated_at:at})},true);
- ls(MK,JSON.stringify({uid:ses.uid,at}));ls(DK,null);
+ const at=new Date().toISOString(),revision=localRevision,payload=JSON.parse(JSON.stringify(S));
+ await api('/rest/v1/books',{method:'POST',headers:{Prefer:'resolution=merge-duplicates,return=minimal'},body:JSON.stringify({user_id:ses.uid,app:APP,data:payload,updated_at:at})},true);
+ ls(MK,JSON.stringify({uid:ses.uid,at}));
+ if(localRevision===revision)ls(DK,null);else{ls(DK,'1');clearTimeout(timer);timer=setTimeout(push2,300)}
 }
 function take(row){S=row.data;if(typeof norm==='function')norm();try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}ls(MK,JSON.stringify({uid:ses.uid,at:row.updated_at}));ls(DK,null);render()}
 async function syncNow(){
  if(!ses){showLogin();return}
- if(busy)return;busy=true;stat('wait');
+ if(busy)return;busy=true;stat('wait');const revision=localRevision;
  try{
-  const row=await pull(),mk=JSON.parse(ls(MK)||'null'),dirty=ls(DK)==='1';
+  const row=await pull(),mk=JSON.parse(ls(MK)||'null'),dirty=ls(DK)==='1'||localRevision!==revision;
   if(!row||!row.data||!Array.isArray(row.data.tx)){await push()}
   else{
    const same=mk&&mk.uid===ses.uid&&Date.parse(mk.at)===Date.parse(row.updated_at);
@@ -803,7 +806,7 @@ async function syncNow(){
  }catch(e){stat(!ses?'none':(navigator.onLine?'err':'off'))}
  busy=false;
 }
-async function push2(){if(!ses)return;try{await push();stat('ok')}catch(e){stat(ses?(navigator.onLine?'err':'off'):'none')}}
+async function push2(){if(!ses||ls(DK)!=='1')return;if(busy){clearTimeout(timer);timer=setTimeout(push2,500);return}busy=true;try{await push();stat('ok')}catch(e){stat(ses?(navigator.onLine?'err':'off'):'none')}finally{busy=false}}
 window.archiveEvidence=async function(file,txId){
  if(!ses)throw new Error("Masuk ke akun Laci Cuanmu untuk menyimpan bukti ke cloud.");await ensure();if(!ses)throw new Error("Sesi login tidak tersedia.");
  const clean=(file.name||"bukti").replace(/[^a-zA-Z0-9._-]/g,"_").slice(-90)||"bukti",path=ses.uid+"/"+txId+"/"+Date.now()+"_"+clean;
