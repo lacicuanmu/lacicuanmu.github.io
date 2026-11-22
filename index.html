@@ -288,6 +288,161 @@ nav button{font-size:12px}
  .home-hero .home-profit{font-size:34px}
 }
 
+
+/* FINAL UI SYSTEM — consistent mobile fintech experience */
+:root{
+ --bg:#f4f5f0;--card:#ffffff;--tx:#202a23;--mu:#77827a;--pr:#245b45;
+ --pl:#e8f0e9;--gr:#27845b;--rd:#b9685d;--line:#e4e9e2;
+ --sh:0 8px 26px rgba(31,54,39,.055);--sh-soft:0 3px 12px rgba(31,54,39,.045);
+}
+:root[data-theme="dark"]{
+ --bg:#121a15;--card:#1d2921;--tx:#edf3ed;--mu:#a2afa5;--pr:#a7c9ae;
+ --pl:#2a3b30;--gr:#83c99a;--rd:#f08c7c;--line:#35453a;
+ --sh:0 8px 26px rgba(0,0,0,.18);--sh-soft:0 3px 12px rgba(0,0,0,.13)
+}
+html,body{background:var(--bg)}
+body{max-width:560px;padding:22px 18px calc(124px + env(safe-area-inset-bottom,0px));font-size:15px;line-height:1.55}
+#app{padding-bottom:10px}
+h1{font-size:32px;line-height:1.14;letter-spacing:-1.2px}
+h2{font-size:19px;line-height:1.3;letter-spacing:-.45px}
+small{font-size:13px}
+button,input,select{font-family:inherit}
+button{touch-action:manipulation}
+.btn{min-height:47px;padding:12px 17px;border-radius:15px;font-size:14px;font-weight:750}
+.btn.sec{background:var(--pl);color:var(--pr);border:1px solid transparent}
+input,select{min-height:52px;padding:13px 15px;border-radius:15px;font-size:16px}
+label{font-size:14px;font-weight:700;margin:17px 0 8px}
+.card,.panel,.panel-flat,.metric-card,.home-recent{border-color:var(--line);box-shadow:var(--sh)}
+.card,.panel{border-radius:23px;padding:18px;margin-bottom:14px}
+.page-head{align-items:center;margin:5px 1px 24px}
+.page-kicker{font-size:12px;letter-spacing:.09em;font-weight:800;margin-bottom:6px}
+.page-title{font-size:34px;letter-spacing:-1.35px}
+.page-subtitle{font-size:15px;line-height:1.5;margin-top:8px;max-width:31ch}
+.page-pill{font-size:13px;padding:10px 15px}
+.section-title{margin:25px 2px 13px}
+.section-title h2{font-size:20px}
+.section-title small{font-size:13px}
+.metric-grid{gap:12px}
+.metric-card{padding:17px;border-radius:21px;box-shadow:var(--sh-soft)}
+.metric-label{font-size:13px;line-height:1.35;gap:9px}
+.metric-icon{width:34px;height:34px;border-radius:12px;font-size:16px}
+.metric-value{font-size:22px;letter-spacing:-.65px;margin-top:11px}
+.page-tabs{gap:8px;padding:4px 1px 13px}
+.page-tab{font:700 14px/1.2 inherit;border-radius:999px;padding:12px 18px;min-height:46px}
+.page-tab.active{box-shadow:0 5px 12px rgba(36,91,69,.14)}
+.panel-flat{border-radius:23px;padding:5px 17px}
+.tx-row{gap:13px;padding:17px 0}
+.tx-symbol{width:46px;height:46px;flex-basis:46px;border-radius:16px;font-size:19px}
+.tx-title{font-size:15px;line-height:1.35;font-weight:800}
+.tx-meta{font-size:13px;line-height:1.4;margin-top:5px}
+.tx-amount{font-size:15px;font-weight:800}
+.tx-side .btn.del{background:transparent;color:var(--mu);border:1px solid var(--line);border-radius:9px;padding:4px 9px;min-height:28px;font-size:11px;font-weight:650;margin-top:5px}
+.report-hero{padding:24px 21px;border-radius:26px;margin-bottom:14px}
+.report-hero .eyebrow{font-size:13px;letter-spacing:.07em;font-weight:800}
+.report-hero .value{font-size:38px;letter-spacing:-1.5px;margin:8px 0}
+.report-hero .hint{font-size:14px}
+.report-hero .mini{padding-top:17px;margin-top:18px}
+.report-hero .mini span{font-size:13px}
+.report-hero .mini b{font-size:19px}
+.report-chart{height:175px;gap:11px}
+.report-chart>div{font-size:12px}
+.report-legend{font-size:12px;gap:18px;margin-top:15px}
+.breakdown-row{font-size:14px;padding:15px 2px}
+.breakdown-row.total{font-size:15px}
+.manage-group{font-size:12px;letter-spacing:.11em;margin:25px 2px 11px}
+.manage-item{gap:14px;padding:17px 0}
+.manage-icon{width:48px;height:48px;flex-basis:48px;border-radius:16px;font-size:21px}
+.manage-copy b{font-size:15px;line-height:1.4}
+.manage-copy small{font-size:13px;line-height:1.5;margin-top:4px}
+.manage-item .btn{min-height:42px;padding:10px 15px;font-size:13px;border-radius:14px}
+.manage-item[style*="padding-top:2px"]{padding-top:2px}
+.manage-copy{overflow-wrap:anywhere}
+.settings-theme{padding:5px;border-radius:16px}
+.settings-theme button{font-size:13px;padding:11px 7px}
+.chips{gap:9px}
+.chip{font-size:14px;padding:11px 15px;border-radius:999px;min-height:43px}
+.empty-state{font-size:14px;padding:30px 15px}
+.empty-state strong{font-size:15px}
+.home-head{align-items:center;margin:5px 1px 25px}
+.home-greet{font-size:15px}
+.home-brand{font-size:35px;letter-spacing:-1.5px}
+.home-month{font-size:13px;padding:10px 14px}
+.home-hero{padding:26px 23px 22px;border-radius:30px;margin-bottom:20px}
+.home-eyebrow{font-size:13px;letter-spacing:.12em}
+.home-month-name{font-size:16px}
+.home-hero .eye{width:44px;height:44px;font-size:19px}
+.home-hero-main{padding:24px 0 20px}
+.home-hero-label{font-size:16px}
+.home-amount{font-size:clamp(36px,9vw,44px);letter-spacing:-1.8px}
+.home-hero-note{font-size:14px}
+.home-hero-bottom{padding-top:18px;gap:15px}
+.home-hero-metric span{font-size:13px}
+.home-hero-metric b{font-size:19px}
+.home-section-head{margin:27px 2px 13px}
+.home-section-head h2{font-size:21px}
+.home-section-head small{font-size:13px}
+.home-actions{gap:12px}
+.home-action{min-height:112px;padding:17px 14px;border-radius:22px;gap:12px}
+.home-action-icon{width:48px;height:48px;flex-basis:48px;border-radius:16px;font-size:22px}
+.home-action strong{font-size:15px}
+.home-action small{font-size:13px;line-height:1.4}
+.home-today-grid{gap:11px}
+.home-today-card{padding:16px;border-radius:20px}
+.home-today-top{font-size:13px;gap:8px}
+.home-today-icon{width:32px;height:32px;border-radius:11px;font-size:16px}
+.home-today-card b{font-size:21px;margin-top:10px}
+.home-recent{padding:5px 17px;border-radius:22px}
+.home-recent .li{padding:15px 0}
+.home-recent-name{font-size:14px}
+.home-recent-meta{font-size:12px}
+.home-recent-amount{font-size:14px}
+.home-see-all{font-size:13px}
+nav{width:min(520px,calc(100% - 22px));bottom:calc(10px + env(safe-area-inset-bottom,0px));padding:8px;border-radius:27px;box-shadow:0 10px 32px rgba(25,45,32,.14)}
+nav button{min-width:59px;padding:8px 9px;font-size:12px;gap:3px}
+nav button span{font-size:22px}
+nav .plus{width:57px;height:57px;min-width:57px;border-radius:19px;font-size:30px}
+.sheet{backdrop-filter:blur(5px)}
+.sheet>div{width:100%;max-width:560px;max-height:94%;padding:22px 20px calc(28px + env(safe-area-inset-bottom,0px));border-radius:30px 30px 0 0;background:var(--bg)}
+.sheet .row:first-child{margin-bottom:18px}
+.sheet .row:first-child h2{font-size:23px;font-weight:800}
+.sheet .seg{padding:5px;border-radius:18px;gap:6px;margin:15px 0 19px}
+.sheet .seg button{font-size:15px;min-height:49px;border-radius:14px}
+.sheet label{font-size:14px;margin:20px 0 9px}
+.sheet input,.sheet select{min-height:56px;font-size:16px;border-radius:16px}
+.sheet .chips{gap:9px}
+.sheet .chip{font-size:14px;min-height:46px;padding:11px 15px;border-radius:999px}
+.sheet #prev{padding:16px 17px;border-radius:22px;margin-top:18px}
+.sheet #prev .li{font-size:15px;padding:15px 0}
+.sheet #prev .li.sum{font-size:16px}
+.sheet .btn.full{min-height:55px;font-size:15px;border-radius:17px;margin-top:22px}
+@media(max-width:390px){
+ body{padding-left:15px;padding-right:15px}
+ .page-title{font-size:31px}
+ .page-subtitle{font-size:14px}
+ .metric-card{padding:14px}
+ .metric-value{font-size:19px}
+ .tx-row{gap:10px}
+ .tx-symbol{width:41px;height:41px;flex-basis:41px}
+ .tx-title{font-size:14px}
+ .tx-meta{font-size:12px}
+ .tx-amount{font-size:13px}
+ .home-brand{font-size:31px}
+ .home-amount{font-size:35px}
+ .home-action{padding:14px 10px;gap:8px;min-height:100px}
+ .home-action-icon{width:40px;height:40px;flex-basis:40px}
+ .home-action strong{font-size:13px}
+ .home-action small{font-size:11px}
+ .home-today-card{padding:13px}
+ .home-today-card b{font-size:18px}
+ .manage-icon{width:43px;height:43px;flex-basis:43px}
+ .manage-copy b{font-size:14px}
+ .manage-copy small{font-size:12px}
+ nav button{min-width:52px;font-size:11px}
+ nav button span{font-size:20px}
+ nav .plus{width:53px;height:53px;min-width:53px}
+ .sheet>div{padding-left:16px;padding-right:16px}
+}
+
 </style>
 </head>
 <body>
