@@ -189,6 +189,32 @@ h1{font-size:26px;letter-spacing:-1px;margin:5px 0 5px}h2{font-size:15px;letter-
 nav{width:min(520px,calc(100% - 22px));padding:6px;border-radius:22px}
 @media(max-width:360px){body{padding-left:14px;padding-right:14px}.page-title{font-size:24px}.metric-card{padding:12px}.metric-value{font-size:15px}.tx-symbol{width:35px;height:35px;flex-basis:35px}.report-hero .value{font-size:25px}nav button{min-width:49px;padding:6px}}
 
+
+/* Transaction sheet refinement */
+.sheet>div{background:var(--bg);box-shadow:0 -12px 45px rgba(25,45,32,.14)}
+.sheet .row:first-child{align-items:center;margin-bottom:15px}
+.sheet .row:first-child h2{font-size:19px;letter-spacing:-.5px}
+.sheet .seg{display:flex;gap:5px;background:var(--pl);padding:5px;border-radius:17px}
+.sheet .seg button{flex:1;min-height:43px;border:0;border-radius:13px;background:transparent;color:var(--mu);font:700 13px inherit}
+.sheet .seg button.on{background:var(--card);color:var(--pr);box-shadow:0 2px 9px rgba(27,55,38,.08)}
+.sheet label{display:block;color:var(--mu);font-size:12px;font-weight:750;margin:17px 0 8px}
+.sheet input{width:100%;min-height:50px;padding:0 15px;border:1px solid var(--line);background:var(--card);color:var(--tx);font:500 15px inherit;outline:none}
+.sheet input:focus{border-color:var(--pr);box-shadow:0 0 0 3px var(--pl)}
+.sheet .chips{display:flex;flex-wrap:wrap;gap:8px}
+.sheet .chip{min-height:40px;padding:9px 13px;border:1px solid var(--line);border-radius:14px;background:var(--card);color:var(--tx);font-size:11px;font-weight:700}
+.sheet .chip.on{background:var(--pl);border-color:#b9cbbd;color:var(--pr)}
+.sheet .row:has(>b[style*="22px"]){justify-content:space-between;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:8px}
+.sheet .row:has(>b[style*="22px"]) .btn{width:42px;height:42px;border-radius:13px;font-size:18px}
+.sheet #prev{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:13px 15px;box-shadow:var(--sh)}
+.sheet #prev .li{padding:12px 0;border-bottom:1px solid var(--line);font-size:12px}
+.sheet #prev .li:last-child{border:0}
+.sheet #prev .li.sum{font-weight:800;color:var(--tx)}
+.sheet .btn.full{min-height:49px;border-radius:15px;font-size:13px;font-weight:800}
+.tx-side .btn.del{opacity:.72;font-weight:650}
+.tx-side .btn.del:active{opacity:1}
+.manage-item .manage-icon.item-icon{font-size:18px}
+@media(max-width:380px){.sheet>div{padding-left:15px;padding-right:15px}.sheet .chip{font-size:10px;padding:8px 10px}}
+
 </style>
 </head>
 <body>
@@ -311,11 +337,11 @@ function shift(n){const [y,m]=rep.split("-").map(Number);const d=new Date(y,m-1+
 function manage(){
  const theme=localStorage.getItem("lcm-theme")||"light";
  const item=(ico,title,desc,action,label)=>'<div class="manage-item"><span class="manage-icon">'+ico+'</span><div class="manage-copy"><b>'+title+'</b><small>'+desc+'</small></div><button class="btn sec" onclick="'+action+'">'+(label||"Kelola")+'</button></div>';
- const products=S.products.map(p=>'<div class="manage-item"><span class="manage-icon">•</span><div class="manage-copy"><b>'+esc(p.name)+'</b><small>Jual '+rp(p.price)+' · HPP '+rp(p.cost)+'</small></div><button class="btn sec" onclick="editProd(\''+p.id+'\')">Edit</button></div>').join("");
- const plats=S.platforms.map(p=>'<div class="manage-item"><span class="manage-icon">•</span><div class="manage-copy"><b>'+esc(p.name)+'</b><small>Potongan '+p.fee+'%</small></div><button class="btn sec" onclick="editPlat(\''+p.id+'\')">Edit</button></div>').join("");
- const rec=S.rec.map(r=>'<div class="manage-item"><span class="manage-icon">•</span><div class="manage-copy"><b>'+esc(r.name)+'</b><small>'+rp(r.amount)+' · tiap tanggal '+r.day+'</small></div><button class="btn sec" onclick="editRec(\''+r.id+'\')">Edit</button></div>').join("");
- const staff=S.staff.map(x=>'<div class="manage-item"><span class="manage-icon">•</span><div class="manage-copy"><b>'+esc(x.name)+'</b><small>'+rp(x.salary)+' · tiap tanggal '+x.day+'</small></div><button class="btn sec" onclick="editStaff(\''+x.id+'\')">Edit</button></div>').join("");
- const prices=S.prices.map(p=>{const l=p.h[p.h.length-1];return '<div class="manage-item"><span class="manage-icon">•</span><div class="manage-copy"><b>'+esc(p.name)+'</b><small>'+rp(l.price)+'/'+esc(p.unit)+' · '+l.date+'</small></div><button class="btn sec" onclick="editPrice(\''+p.id+'\')">Update</button></div>'}).join("");
+ const products=S.products.map(p=>'<div class="manage-item"><span class="manage-icon item-icon">'+(/minum|kopi|teh|jus|es/i.test(p.name)?"🥤":/makan|nasi|ayam|roti|kue|snack/i.test(p.name)?"🍱":"📦")+'</span><div class="manage-copy"><b>'+esc(p.name)+'</b><small>Jual '+rp(p.price)+' · HPP '+rp(p.cost)+'</small></div><button class="btn sec" onclick="editProd(\''+p.id+'\')">Edit</button></div>').join("");
+ const plats=S.platforms.map(p=>'<div class="manage-item"><span class="manage-icon item-icon">'+(/shopee/i.test(p.name)?"🛍️":/gofood/i.test(p.name)?"🟢":/grab/i.test(p.name)?"🛵":/whatsapp/i.test(p.name)?"💬":"🌐")+'</span><div class="manage-copy"><b>'+esc(p.name)+'</b><small>Potongan '+p.fee+'%</small></div><button class="btn sec" onclick="editPlat(\''+p.id+'\')">Edit</button></div>').join("");
+ const rec=S.rec.map(r=>'<div class="manage-item"><span class="manage-icon item-icon">🔁</span><div class="manage-copy"><b>'+esc(r.name)+'</b><small>'+rp(r.amount)+' · tiap tanggal '+r.day+'</small></div><button class="btn sec" onclick="editRec(\''+r.id+'\')">Edit</button></div>').join("");
+ const staff=S.staff.map(x=>'<div class="manage-item"><span class="manage-icon item-icon">👤</span><div class="manage-copy"><b>'+esc(x.name)+'</b><small>'+rp(x.salary)+' · tiap tanggal '+x.day+'</small></div><button class="btn sec" onclick="editStaff(\''+x.id+'\')">Edit</button></div>').join("");
+ const prices=S.prices.map(p=>{const l=p.h[p.h.length-1];return '<div class="manage-item"><span class="manage-icon item-icon">🧾</span><div class="manage-copy"><b>'+esc(p.name)+'</b><small>'+rp(l.price)+'/'+esc(p.unit)+' · '+l.date+'</small></div><button class="btn sec" onclick="editPrice(\''+p.id+'\')">Update</button></div>'}).join("");
  $("#app").innerHTML='<header class="page-head"><div><span class="page-kicker">PENGATURAN USAHA</span><h1 class="page-title">Kelola</h1><div class="page-subtitle">Atur kebutuhan operasional dan data usahamu.</div></div><span class="page-pill">Pengaturan</span></header>'+
  '<section class="panel"><div class="manage-item" style="padding-top:2px"><span class="manage-icon">🏪</span><div class="manage-copy"><b>Identitas usaha</b><small>Nama yang tampil di beranda</small></div></div><label>Nama usaha / pemilik</label><input value="'+esc(S.name)+'" onchange="S.name=this.value;save();render()"></section>'+
  '<div class="manage-group">Produk & penjualan</div><section class="panel">'+item("📦","Produk & HPP",S.products.length+" produk · atur harga jual dan modal","editProd()","Tambah")+(products||'<div class="empty-state">Belum ada produk.</div>')+'</section>'+
