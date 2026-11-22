@@ -52,6 +52,35 @@ hr{opacity:.3}
 #cl{display:block;margin:0 0 9px auto;border:1px solid var(--line);background:var(--card);color:var(--mu);border-radius:999px;padding:6px 12px;font:600 11px "Plus Jakarta Sans",sans-serif;cursor:pointer}
 #lg{position:fixed;inset:0;z-index:50;background:var(--bg);display:none;align-items:center;justify-content:center;padding:24px}#lg.show{display:flex}#lg>div{width:100%;max-width:380px}#lg h2{margin:0 0 6px}#lg .e{color:var(--rd);font-size:13px;min-height:18px;margin:8px 0}
 
+
+/* Shared page surfaces: history, reports and management */
+#app>h1:not(.home-brand){font-size:25px;letter-spacing:-.9px;margin:7px 1px 18px}
+#app>h2{display:flex;align-items:center;gap:8px;margin:23px 1px 10px;font-size:15px;letter-spacing:-.35px}
+#app>.card{border-radius:20px;padding:15px 16px;box-shadow:var(--sh)}
+#app>.card.row{min-height:54px}
+#app>.card>.li{padding:13px 1px}
+#app>.card>.li>div:first-child{min-width:0;font-size:12px;font-weight:650}
+#app>.card>.li small{font-weight:500;font-size:10px;line-height:1.5}
+#app>.card>.li>div:last-child{display:flex;align-items:center;gap:7px;flex-shrink:0}
+#app>.grid{gap:10px}
+#app .stat{border-radius:18px;padding:14px 13px;box-shadow:var(--sh);font-size:11px}
+#app .stat b{font-size:16px;letter-spacing:-.45px}
+#app .bars{height:142px;gap:8px}
+#app .bars>div{font-size:10px}
+#app .pair{gap:3px}
+#app .btn{transition:transform .15s ease,filter .15s ease}
+#app .btn:active,#app .home-action:active{transform:scale(.98)}
+#app input,#app select{min-height:46px}
+#app .chips{gap:7px}
+#app .chip{border-radius:999px;padding:8px 12px}
+#app .empty{padding:24px 12px;font-size:12px;line-height:1.6}
+@media(max-width:360px){
+ #app>.card{padding:13px}
+ #app .stat{padding:12px 10px}
+ #app .stat b{font-size:14px}
+ #app>.card>.li>div:last-child{gap:3px}
+}
+
 /* Home dashboard redesign */
 .home-head{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin:3px 1px 22px}
 .home-greet{display:block;color:var(--mu);font-size:12px;font-weight:600;letter-spacing:.02em}
