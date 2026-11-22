@@ -334,7 +334,7 @@ function list(){
   const sale=t.type==="sale",title=sale?(t.qty+"× "+esc(t.name)):esc(t.cat);
   const meta=esc(t.date)+" · "+(sale?esc(t.platform)+(t.fee?" · platform "+rp(t.fee):"")+(t.tax?" · pajak "+rp(t.tax):""):esc(t.note||"Belanja usaha"));
   const amount=sale?t.qty*t.price-(t.fee||0)-(t.tax||0):t.amount;
-  return '<div class="tx-row"><div class="tx-symbol">'+(sale?"↗":"↙")+'</div><div class="tx-main"><div class="tx-title">'+title+'</div><div class="tx-meta">'+meta+'</div><button class="btn del" style="margin:5px 0 0;padding:2px 0" onclick="editRemark(\''+t.id+'\')">Keterangan · '+(t.note?'Edit':'Tambah')+'</button></div><div class="tx-side"><div class="tx-amount '+(sale?"pos":"neg")+'">'+(sale?"+":"−")+rp(amount)+'</div><button class="btn del" onclick="delTx(\''+t.id+'\')">Hapus</button></div></div>';
+  return '<div class="tx-row"><div class="tx-symbol">'+(sale?"↗":"↙")+'</div><div class="tx-main"><div class="tx-title">'+title+'</div><div class="tx-meta">'+meta+'</div><button class="btn del" style="margin:5px 0 0;padding:2px 0" onclick="editRemark(\''+t.id+'\')">Keterangan · '+(t.note?'Edit':'Tambah')+'</button>'+(t.evidence?'<button class="btn del" style="margin:5px 0 0;padding:2px 0" onclick="openEvidenceByTx(\\''+t.id+'\\')">Lihat bukti asli</button>':'')+'</div><div class="tx-side"><div class="tx-amount '+(sale?"pos":"neg")+'">'+(sale?"+":"−")+rp(amount)+'</div><button class="btn del" onclick="delTx(\''+t.id+'\')">Hapus</button></div></div>';
  }).join(""):'<div class="empty-state"><strong>Belum ada transaksi di kategori ini</strong>Transaksi yang kamu catat akan muncul di sini.</div>';
  $("#app").innerHTML='<header class="page-head"><div><span class="page-kicker">AKTIVITAS USAHA</span><h1 class="page-title">Riwayat</h1><div class="page-subtitle">Pantau semua transaksi yang sudah dicatat.</div></div><span class="page-pill">'+all.length+' transaksi</span></header>'+
  '<div class="metric-grid"><div class="metric-card"><div class="metric-label"><span class="metric-icon">↗</span>Penjualan kotor</div><b class="metric-value">'+rp(sales)+'</b></div><div class="metric-card"><div class="metric-label"><span class="metric-icon">↙</span>Total belanja</div><b class="metric-value">'+rp(buys)+'</b></div></div>'+
@@ -345,7 +345,7 @@ function editRemark(id){
  const t=S.tx.find(x=>x.id===id);if(!t)return;
  open(hd('Keterangan transaksi')+`<label>Keterangan (opsional)</label><textarea id="remark" rows="4" style="width:100%;min-height:110px;padding:13px;border:1px solid var(--line);border-radius:16px;background:var(--card);color:var(--tx);font:inherit">${esc(t.note||"")}</textarea><button class="btn full" style="margin-top:16px" onclick="saveRemark('${id}')">Simpan keterangan</button>`);
 }
-function saveRemark(id){const t=S.tx.find(x=>x.id===id);if(!t)return;t.note=$("#remark").value.trim();save();close();render()}
+function openEvidenceByTx(id){const t=S.tx.find(x=>x.id===id);if(!t||!t.evidence)return alert('Bukti asli tidak ditemukan pada transaksi ini.');if(typeof window.openEvidence==='function')window.openEvidence(t.evidence);else alert('Fitur arsip belum siap. Muat ulang aplikasi.')}\nfunction saveRemark(id){const t=S.tx.find(x=>x.id===id);if(!t)return;t.note=$("#remark").value.trim();save();close();render()}
 
 function report(){
  const [y,mo]=rep.split("-").map(Number),months=[];
@@ -663,8 +663,8 @@ async function prepareCaptureImage(file){
 }
 async function readCapture(file){
  if(!file)return;if(file.size>15*1024*1024){captureStatus("Ukuran file maksimal 15 MB.");return}
- const isPdf=file.type==="application/pdf"||/\\.pdf$/i.test(file.name||"");
- if(!isPdf&&!/^image\\/(jpeg|png|webp|bmp|tiff|heic|heif)$/i.test(file.type)){captureStatus("Format belum didukung. Gunakan JPG, PNG, WEBP, atau PDF.");return}
+ const isPdf=file.type==="application/pdf"||/\.pdf$/i.test(file.name||"");
+ if(!isPdf&&!/^image\/(jpeg|png|webp|bmp|tiff|heic|heif)$/i.test(file.type)){captureStatus("Format belum didukung. Gunakan JPG, PNG, WEBP, atau PDF.");return}
  CAP.file=file;captureStatus("Menyiapkan OCR…");let worker=null;
  try{
   if(!navigator.onLine)throw new Error("Perangkat sedang offline. Koneksi internet diperlukan untuk memuat OCR pertama kali.");
@@ -678,9 +678,9 @@ async function readCapture(file){
   }else pages=[await prepareCaptureImage(file)];
   const logger=m=>{if(m.status==="recognizing text")captureStatus("Membaca dokumen… "+Math.round((m.progress||0)*100)+"%")};
   try{worker=await Tesseract.createWorker("ind+eng",1,{logger})}catch(first){captureStatus("Menyiapkan OCR bahasa alternatif…");worker=await Tesseract.createWorker("eng",1,{logger})}
-  let out="";for(let i=0;i<pages.length;i++){captureStatus("Membaca halaman "+(i+1)+" dari "+pages.length+"…");const res=await worker.recognize(pages[i]);out+="\\n"+(res.data.text||"")}
+  let out="";for(let i=0;i<pages.length;i++){captureStatus("Membaca halaman "+(i+1)+" dari "+pages.length+"…");const res=await worker.recognize(pages[i]);out+="\n"+(res.data.text||"")}
   CAP.text=out.trim();if(!CAP.text)throw new Error("Teks tidak terbaca. Coba foto lebih terang, tidak miring, dan lebih dekat.");
-  CAP.hash=captureHash(CAP.text.toLowerCase().replace(/\\s+/g," "));const parsed=parseCapture(CAP.text);Object.assign(CAP,parsed);
+  CAP.hash=captureHash(CAP.text.toLowerCase().replace(/\s+/g," "));const parsed=parseCapture(CAP.text);Object.assign(CAP,parsed);
   const duplicate=S.tx.some(t=>t.captureHash===CAP.hash);CAP.status=duplicate?"Dokumen ini mirip dengan bukti yang pernah disimpan. Periksa kemungkinan duplikat.":"OCR selesai. Periksa semua nilai sebelum menyimpan.";
   captureStatus(CAP.status);drawCaptureReview(duplicate);
  }catch(e){const msg=e&&e.message?e.message:String(e||"Kesalahan tidak diketahui");captureStatus("OCR gagal: "+msg+". Periksa koneksi, lalu coba lagi atau catat transaksi manual.")}
