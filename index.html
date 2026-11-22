@@ -625,7 +625,9 @@ function captureHash(t){
  return (h>>>0).toString(16);
 }
 function moneyFromLine(line){
- const m=line.match(/(?:rp\.?\s*)?([0-9][0-9.,]{1,})/i);if(!m)return 0;
+ const marked=[...line.matchAll(/rp\.?\s*([0-9][0-9.,]*)/gi)];
+ const all=[...line.matchAll(/([0-9][0-9.,]{1,})/g)];
+ const m=marked.length?marked[marked.length-1]:all[all.length-1];if(!m)return 0;
  const digits=m[1].replace(/[^0-9]/g,"");return Number(digits)||0;
 }
 function parseCapture(text){
