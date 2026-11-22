@@ -642,7 +642,7 @@ function moneyFromLine(line){
 }
 function parseCapture(text){
  const lines=text.split(/\n+/).map(x=>x.replace(/\s+/g," ").trim()).filter(Boolean);
- const find=(re)=>{for(let i=lines.length-1;i>=0;i--)if(re.test(lines[i])){
+ const find=(re,exclude)=>{for(let i=lines.length-1;i>=0;i--)if(re.test(lines[i])&&!(exclude&&exclude.test(lines[i]))){
   const direct=moneyFromLine(lines[i]);if(direct)return direct;
   for(let j=i+1;j<Math.min(lines.length,i+3);j++){if(/^(tanggal|date|nama|rekening|dari rekening|jenis transfer|berita)/i.test(lines[j]))break;const next=moneyFromLine(lines[j]);if(next)return next}
  }return 0};
@@ -658,7 +658,9 @@ function parseCapture(text){
  const discount=find(/(diskon|discount|potongan harga|voucher)/i);
  const tax=find(/(ppn|pajak|tax)/i);
  const fee=find(/(biaya layanan|biaya admin|admin fee|service fee|platform fee|komisi)/i);
- let total=find(/(grand total|total bayar|total pembayaran|jumlah(?: bayar| pembayaran| transfer)?|amount(?: paid)?|total transfer|total akhir|total|nominal(?: transfer)?)/i);
+ // Abaikan "Total Item/Barang/Produk" agar angka kuantitas tidak dianggap nominal transaksi.
+ const nonAmountTotal=/\btotal\s*(?:items?|barang|produk|qty|kuantitas)\b/i;
+ let total=find(/(grand total|total bayar|total pembayaran|jumlah(?: bayar| pembayaran| transfer)?|amount(?: paid)?|total transfer|total akhir|total|nominal(?: transfer)?)/i,nonAmountTotal);
  if(!total)total=Math.max(0,gross-discount+tax+fee);
  if(!gross)gross=Math.max(0,total+discount-tax-fee);
  let merchant="";
