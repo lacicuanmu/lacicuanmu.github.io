@@ -642,7 +642,7 @@ function parseCapture(text){
  let date=today();
  const dm=text.match(/\b(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{2,4})\b/);
  if(dm){let y=Number(dm[3]);if(y<100)y+=2000;const d=String(Number(dm[1])).padStart(2,"0"),m=String(Number(dm[2])).padStart(2,"0");if(Number(m)<=12&&Number(d)<=31)date=y+"-"+m+"-"+d}
- const gross=find(/(subtotal|sub total|total belanja|total penjualan|jumlah barang|gross)/i);
+ let gross=find(/(subtotal|sub total|total belanja|total penjualan|jumlah barang|gross)/i);
  const discount=find(/(diskon|discount|potongan harga|voucher)/i);
  const tax=find(/(ppn|pajak|tax)/i);
  const fee=find(/(biaya layanan|biaya admin|admin fee|service fee|platform fee|komisi)/i);
