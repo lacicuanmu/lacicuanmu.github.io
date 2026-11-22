@@ -14,6 +14,8 @@ values (
     'image/webp',
     'image/bmp',
     'image/tiff',
+    'image/heic',
+    'image/heif',
     'application/pdf'
   ]
 )
