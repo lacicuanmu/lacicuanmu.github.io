@@ -133,6 +133,62 @@ nav .plus{width:50px;height:50px;min-width:50px;border-radius:17px}
 @media(max-width:360px){.home-brand{font-size:24px}.home-action{padding:11px 9px;gap:7px}.home-action-icon{width:34px;height:34px;flex-basis:34px}.home-today-card{padding:11px}.home-today-card b{font-size:14px}}
 
 @media(min-width:540px){body{padding-top:24px}}
+
+/* Laci Cuanmu · cohesive multi-screen UI */
+:root{--bg:#f5f6f2;--card:#fff;--tx:#202a23;--mu:#7a857c;--pr:#245b45;--pl:#eaf1eb;--gr:#27845b;--rd:#c65b4b;--line:#e8ece6;--sh:0 5px 22px rgba(29,55,39,.055)}
+:root[data-theme="dark"]{--bg:#121a15;--card:#1d2921;--tx:#edf3ed;--mu:#a2afa5;--pr:#a7c9ae;--pl:#2a3b30;--gr:#83c99a;--rd:#f08c7c;--line:#35453a;--sh:0 6px 24px rgba(0,0,0,.17)}
+body{max-width:560px;padding:20px 18px calc(112px + env(safe-area-inset-bottom,0px));font-size:13px}
+h1{font-size:26px;letter-spacing:-1px;margin:5px 0 5px}h2{font-size:15px;letter-spacing:-.35px;margin:22px 0 11px}
+#app{min-height:65vh}
+.page-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin:4px 1px 20px}
+.page-kicker{display:block;color:var(--mu);font-size:11px;font-weight:700;letter-spacing:.04em;margin-bottom:4px}
+.page-title{margin:0;font-size:27px;line-height:1.15;letter-spacing:-1.05px;font-weight:800}
+.page-subtitle{color:var(--mu);font-size:11px;margin-top:6px}
+.page-pill{flex-shrink:0;border:1px solid var(--line);background:var(--card);border-radius:999px;padding:7px 11px;color:var(--mu);font-size:10px;font-weight:750}
+.section-title{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:22px 1px 10px}
+.section-title h2{margin:0;font-size:15px}.section-title small{font-size:10px;color:var(--mu);font-weight:650}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:21px;padding:15px;box-shadow:var(--sh);margin-bottom:12px}
+.panel-flat{background:var(--card);border:1px solid var(--line);border-radius:19px;padding:4px 14px;box-shadow:var(--sh);margin-bottom:12px}
+.metric-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.metric-card{min-width:0;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:var(--sh)}
+.metric-label{display:flex;align-items:center;gap:7px;color:var(--mu);font-size:10px;font-weight:700}
+.metric-icon{width:27px;height:27px;display:grid;place-items:center;border-radius:9px;background:var(--pl);font-size:13px}
+.metric-value{display:block;margin-top:9px;font-size:17px;line-height:1.25;font-weight:800;letter-spacing:-.5px;overflow-wrap:anywhere}
+.page-tabs{display:flex;gap:6px;overflow-x:auto;padding:3px 1px 10px;scrollbar-width:none}
+.page-tab{flex:0 0 auto;border:1px solid var(--line);background:var(--card);color:var(--mu);border-radius:999px;padding:9px 13px;font:700 11px inherit;cursor:pointer}
+.page-tab.active{background:var(--pr);border-color:var(--pr);color:#fff}
+.tx-row{display:flex;align-items:center;gap:11px;padding:13px 0;border-bottom:1px solid var(--line)}
+.tx-row:last-child{border-bottom:0}.tx-symbol{width:39px;height:39px;flex:0 0 39px;border-radius:14px;background:var(--pl);display:grid;place-items:center;color:var(--pr);font-size:17px;font-weight:800}
+.tx-main{min-width:0;flex:1}.tx-title{font-size:12px;font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tx-meta{font-size:10px;color:var(--mu);margin-top:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tx-side{text-align:right;flex-shrink:0}.tx-amount{font-size:12px;font-weight:800;white-space:nowrap}
+.tx-side .btn.del{font-size:10px;padding:3px 0;min-height:24px}
+.report-hero{background:linear-gradient(145deg,#285f49,#173f2e);color:white;border-radius:24px;padding:19px;margin-bottom:12px;box-shadow:0 12px 28px rgba(31,83,59,.15)}
+.report-hero .eyebrow{font-size:10px;color:rgba(255,255,255,.72);font-weight:700}.report-hero .value{font-size:29px;line-height:1.2;letter-spacing:-1px;font-weight:800;margin:6px 0}
+.report-hero .hint{font-size:10px;color:rgba(255,255,255,.7)}.report-hero .mini{display:grid;grid-template-columns:1fr 1fr;gap:12px;border-top:1px solid rgba(255,255,255,.2);padding-top:13px;margin-top:15px}
+.report-hero .mini span{display:block;font-size:9px;color:rgba(255,255,255,.68)}.report-hero .mini b{display:block;font-size:14px;margin-top:4px}
+.report-chart{height:145px;display:flex;align-items:flex-end;gap:9px;padding-top:12px}
+.report-chart>div{height:100%;flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:6px;color:var(--mu);font-size:9px}
+.report-chart .bars-pair{height:calc(100% - 18px);width:100%;display:flex;align-items:flex-end;gap:3px}.report-chart i{flex:1;min-height:2px;border-radius:6px 6px 2px 2px}
+.report-legend{display:flex;gap:15px;color:var(--mu);font-size:10px;margin-top:12px}.report-legend span{display:flex;align-items:center;gap:5px}
+.legend-dot{width:7px;height:7px;border-radius:50%;background:var(--pr)}.legend-dot.profit{background:var(--gr)}
+.breakdown-row{display:flex;justify-content:space-between;gap:10px;padding:12px 1px;border-bottom:1px solid var(--line);font-size:11px}
+.breakdown-row:last-child{border:0}.breakdown-row b{font-weight:750;white-space:nowrap}.breakdown-row.total{font-weight:800;font-size:12px}
+.manage-group{margin:19px 0 9px 2px;font-size:11px;color:var(--mu);font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.manage-item{display:flex;align-items:center;gap:11px;padding:13px 0;border-bottom:1px solid var(--line)}
+.manage-item:last-child{border-bottom:0}.manage-icon{width:38px;height:38px;flex:0 0 38px;display:grid;place-items:center;border-radius:13px;background:var(--pl);font-size:17px}
+.manage-copy{flex:1;min-width:0}.manage-copy b{display:block;font-size:12px}.manage-copy small{display:block;color:var(--mu);font-size:10px;margin-top:3px;line-height:1.4}
+.manage-item .btn{padding:8px 11px;min-height:34px;font-size:10px}
+.settings-theme{display:flex;gap:6px;background:var(--pl);padding:4px;border-radius:14px}
+.settings-theme button{flex:1;border:0;background:transparent;color:var(--mu);border-radius:11px;padding:9px 5px;font-size:10px;font-weight:750}
+.settings-theme button.on{background:var(--card);color:var(--pr);box-shadow:0 2px 7px rgba(30,50,35,.08)}
+.empty-state{padding:27px 14px;text-align:center;color:var(--mu);font-size:11px;line-height:1.6}
+.empty-state strong{display:block;color:var(--tx);font-size:12px;margin-bottom:4px}
+.sheet>div{padding:20px 18px calc(26px + env(safe-area-inset-bottom,0px));border-radius:26px 26px 0 0}
+.sheet label{margin:14px 0 6px}.sheet input,.sheet select{border-radius:13px}
+nav{width:min(520px,calc(100% - 22px));padding:6px;border-radius:22px}
+@media(max-width:360px){body{padding-left:14px;padding-right:14px}.page-title{font-size:24px}.metric-card{padding:12px}.metric-value{font-size:15px}.tx-symbol{width:35px;height:35px;flex-basis:35px}.report-hero .value{font-size:25px}nav button{min-width:49px;padding:6px}}
+
 </style>
 </head>
 <body>
@@ -156,7 +212,7 @@ const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",
 const today=()=>{const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")};
 const MON=["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Agu","Sep","Okt","Nov","Des"];
 const MONF=["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
-let tab="home",rep=today().slice(0,7);
+let tab="home",rep=today().slice(0,7),listFilter="all";
 
 function calc(list){
  let gross=0,fee=0,porsi=0,buy=0,by={};
@@ -217,44 +273,60 @@ function home(){
  <section class="home-recent">${recentHtml}</section>`;
 }
 function list(){
- const a=[...S.tx].sort((x,y)=>y.date.localeCompare(x.date)||y.id.localeCompare(x.id)).slice(0,100);
- $("#app").innerHTML=`<h1>Riwayat</h1><div class="card">${a.length?a.map(t=>t.type==="sale"
- ?`<div class="li"><div>${t.qty}× ${esc(t.name)}<small>${t.date} · ${esc(t.platform)}${t.fee?" · potongan "+rp(t.fee):""}</small></div><div><b class="pos">+${rp(t.qty*t.price-t.fee)}</b><button class="btn del" onclick="delTx('${t.id}')">✕</button></div></div>`
- :`<div class="li"><div>${esc(t.cat)}<small>${t.date}${t.note?" · "+esc(t.note):""}</small></div><div><b class="neg">−${rp(t.amount)}</b><button class="btn del" onclick="delTx('${t.id}')">✕</button></div></div>`).join(""):`<div class="empty">Belum ada transaksi. Tekan tombol ＋ untuk mencatat.</div>`}</div>`;
+ const all=[...S.tx].sort((x,y)=>y.date.localeCompare(x.date)||String(y.id).localeCompare(String(x.id)));
+ const a=listFilter==="all"?all:all.filter(t=>t.type===listFilter);
+ const sales=all.filter(t=>t.type==="sale").reduce((n,t)=>n+t.qty*t.price,0);
+ const buys=all.filter(t=>t.type==="buy").reduce((n,t)=>n+t.amount,0);
+ const tabs=[["all","Semua"],["sale","Penjualan"],["buy","Belanja"]].map(x=>'<button class="page-tab '+(listFilter===x[0]?"active":"")+'" onclick="listFilter=\''+x[0]+'\';render()">'+x[1]+'</button>').join("");
+ const rows=a.length?a.map(t=>{
+  const sale=t.type==="sale",title=sale?(t.qty+"× "+esc(t.name)):esc(t.cat);
+  const meta=esc(t.date)+" · "+(sale?esc(t.platform)+(t.fee?" · potongan "+rp(t.fee):""):esc(t.note||"Belanja usaha"));
+  const amount=sale?t.qty*t.price-(t.fee||0):t.amount;
+  return '<div class="tx-row"><div class="tx-symbol">'+(sale?"↗":"↙")+'</div><div class="tx-main"><div class="tx-title">'+title+'</div><div class="tx-meta">'+meta+'</div></div><div class="tx-side"><div class="tx-amount '+(sale?"pos":"neg")+'">'+(sale?"+":"−")+rp(amount)+'</div><button class="btn del" onclick="delTx(\''+t.id+'\')">Hapus</button></div></div>';
+ }).join(""):'<div class="empty-state"><strong>Belum ada transaksi di kategori ini</strong>Transaksi yang kamu catat akan muncul di sini.</div>';
+ $("#app").innerHTML='<header class="page-head"><div><span class="page-kicker">AKTIVITAS USAHA</span><h1 class="page-title">Riwayat</h1><div class="page-subtitle">Pantau semua transaksi yang sudah dicatat.</div></div><span class="page-pill">'+all.length+' transaksi</span></header>'+
+ '<div class="metric-grid"><div class="metric-card"><div class="metric-label"><span class="metric-icon">↗</span>Penjualan kotor</div><b class="metric-value">'+rp(sales)+'</b></div><div class="metric-card"><div class="metric-label"><span class="metric-icon">↙</span>Total belanja</div><b class="metric-value">'+rp(buys)+'</b></div></div>'+
+ '<div class="section-title"><h2>Semua aktivitas</h2><small>Terbaru dahulu</small></div><div class="page-tabs">'+tabs+'</div><section class="panel-flat">'+rows+'</section>';
 }
 function delTx(id){if(confirm('Hapus transaksi ini?')){const t=S.tx.find(x=>x.id===id);if(t&&t.rid){const r=S.rec.find(x=>x.id===t.rid)||S.staff.find(x=>x.id===t.rid);if(r){r.skip=r.skip||[];r.skip.push(t.rm)}}S.tx=S.tx.filter(x=>x.id!==id);save();render()}}
 function report(){
- const [y,mo]=rep.split("-").map(Number);
- const months=[];for(let i=5;i>=0;i--){const d=new Date(y,mo-1-i,1);months.push(d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0"))}
- const data=months.map(m=>calc(inMonth(m)));
- const mx=Math.max(1,...data.map(d=>Math.max(d.net,Math.abs(d.profit))));
+ const [y,mo]=rep.split("-").map(Number),months=[];
+ for(let i=5;i>=0;i--){const d=new Date(y,mo-1-i,1);months.push(d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0"))}
+ const data=months.map(m=>calc(inMonth(m))),mx=Math.max(1,...data.map(d=>Math.max(d.net,Math.abs(d.profit))));
  const M=calc(inMonth(rep)),gk=M.net-(M.by["Bahan baku"]||0)-(M.by["Kemasan & perlengkapan"]||0);
- const other=S.cats.filter(c=>c!=="Bahan baku"&&c!=="Kemasan & perlengkapan");
- const pct=M.net>0?Math.round(gk/M.net*100):0;
- const L=(a,b,c)=>`<div class="li"><span class="${c||""}">${a}</span><span class="${c||""}">${b}</span></div>`;
- $("#app").innerHTML=`<h1>Laporan</h1>
- <div class="card row"><button class="btn sec" onclick="shift(-1)">‹</button><b>${MONF[mo-1]} ${y}</b><button class="btn sec" onclick="shift(1)">›</button></div>
- <div class="card"><small style="color:var(--mu)">6 bulan terakhir</small><div class="bars">${data.map((d,i)=>`<div><div class="pair"><i style="height:${d.net/mx*100}%;background:var(--pr)"></i><i style="height:${Math.max(0,d.profit)/mx*100}%;background:var(--gr)"></i></div>${MON[+months[i].slice(5)-1]}</div>`).join("")}</div>
- <div style="font-size:13px;margin-top:10px;color:var(--mu)">🟪 Pendapatan bersih &nbsp; 🟩 Laba bersih</div></div>
- <h2>Laba rugi</h2><div class="card">
- ${L("Penjualan kotor",rp(M.gross))}${L("– Potongan platform",rp(M.fee))}${L("Pendapatan bersih",rp(M.net),"sum")}
- ${L("– Bahan baku",rp(M.by["Bahan baku"]||0))}${L("– Kemasan & perlengkapan",rp(M.by["Kemasan & perlengkapan"]||0))}
- ${L("Laba kotor ("+pct+"%)",rp(gk),"sum")}${other.map(c=>L("– "+esc(c),rp(M.by[c]||0))).join("")}
- ${L("Laba bersih",rp(M.profit),"sum "+(M.profit<0?"neg":"pos"))}</div>`;
+ const other=S.cats.filter(c=>c!=="Bahan baku"&&c!=="Kemasan & perlengkapan"),pct=M.net>0?Math.round(gk/M.net*100):0;
+ const row=(a,b,cls)=>'<div class="breakdown-row '+(cls||"")+'"><span>'+a+'</span><b>'+b+'</b></div>';
+ $("#app").innerHTML='<header class="page-head"><div><span class="page-kicker">ANALISIS KEUANGAN</span><h1 class="page-title">Laporan</h1><div class="page-subtitle">Lihat performa dan kesehatan usaha.</div></div><span class="page-pill">Bulanan</span></header>'+
+ '<section class="panel" style="padding:10px 13px"><div class="row"><button class="btn sec" onclick="shift(-1)">‹</button><b style="font-size:13px">'+MONF[mo-1]+' '+y+'</b><button class="btn sec" onclick="shift(1)">›</button></div></section>'+
+ '<section class="report-hero"><div class="eyebrow">ESTIMASI LABA BERSIH</div><div class="value">'+rp(M.profit)+'</div><div class="hint">'+M.porsi+' porsi tercatat · '+MONF[mo-1]+' '+y+'</div><div class="mini"><div><span>Pendapatan bersih</span><b>'+rp(M.net)+'</b></div><div><span>Total belanja</span><b>'+rp(M.buy)+'</b></div></div></section>'+
+ '<div class="metric-grid"><div class="metric-card"><div class="metric-label"><span class="metric-icon">🧾</span>Penjualan kotor</div><b class="metric-value">'+rp(M.gross)+'</b></div><div class="metric-card"><div class="metric-label"><span class="metric-icon">🏷️</span>Potongan platform</div><b class="metric-value">'+rp(M.fee)+'</b></div></div>'+
+ '<div class="section-title"><h2>Tren 6 bulan</h2><small>Pendapatan & laba</small></div><section class="panel"><div class="report-chart">'+data.map((v,i)=>'<div><div class="bars-pair"><i style="height:'+Math.max(2,v.net/mx*100)+'%;background:var(--pr)"></i><i style="height:'+Math.max(2,Math.max(0,v.profit)/mx*100)+'%;background:var(--gr)"></i></div>'+MON[+months[i].slice(5)-1]+'</div>').join("")+'</div><div class="report-legend"><span><i class="legend-dot"></i>Pendapatan bersih</span><span><i class="legend-dot profit"></i>Laba bersih</span></div></section>'+
+ '<div class="section-title"><h2>Rincian laba rugi</h2><small>'+MONF[mo-1]+' '+y+'</small></div><section class="panel">'+
+ row("Penjualan kotor",rp(M.gross))+row("Potongan platform","−"+rp(M.fee))+row("Pendapatan bersih",rp(M.net),"total")+
+ row("Bahan baku","−"+rp(M.by["Bahan baku"]||0))+row("Kemasan & perlengkapan","−"+rp(M.by["Kemasan & perlengkapan"]||0))+
+ row("Laba kotor ("+pct+"%)",rp(gk),"total")+other.map(c=>row(esc(c),"−"+rp(M.by[c]||0))).join("")+
+ row("Laba bersih",rp(M.profit),"total "+(M.profit<0?"neg":"pos"))+'</section><p class="filter-note">Perhitungan mengikuti transaksi yang sudah tersimpan. Potongan platform dihitung terpisah dari belanja.</p>';
 }
 function shift(n){const [y,m]=rep.split("-").map(Number);const d=new Date(y,m-1+n,1);rep=d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0");render()}
 function manage(){
- $("#app").innerHTML=`<h1>Kelola</h1>
- <div class="card"><label style="margin-top:0">Nama usaha / pemilik</label><input value="${esc(S.name)}" onchange="S.name=this.value;save()"></div>
- <h2 style="margin-top:6px">Produk &amp; HPP</h2><div class="card">${S.products.map(p=>`<div class="li"><div>${esc(p.name)}<small>Jual ${rp(p.price)} · modal ${rp(p.cost)} · margin ${p.price?Math.round((p.price-p.cost)/p.price*100):0}%</small></div><div><button class="btn sec" onclick="editProd('${p.id}')">Edit</button></div></div>`).join("")||'<div class="empty">Belum ada produk</div>'}
- <button class="btn full" style="margin-top:10px" onclick="editProd()">＋ Tambah produk</button></div>
- <h2>Platform &amp; potongan</h2><div class="card">${S.platforms.map(p=>`<div class="li"><div>${esc(p.name)}<small>Potongan ${p.fee}%</small></div><button class="btn sec" onclick="editPlat('${p.id}')">Edit</button></div>`).join("")}
- <button class="btn full" style="margin-top:10px" onclick="editPlat()">＋ Tambah platform</button></div>
- <h2>Kategori belanja</h2><div class="card"><div class="chips">${S.cats.map(c=>`<span class="chip">${esc(c)}</span>`).join("")}</div>
- <button class="btn sec full" style="margin-top:12px" onclick="addCat()">＋ Tambah kategori</button></div>
- ${extraHtml()}<h2>Tampilan</h2><div class="card"><div class="seg" id="th"><button onclick="setTheme('auto')">Otomatis</button><button onclick="setTheme('light')">Terang</button><button onclick="setTheme('dark')">Gelap</button></div></div>
- <button class="btn del full" onclick="if(confirm('Hapus semua data?')){S=JSON.parse(JSON.stringify(def));save();render()}">Hapus semua data</button>`;
- const th=$("#th"),saved=localStorage.getItem("lcm-theme")||"light";if(th)th.querySelectorAll("button").forEach((b,i)=>b.classList.toggle("on",["auto","light","dark"][i]===saved));
+ const theme=localStorage.getItem("lcm-theme")||"light";
+ const item=(ico,title,desc,action,label)=>'<div class="manage-item"><span class="manage-icon">'+ico+'</span><div class="manage-copy"><b>'+title+'</b><small>'+desc+'</small></div><button class="btn sec" onclick="'+action+'">'+(label||"Kelola")+'</button></div>';
+ const products=S.products.map(p=>'<div class="manage-item"><span class="manage-icon">•</span><div class="manage-copy"><b>'+esc(p.name)+'</b><small>Jual '+rp(p.price)+' · HPP '+rp(p.cost)+'</small></div><button class="btn sec" onclick="editProd(\''+p.id+'\')">Edit</button></div>').join("");
+ const plats=S.platforms.map(p=>'<div class="manage-item"><span class="manage-icon">•</span><div class="manage-copy"><b>'+esc(p.name)+'</b><small>Potongan '+p.fee+'%</small></div><button class="btn sec" onclick="editPlat(\''+p.id+'\')">Edit</button></div>').join("");
+ const rec=S.rec.map(r=>'<div class="manage-item"><span class="manage-icon">•</span><div class="manage-copy"><b>'+esc(r.name)+'</b><small>'+rp(r.amount)+' · tiap tanggal '+r.day+'</small></div><button class="btn sec" onclick="editRec(\''+r.id+'\')">Edit</button></div>').join("");
+ const staff=S.staff.map(x=>'<div class="manage-item"><span class="manage-icon">•</span><div class="manage-copy"><b>'+esc(x.name)+'</b><small>'+rp(x.salary)+' · tiap tanggal '+x.day+'</small></div><button class="btn sec" onclick="editStaff(\''+x.id+'\')">Edit</button></div>').join("");
+ const prices=S.prices.map(p=>{const l=p.h[p.h.length-1];return '<div class="manage-item"><span class="manage-icon">•</span><div class="manage-copy"><b>'+esc(p.name)+'</b><small>'+rp(l.price)+'/'+esc(p.unit)+' · '+l.date+'</small></div><button class="btn sec" onclick="editPrice(\''+p.id+'\')">Update</button></div>'}).join("");
+ $("#app").innerHTML='<header class="page-head"><div><span class="page-kicker">PENGATURAN USAHA</span><h1 class="page-title">Kelola</h1><div class="page-subtitle">Atur kebutuhan operasional dan data usahamu.</div></div><span class="page-pill">Pengaturan</span></header>'+
+ '<section class="panel"><div class="manage-item" style="padding-top:2px"><span class="manage-icon">🏪</span><div class="manage-copy"><b>Identitas usaha</b><small>Nama yang tampil di beranda</small></div></div><label>Nama usaha / pemilik</label><input value="'+esc(S.name)+'" onchange="S.name=this.value;save();render()"></section>'+
+ '<div class="manage-group">Produk & penjualan</div><section class="panel">'+item("📦","Produk & HPP",S.products.length+" produk · atur harga jual dan modal","editProd()","Tambah")+(products||'<div class="empty-state">Belum ada produk.</div>')+'</section>'+
+ '<section class="panel">'+item("🛵","Platform & potongan",S.platforms.length+" platform · atur biaya layanan","editPlat()","Tambah")+plats+'</section>'+
+ '<section class="panel"><div class="manage-item" style="padding-top:2px"><span class="manage-icon">🧺</span><div class="manage-copy"><b>Kategori belanja</b><small>Kelompokkan pengeluaran usaha</small></div><button class="btn sec" onclick="addCat()">Tambah</button></div><div class="chips">'+S.cats.map(c=>'<span class="chip">'+esc(c)+'</span>').join("")+'</div></section>'+
+ '<div class="manage-group">Operasional usaha</div><section class="panel">'+item("🔁","Biaya rutin otomatis",S.rec.length+" biaya rutin terjadwal","editRec()","Tambah")+(rec||'<div class="empty-state">Belum ada biaya rutin.</div>')+'</section>'+
+ '<section class="panel">'+item("👥","Karyawan & gaji",S.staff.length+" karyawan terdaftar","editStaff()","Tambah")+(staff||'<div class="empty-state">Belum ada karyawan.</div>')+'</section>'+
+ '<section class="panel">'+item("🧾","Harga bahan",S.prices.length+" bahan dipantau","editPrice()","Tambah")+(prices||'<div class="empty-state">Belum ada riwayat harga bahan.</div>')+'</section>'+
+ '<div class="manage-group">Tampilan & data</div><section class="panel"><div class="manage-item" style="padding-top:2px"><span class="manage-icon">🎨</span><div class="manage-copy"><b>Tampilan aplikasi</b><small>Pilih mode sesuai kenyamananmu</small></div></div><div class="settings-theme" id="th"><button class="'+(theme==="auto"?"on":"")+'" onclick="setTheme(\'auto\')">Otomatis</button><button class="'+(theme==="light"?"on":"")+'" onclick="setTheme(\'light\')">Terang</button><button class="'+(theme==="dark"?"on":"")+'" onclick="setTheme(\'dark\')">Gelap</button></div></section>'+
+ '<section class="panel">'+item("📤","Ekspor laporan","Salin seluruh transaksi ke format CSV","openCsv()","Ekspor")+item("💾","Cadangkan & pulihkan","Simpan atau pulihkan data dari kode cadangan","openBackup()","Buka")+'</section>'+
+ '<button class="btn del full" onclick="if(confirm(\'Hapus semua data?\')){S=JSON.parse(JSON.stringify(def));save();render()}">Hapus semua data</button>';
 }
 function shut(){$('#sheet').classList.remove('show')}
 document.close=()=>shut();
