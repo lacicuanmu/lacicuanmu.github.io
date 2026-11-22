@@ -382,14 +382,14 @@ function manage(){
  '<div class="manage-group">Operasional usaha</div><section class="panel">'+item("🔁","Biaya rutin otomatis",S.rec.length+" biaya rutin terjadwal","editRec()","Tambah")+(rec||'<div class="empty-state">Belum ada biaya rutin.</div>')+'</section>'+
  '<section class="panel">'+item("👥","Karyawan & gaji",S.staff.length+" karyawan terdaftar","editStaff()","Tambah")+(staff||'<div class="empty-state">Belum ada karyawan.</div>')+'</section>'+
  '<section class="panel">'+item("🧾","Harga bahan",S.prices.length+" bahan dipantau","editPrice()","Tambah")+(prices||'<div class="empty-state">Belum ada riwayat harga bahan.</div>')+'</section>'+
- '<div class="manage-group">Keuangan & pajak</div><section class="panel">'+item("🧾","Kewajiban pajak",S.tax.length+" catatan pajak · kelola tagihan dan pembayaran","editTax()","Tambah")+taxSummaryHtml()+'</section>'+
+ '<div class="manage-group">Catatan usaha</div><section class="panel">'+item("🗒️","Catatan usaha",S.notes.length+" catatan · supplier, tagihan, pengingat, dan ide","editNote()","Tambah")+notesSummaryHtml()+'</section>'+\n '<div class="manage-group">Keuangan & pajak</div><section class="panel">'+item("🧾","Kewajiban pajak",S.tax.length+" catatan pajak · kelola tagihan dan pembayaran","editTax()","Tambah")+taxSummaryHtml()+'</section>'+
  '<div class="manage-group">Tampilan & data</div><section class="panel"><div class="manage-item" style="padding-top:2px"><span class="manage-icon">🎨</span><div class="manage-copy"><b>Tampilan aplikasi</b><small>Pilih mode sesuai kenyamananmu</small></div></div><div class="settings-theme" id="th"><button class="'+(theme==="auto"?"on":"")+'" onclick="setTheme(\'auto\')">Otomatis</button><button class="'+(theme==="light"?"on":"")+'" onclick="setTheme(\'light\')">Terang</button><button class="'+(theme==="dark"?"on":"")+'" onclick="setTheme(\'dark\')">Gelap</button></div></section>'+
  '<section class="panel">'+item("📤","Ekspor laporan","Salin seluruh transaksi ke format CSV","openCsv()","Ekspor")+item("💾","Cadangkan & pulihkan","Simpan atau pulihkan data dari kode cadangan","openBackup()","Buka")+'</section>'+
  '<button class="btn del full" onclick="if(confirm(\'Hapus semua data?\')){S=JSON.parse(JSON.stringify(def));save();render()}">Hapus semua data</button>';
 }
 function shut(){$('#sheet').classList.remove('show')}
 document.close=()=>shut();
-function norm(){S.products=S.products||[];S.platforms=S.platforms||[];S.tx=S.tx||[];S.rec=S.rec||[];S.staff=S.staff||[];S.prices=S.prices||[];S.tax=S.tax||[];S.cats=S.cats||[];['Transportasi','Gaji karyawan'].forEach(c=>{if(!S.cats.includes(c))S.cats.push(c)})}
+function norm(){S.products=S.products||[];S.platforms=S.platforms||[];S.tx=S.tx||[];S.rec=S.rec||[];S.staff=S.staff||[];S.prices=S.prices||[];S.tax=S.tax||[];S.notes=S.notes||[];S.cats=S.cats||[];['Transportasi','Gaji karyawan'].forEach(c=>{if(!S.cats.includes(c))S.cats.push(c)})}
 function allRec(){return[...S.rec,...S.staff.map(s=>({id:s.id,name:'Gaji '+s.name,amount:s.salary,cat:'Gaji karyawan',day:s.day,start:s.start,skip:s.skip}))]}
 function applyRec(){
  norm();const now=today(),cm=now.slice(0,7),dn=+now.slice(8);let ch=false;
@@ -410,6 +410,54 @@ function extraHtml(){
  const rc=S.rec.map(r=>`<div class='li'><div>${esc(r.name)}<small>Tiap tgl ${r.day} · ${esc(r.cat)}</small></div><div><b>${rp(r.amount)}</b> <button class='btn sec' data-i='${r.id}' onclick='editRec(this.dataset.i)'>✎</button></div></div>`).join('');
  const st=S.staff.map(s=>`<div class='li'><div>${esc(s.name)}<small>Gaji tiap tgl ${s.day}</small></div><div><b>${rp(s.salary)}</b> <button class='btn sec' data-i='${s.id}' onclick='editStaff(this.dataset.i)'>✎</button></div></div>`).join('');
  return `<h2>Biaya rutin otomatis</h2><div class='card'>${rc||`<div class='empty'>Belum ada. Contoh: sewa tempat, listrik, internet</div>`}<button class='btn full' style='margin-top:10px' onclick='editRec()'>＋ Tambah biaya rutin</button></div><h2>Karyawan &amp; gaji</h2><div class='card'>${st||`<div class='empty'>Belum ada karyawan</div>`}<button class='btn full' style='margin-top:10px' onclick='editStaff()'>＋ Tambah karyawan</button></div><h2>Harga bahan</h2><div class='card'>${pr||`<div class='empty'>Catat harga bahan untuk memantau kenaikannya</div>`}<button class='btn full' style='margin-top:10px' onclick='editPrice()'>＋ Catat harga bahan</button></div><h2>Data</h2><div class='card'><button class='btn sec full' onclick='openCsv()'>Ekspor CSV</button><button class='btn sec full' style='margin-top:10px' onclick='openBackup()'>Cadangkan &amp; pulihkan data</button></div>`}
+
+
+let NOTE={},NOTEQ="";
+const NOTE_CATS=["Operasional","Supplier","Tagihan","Ide Usaha","Lainnya"];
+function notesSummaryHtml(){
+ const rows=S.notes.filter(n=>!NOTEQ||[n.title,n.body,n.category].join(" ").toLowerCase().includes(NOTEQ.toLowerCase()))
+  .sort((a,b)=>(b.pinned?1:0)-(a.pinned?1:0)||(b.updatedAt||b.date||"").localeCompare(a.updatedAt||a.date||""))
+  .map(n=>'<div class="manage-item"><span class="manage-icon item-icon">'+(n.pinned?"📌":n.category==="Supplier"?"🏭":n.category==="Tagihan"?"🧾":n.category==="Ide Usaha"?"💡":"🗒️")+'</span><div class="manage-copy"><b>'+esc(n.title)+(n.pinned?' <span style="color:var(--pr);font-size:11px">· PIN</span>':'')+'</b><small>'+esc(n.category)+' · '+esc(n.date||"")+' · '+esc((n.body||"").slice(0,76))+(String(n.body||"").length>76?"…":"")+'</small></div><button class="btn sec" data-i="'+esc(n.id)+'" onclick="editNote(this.dataset.i)">Edit</button></div>').join("");
+ return '<input aria-label="Cari catatan" placeholder="Cari catatan…" value="'+esc(NOTEQ)+'" oninput="filterNotes(this.value)" style="min-height:46px;margin:4px 0 10px;font-size:14px">'+
+ '<div id="notesRows">'+(rows||'<div class="empty-state">'+(S.notes.length?"Catatan tidak ditemukan.":"Belum ada catatan. Simpan informasi penting usahamu di sini.")+'</div>')+'</div>';
+}
+function filterNotes(q){
+ NOTEQ=q;const box=$("#notesRows");if(!box)return;
+ const rows=S.notes.filter(n=>!q||[n.title,n.body,n.category].join(" ").toLowerCase().includes(q.toLowerCase())).sort((a,b)=>(b.pinned?1:0)-(a.pinned?1:0)||(b.updatedAt||b.date||"").localeCompare(a.updatedAt||a.date||""));
+ box.innerHTML=rows.map(n=>'<div class="manage-item"><span class="manage-icon item-icon">'+(n.pinned?"📌":"🗒️")+'</span><div class="manage-copy"><b>'+esc(n.title)+(n.pinned?' <span style="color:var(--pr);font-size:11px">· PIN</span>':'')+'</b><small>'+esc(n.category)+' · '+esc(n.date||"")+' · '+esc((n.body||"").slice(0,76))+(String(n.body||"").length>76?"…":"")+'</small></div><button class="btn sec" data-i="'+esc(n.id)+'" onclick="editNote(this.dataset.i)">Edit</button></div>').join("")||(S.notes.length?'<div class="empty-state">Catatan tidak ditemukan.</div>':'<div class="empty-state">Belum ada catatan.</div>');
+}
+function editNote(id){
+ const n=S.notes.find(x=>x.id===id);
+ NOTE=n?{...n}:{id:"",title:"",body:"",category:"Operasional",date:today(),pinned:false,createdAt:"",updatedAt:""};
+ drawNote();
+}
+function drawNote(){
+ open(hd(NOTE.id?"Edit catatan":"Tambah catatan")+
+ '<label>Judul catatan</label><input id="noteTitle" maxlength="100" placeholder="Contoh: Kontak supplier tepung" value="'+esc(NOTE.title)+'">'+
+ '<label>Kategori</label><select id="noteCategory">'+NOTE_CATS.map(c=>'<option value="'+c+'" '+(NOTE.category===c?"selected":"")+'>'+c+'</option>').join("")+'</select>'+
+ '<label>Isi catatan</label><textarea id="noteBody" rows="6" maxlength="5000" placeholder="Tulis detail, nomor kontak, pengingat, atau ide usaha…" style="width:100%;min-height:130px;padding:13px 15px;border:1px solid var(--line);border-radius:16px;background:var(--card);color:var(--tx);font:inherit">'+esc(NOTE.body)+'</textarea>'+
+ '<label>Tanggal</label><input id="noteDate" type="date" value="'+esc(NOTE.date||today())+'">'+
+ '<div class="manage-item" style="margin-top:10px"><div class="manage-copy"><b>Sematkan catatan</b><small>Catatan penting tampil di urutan atas</small></div><input id="notePinned" type="checkbox" '+(NOTE.pinned?"checked":"")+' style="width:22px;min-height:22px;accent-color:var(--pr)"></div>'+
+ '<button class="btn full" style="margin-top:16px" onclick="saveNote()">Simpan catatan</button>'+
+ (NOTE.id?'<button class="btn del full" style="margin-top:8px" onclick="delNote()">Hapus catatan</button>':""));
+}
+function saveNote(){
+ const title=$("#noteTitle").value.trim(),body=$("#noteBody").value.trim(),date=$("#noteDate").value;
+ if(!title)return alert("Isi judul catatan terlebih dahulu");
+ if(!body)return alert("Isi catatan terlebih dahulu");
+ if(!date)return alert("Pilih tanggal catatan");
+ const now=new Date().toISOString();
+ const data={title,body,category:$("#noteCategory").value,date,pinned:$("#notePinned").checked,updatedAt:now};
+ if(NOTE.id){const old=S.notes.find(x=>x.id===NOTE.id);if(!old)return alert("Catatan tidak ditemukan");Object.assign(old,data)}
+ else S.notes.push({id:uid(),...data,createdAt:now});
+ save();shut();render();
+}
+function delNote(){
+ if(!NOTE.id)return;
+ if(confirm("Hapus catatan ini? Tindakan ini tidak bisa dibatalkan.")){
+  S.notes=S.notes.filter(x=>x.id!==NOTE.id);save();shut();render();
+ }
+}
 
 let TX={};
 function taxSummaryHtml(){
