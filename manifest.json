@@ -3,10 +3,18 @@
   "short_name": "Laci Cuanmu",
   "start_url": ".",
   "display": "standalone",
-  "background_color": "#f6f3ff",
-  "theme_color": "#6c4de6",
+  "background_color": "#f7f6f1",
+  "theme_color": "#245b45",
   "icons": [
-    {"src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png"},
-    {"src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png"}
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
   ]
 }
