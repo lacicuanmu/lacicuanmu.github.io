@@ -382,13 +382,14 @@ function manage(){
  '<div class="manage-group">Operasional usaha</div><section class="panel">'+item("🔁","Biaya rutin otomatis",S.rec.length+" biaya rutin terjadwal","editRec()","Tambah")+(rec||'<div class="empty-state">Belum ada biaya rutin.</div>')+'</section>'+
  '<section class="panel">'+item("👥","Karyawan & gaji",S.staff.length+" karyawan terdaftar","editStaff()","Tambah")+(staff||'<div class="empty-state">Belum ada karyawan.</div>')+'</section>'+
  '<section class="panel">'+item("🧾","Harga bahan",S.prices.length+" bahan dipantau","editPrice()","Tambah")+(prices||'<div class="empty-state">Belum ada riwayat harga bahan.</div>')+'</section>'+
+ '<div class="manage-group">Keuangan & pajak</div><section class="panel">'+item("🧾","Kewajiban pajak",S.tax.length+" catatan pajak · kelola tagihan dan pembayaran","editTax()","Tambah")+taxSummaryHtml()+'</section>'+
  '<div class="manage-group">Tampilan & data</div><section class="panel"><div class="manage-item" style="padding-top:2px"><span class="manage-icon">🎨</span><div class="manage-copy"><b>Tampilan aplikasi</b><small>Pilih mode sesuai kenyamananmu</small></div></div><div class="settings-theme" id="th"><button class="'+(theme==="auto"?"on":"")+'" onclick="setTheme(\'auto\')">Otomatis</button><button class="'+(theme==="light"?"on":"")+'" onclick="setTheme(\'light\')">Terang</button><button class="'+(theme==="dark"?"on":"")+'" onclick="setTheme(\'dark\')">Gelap</button></div></section>'+
  '<section class="panel">'+item("📤","Ekspor laporan","Salin seluruh transaksi ke format CSV","openCsv()","Ekspor")+item("💾","Cadangkan & pulihkan","Simpan atau pulihkan data dari kode cadangan","openBackup()","Buka")+'</section>'+
  '<button class="btn del full" onclick="if(confirm(\'Hapus semua data?\')){S=JSON.parse(JSON.stringify(def));save();render()}">Hapus semua data</button>';
 }
 function shut(){$('#sheet').classList.remove('show')}
 document.close=()=>shut();
-function norm(){S.products=S.products||[];S.platforms=S.platforms||[];S.tx=S.tx||[];S.rec=S.rec||[];S.staff=S.staff||[];S.prices=S.prices||[];S.cats=S.cats||[];['Transportasi','Gaji karyawan'].forEach(c=>{if(!S.cats.includes(c))S.cats.push(c)})}
+function norm(){S.products=S.products||[];S.platforms=S.platforms||[];S.tx=S.tx||[];S.rec=S.rec||[];S.staff=S.staff||[];S.prices=S.prices||[];S.tax=S.tax||[];S.cats=S.cats||[];['Transportasi','Gaji karyawan'].forEach(c=>{if(!S.cats.includes(c))S.cats.push(c)})}
 function allRec(){return[...S.rec,...S.staff.map(s=>({id:s.id,name:'Gaji '+s.name,amount:s.salary,cat:'Gaji karyawan',day:s.day,start:s.start,skip:s.skip}))]}
 function applyRec(){
  norm();const now=today(),cm=now.slice(0,7),dn=+now.slice(8);let ch=false;
@@ -409,6 +410,49 @@ function extraHtml(){
  const rc=S.rec.map(r=>`<div class='li'><div>${esc(r.name)}<small>Tiap tgl ${r.day} · ${esc(r.cat)}</small></div><div><b>${rp(r.amount)}</b> <button class='btn sec' data-i='${r.id}' onclick='editRec(this.dataset.i)'>✎</button></div></div>`).join('');
  const st=S.staff.map(s=>`<div class='li'><div>${esc(s.name)}<small>Gaji tiap tgl ${s.day}</small></div><div><b>${rp(s.salary)}</b> <button class='btn sec' data-i='${s.id}' onclick='editStaff(this.dataset.i)'>✎</button></div></div>`).join('');
  return `<h2>Biaya rutin otomatis</h2><div class='card'>${rc||`<div class='empty'>Belum ada. Contoh: sewa tempat, listrik, internet</div>`}<button class='btn full' style='margin-top:10px' onclick='editRec()'>＋ Tambah biaya rutin</button></div><h2>Karyawan &amp; gaji</h2><div class='card'>${st||`<div class='empty'>Belum ada karyawan</div>`}<button class='btn full' style='margin-top:10px' onclick='editStaff()'>＋ Tambah karyawan</button></div><h2>Harga bahan</h2><div class='card'>${pr||`<div class='empty'>Catat harga bahan untuk memantau kenaikannya</div>`}<button class='btn full' style='margin-top:10px' onclick='editPrice()'>＋ Catat harga bahan</button></div><h2>Data</h2><div class='card'><button class='btn sec full' onclick='openCsv()'>Ekspor CSV</button><button class='btn sec full' style='margin-top:10px' onclick='openBackup()'>Cadangkan &amp; pulihkan data</button></div>`}
+
+let TX={};
+function taxSummaryHtml(){
+ const open=S.tax.filter(t=>t.status!=="paid"),paid=S.tax.filter(t=>t.status==="paid");
+ const overdue=open.filter(t=>t.due&&t.due<today()).length;
+ const total=open.reduce((n,t)=>n+(Number(t.amount)||0),0);
+ const rows=[...S.tax].sort((a,b)=>(a.due||"").localeCompare(b.due||"")).map(t=>{
+  const late=t.status!=="paid"&&t.due&&t.due<today();
+  return '<div class="manage-item"><span class="manage-icon item-icon">'+(t.status==="paid"?"✅":late?"⚠️":"🧾")+'</span><div class="manage-copy"><b>'+esc(t.name)+'</b><small>'+esc(t.period||"Periode tidak diisi")+' · '+rp(t.amount)+' · '+(t.status==="paid"?"Lunas":late?"Terlambat":"Belum dibayar")+'</small></div><button class="btn sec" onclick="editTax(\''+t.id+'\')">Detail</button></div>';
+ }).join("");
+ return '<div class="metric-grid" style="margin:8px 0 12px"><div class="metric-card"><div class="metric-label">Belum dibayar</div><b class="metric-value">'+rp(total)+'</b><small>'+open.length+' tagihan</small></div><div class="metric-card"><div class="metric-label">Sudah lunas</div><b class="metric-value">'+paid.length+'</b><small>'+overdue+' terlambat</small></div></div>'+ (rows||'<div class="empty-state">Belum ada kewajiban pajak. Tambahkan tagihan pajak usaha di sini.</div>');
+}
+function editTax(id){
+ const t=S.tax.find(x=>x.id===id);
+ TX=t?{...t}:{id:"",name:"",period:"",amount:"",due:today(),status:"unpaid",paidDate:"",note:"",proof:""};
+ drawTax();
+}
+function drawTax(){
+ open(hd(TX.id?"Detail kewajiban pajak":"Tambah kewajiban pajak")+
+ '<label>Jenis / nama pajak</label><input id="taxName" placeholder="Contoh: PPh Final, PPN, PBB" value="'+esc(TX.name)+'">'+
+ '<label>Periode pajak</label><input id="taxPeriod" placeholder="Contoh: Oktober 2026 / Masa 10-2026" value="'+esc(TX.period)+'">'+
+ '<label>Nominal pajak (Rp)</label><input id="taxAmount" type="number" inputmode="numeric" min="0" value="'+esc(TX.amount)+'">'+
+ '<label>Tanggal jatuh tempo</label><input id="taxDue" type="date" value="'+esc(TX.due)+'">'+
+ '<label>Status pembayaran</label><div class="chips"><button class="chip '+(TX.status!=="paid"?"on":"")+'" onclick="TX.status=\'unpaid\';drawTax()">Belum dibayar</button><button class="chip '+(TX.status==="paid"?"on":"")+'" onclick="TX.status=\'paid\';if(!TX.paidDate)TX.paidDate=today();drawTax()">Lunas</button></div>'+
+ (TX.status==="paid"?'<label>Tanggal pembayaran</label><input id="taxPaidDate" type="date" value="'+esc(TX.paidDate||today())+'">':'')+
+ '<label>Keterangan (opsional)</label><textarea id="taxNote" rows="3" style="width:100%;min-height:80px;padding:12px;border:1px solid var(--pl);border-radius:14px;background:var(--card);color:var(--tx);font:inherit">'+esc(TX.note||"")+'</textarea>'+
+ '<label>Bukti pembayaran (opsional)</label><input id="taxProof" placeholder="Nama file atau tautan bukti" value="'+esc(TX.proof||"")+'">'+
+ '<div style="font-size:12px;opacity:.7;margin-top:8px">Bukti saat ini dicatat sebagai nama file atau tautan. Unggah file langsung belum tersedia.</div>'+
+ '<button class="btn full" style="margin-top:16px" onclick="saveTax()">Simpan kewajiban pajak</button>'+
+ (TX.id?'<button class="btn del full" style="margin-top:8px" onclick="delTax()">Hapus catatan pajak</button>':""));
+}
+function saveTax(){
+ const name=$("#taxName").value.trim(),period=$("#taxPeriod").value.trim(),amount=num($("#taxAmount").value),due=$("#taxDue").value;
+ if(!name||!amount||!due)return alert("Isi nama pajak, nominal, dan tanggal jatuh tempo");
+ const status=TX.status==="paid"?"paid":"unpaid";
+ const paidDate=status==="paid"?($("#taxPaidDate")?$("#taxPaidDate").value:(TX.paidDate||today())):"";
+ if(status==="paid"&&!paidDate)return alert("Isi tanggal pembayaran");
+ const data={name,period,amount,due,status,paidDate,note:$("#taxNote").value.trim(),proof:$("#taxProof").value.trim()};
+ if(TX.id)Object.assign(S.tax.find(x=>x.id===TX.id),data);else S.tax.push({id:uid(),...data});
+ save();shut();render();
+}
+function delTax(){if(!TX.id)return;if(confirm("Hapus catatan kewajiban pajak ini?")){S.tax=S.tax.filter(x=>x.id!==TX.id);save();shut();render()}}
+
 let R={},G={},P={};
 const hd=t=>`<div class='row'><h2 style='margin:0'>${t}</h2><button class='btn sec' onclick='shut()'>✕</button></div>`;
 function editRec(id){const r=S.rec.find(x=>x.id===id);R=r?{...r}:{id:'',name:'',amount:'',cat:S.cats[0],day:1};drawRec()}
