@@ -51,6 +51,58 @@ nav .plus{background:var(--pr);color:#fff;width:49px;height:49px;min-width:49px;
 hr{opacity:.3}
 #cl{display:block;margin:0 0 9px auto;border:1px solid var(--line);background:var(--card);color:var(--mu);border-radius:999px;padding:6px 12px;font:600 11px "Plus Jakarta Sans",sans-serif;cursor:pointer}
 #lg{position:fixed;inset:0;z-index:50;background:var(--bg);display:none;align-items:center;justify-content:center;padding:24px}#lg.show{display:flex}#lg>div{width:100%;max-width:380px}#lg h2{margin:0 0 6px}#lg .e{color:var(--rd);font-size:13px;min-height:18px;margin:8px 0}
+
+/* Home dashboard redesign */
+.home-head{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin:3px 1px 22px}
+.home-greet{display:block;color:var(--mu);font-size:12px;font-weight:600;letter-spacing:.02em}
+.home-brand{font-size:27px;line-height:1.12;letter-spacing:-1.1px;font-weight:800;margin:5px 0 0}
+.home-month{flex-shrink:0;border:1px solid var(--line);background:var(--card);color:var(--mu);border-radius:999px;padding:7px 10px;font-size:10px;font-weight:750}
+.home-hero{position:relative;overflow:hidden;background:linear-gradient(145deg,#28634b 0%,#194633 72%,#143a2d 100%);color:#fff;border-radius:28px;padding:22px 20px 18px;margin:0 0 17px;box-shadow:0 16px 34px rgba(27,77,54,.18)}
+.home-hero:before{content:"";position:absolute;width:190px;height:190px;border:1px solid rgba(255,255,255,.09);border-radius:50%;right:-75px;top:-93px;box-shadow:0 0 0 22px rgba(255,255,255,.025),0 0 0 46px rgba(255,255,255,.02)}
+.home-hero-top,.home-hero-main,.home-hero-bottom{position:relative;z-index:1}
+.home-hero-top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.home-eyebrow{font-size:10px;letter-spacing:.13em;text-transform:uppercase;font-weight:800;color:rgba(255,255,255,.72)}
+.home-month-name{font-size:13px;color:rgba(255,255,255,.9);font-weight:650;margin-top:3px}
+.home-hero .eye{width:36px;height:36px;border-radius:12px}
+.home-hero-main{padding:20px 0 17px}
+.home-hero-label{font-size:12px;color:rgba(255,255,255,.74);font-weight:600}
+.home-amount{font-size:clamp(30px,8vw,39px);line-height:1.15;letter-spacing:-1.5px;font-weight:800;margin:5px 0 7px;overflow-wrap:anywhere}
+.home-hero-note{font-size:11px;color:rgba(255,255,255,.72)}
+.home-hero-bottom{display:grid;grid-template-columns:1fr 1fr;gap:12px;border-top:1px solid rgba(255,255,255,.17);padding-top:15px}
+.home-hero-metric{min-width:0}
+.home-hero-metric span{display:block;font-size:10px;color:rgba(255,255,255,.68);margin-bottom:4px}
+.home-hero-metric b{font-size:15px;letter-spacing:-.3px;overflow-wrap:anywhere}
+.home-hero-metric+ .home-hero-metric{border-left:1px solid rgba(255,255,255,.17);padding-left:13px}
+.home-section-head{display:flex;justify-content:space-between;align-items:center;margin:22px 1px 11px}
+.home-section-head h2{margin:0;font-size:16px;letter-spacing:-.4px}
+.home-section-head small{color:var(--mu);font-size:10px;font-weight:650}
+.home-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.home-action{border:1px solid var(--line);background:var(--card);color:var(--tx);border-radius:19px;padding:13px 12px;display:flex;align-items:center;gap:10px;text-align:left;min-width:0;box-shadow:var(--sh);cursor:pointer;font:inherit}
+.home-action.primary{background:var(--pr);color:#fff;border-color:var(--pr)}
+.home-action-icon{width:39px;height:39px;flex:0 0 39px;display:grid;place-items:center;border-radius:13px;background:var(--pl);color:var(--pr);font-size:19px}
+.home-action.primary .home-action-icon{background:rgba(255,255,255,.15);color:#fff}
+.home-action strong{display:block;font-size:12px;font-weight:800;line-height:1.3}
+.home-action small{display:block;color:var(--mu);font-size:10px;margin-top:3px}
+.home-action.primary small{color:rgba(255,255,255,.72)}
+.home-today-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.home-today-card{background:var(--card);border:1px solid var(--line);border-radius:17px;padding:13px;min-width:0}
+.home-today-top{display:flex;align-items:center;gap:7px;color:var(--mu);font-size:10px;font-weight:650}
+.home-today-icon{width:25px;height:25px;display:grid;place-items:center;border-radius:9px;background:var(--pl);font-size:13px}
+.home-today-card b{display:block;font-size:16px;letter-spacing:-.45px;margin-top:8px;overflow-wrap:anywhere}
+.home-recent{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:4px 14px;box-shadow:var(--sh)}
+.home-recent .li{padding:12px 0}
+.home-recent .li:first-child{border-top:0}
+.home-recent-name{font-size:12px;font-weight:750;color:var(--tx)}
+.home-recent-meta{font-size:10px;color:var(--mu);margin-top:3px}
+.home-recent-amount{font-size:12px;font-weight:800;white-space:nowrap}
+.home-see-all{border:0;background:none;color:var(--pr);font:750 11px "Plus Jakarta Sans",sans-serif;padding:8px 0;cursor:pointer}
+.home-empty{padding:19px 8px;text-align:center;color:var(--mu);font-size:11px}
+nav{padding:6px 7px;border-radius:24px;backdrop-filter:blur(18px);background:color-mix(in srgb,var(--card) 92%,transparent)}
+nav button{min-width:55px;padding:7px 9px;font-size:10px}
+nav button span{font-size:18px}
+nav .plus{width:50px;height:50px;min-width:50px;border-radius:17px}
+@media(max-width:360px){.home-brand{font-size:24px}.home-action{padding:11px 9px;gap:7px}.home-action-icon{width:34px;height:34px;flex-basis:34px}.home-today-card{padding:11px}.home-today-card b{font-size:14px}}
+
 @media(min-width:540px){body{padding-top:24px}}
 </style>
 </head>
@@ -98,14 +150,42 @@ function render(){
 function home(){
  const m=today().slice(0,7),M=calc(inMonth(m)),T=calc(S.tx.filter(t=>t.date===today()));
  const mi=+m.slice(5)-1;
- $("#app").innerHTML=`<div class="row"><div><small style="color:var(--mu)">Halo,</small><h1 style="margin:0">${esc(S.name)}</h1></div></div><div style="height:12px"></div>
- <div class="hero"><div class="row"><small>Laba bersih ${MONF[mi]}</small><button class="eye" onclick="S.hide=!S.hide;save();render()">${S.hide?"🙈":"👁"}</button></div>
- <div class="big">${mask(M.profit)}</div><small>${M.porsi?M.porsi+" porsi terjual bulan ini":"Belum ada penjualan"}</small>
- <hr style="border:0;border-top:1px solid rgba(255,255,255,.25);margin:14px 0"><div class="row"><div><small>Pendapatan bersih</small><div><b>${mask(M.net)}</b></div></div><div><small>Total biaya</small><div><b>${mask(M.buy)}</b></div></div></div></div>
- <div class="row" style="margin-bottom:6px"><button class="btn" onclick="openAdd('sale')">＋ Penjualan</button><button class="btn sec" onclick="openAdd('buy')">🛒 Belanja</button></div>
- <h2>Hari ini</h2><div class="grid">
- <div class="stat">💰 Penjualan bersih<b>${mask(T.net)}</b></div><div class="stat">🛒 Belanja<b>${mask(T.buy)}</b></div>
- <div class="stat">📈 Laba hari ini<b>${mask(T.profit)}</b></div><div class="stat">📦 Porsi terjual<b>${T.porsi} porsi</b></div></div>`;
+ const recent=[...S.tx].sort((a,b)=>b.date.localeCompare(a.date)||String(b.id).localeCompare(String(a.id))).slice(0,3);
+ const recentHtml=recent.length?recent.map(t=>{
+  const sale=t.type==="sale",title=sale?(String(t.qty)+"× "+esc(t.name)):esc(t.cat);
+  const meta=esc(t.date)+(sale?" · "+esc(t.platform):t.note?" · "+esc(t.note):"");
+  const amount=sale?rp(t.qty*t.price-(t.fee||0)):rp(t.amount);
+  return `<div class="li"><div style="min-width:0"><div class="home-recent-name">${sale?"↗ ":"↙ "}${title}</div><div class="home-recent-meta">${meta}</div></div><div class="home-recent-amount ${sale?"pos":"neg"}">${sale?"+":"−"}${amount}</div></div>`;
+ }).join(""):`<div class="home-empty">Belum ada transaksi. Mulai catat penjualan atau belanja pertamamu.</div>`;
+ $("#app").innerHTML=`
+ <header class="home-head">
+  <div><span class="home-greet">Halo, selamat datang di</span><h1 class="home-brand">${esc(S.name)}</h1></div>
+  <span class="home-month">${MON[mi].toUpperCase()} ${m.slice(0,4)}</span>
+ </header>
+ <section class="home-hero">
+  <div class="home-hero-top"><div><div class="home-eyebrow">Ringkasan bulanan</div><div class="home-month-name">${MONF[mi]} ${m.slice(0,4)}</div></div>
+   <button class="eye" aria-label="Sembunyikan atau tampilkan nominal" onclick="S.hide=!S.hide;save();render()">${S.hide?"🙈":"👁"}</button>
+  </div>
+  <div class="home-hero-main"><div class="home-hero-label">Estimasi laba bersih</div><div class="home-amount">${mask(M.profit)}</div><div class="home-hero-note">${M.porsi?M.porsi+" porsi tercatat bulan ini":"Belum ada penjualan bulan ini"}</div></div>
+  <div class="home-hero-bottom">
+   <div class="home-hero-metric"><span>Pendapatan bersih</span><b>${mask(M.net)}</b></div>
+   <div class="home-hero-metric"><span>Total belanja</span><b>${mask(M.buy)}</b></div>
+  </div>
+ </section>
+ <div class="home-section-head"><h2>Aksi cepat</h2><small>Catat aktivitas usaha</small></div>
+ <div class="home-actions">
+  <button class="home-action primary" onclick="openAdd('sale')"><span class="home-action-icon">↗</span><span><strong>Catat penjualan</strong><small>Tambah pemasukan</small></span></button>
+  <button class="home-action" onclick="openAdd('buy')"><span class="home-action-icon">↙</span><span><strong>Catat belanja</strong><small>Tambah pengeluaran</small></span></button>
+ </div>
+ <div class="home-section-head"><h2>Aktivitas hari ini</h2><small>${today().split("-").reverse().join("/")}</small></div>
+ <div class="home-today-grid">
+  <div class="home-today-card"><div class="home-today-top"><span class="home-today-icon">💰</span>Penjualan bersih</div><b>${mask(T.net)}</b></div>
+  <div class="home-today-card"><div class="home-today-top"><span class="home-today-icon">🛒</span>Total belanja</div><b>${mask(T.buy)}</b></div>
+  <div class="home-today-card"><div class="home-today-top"><span class="home-today-icon">📈</span>Laba hari ini</div><b>${mask(T.profit)}</b></div>
+  <div class="home-today-card"><div class="home-today-top"><span class="home-today-icon">📦</span>Porsi terjual</div><b>${T.porsi} porsi</b></div>
+ </div>
+ <div class="home-section-head"><h2>Transaksi terbaru</h2><button class="home-see-all" onclick="tab='list';render()">Lihat semua →</button></div>
+ <section class="home-recent">${recentHtml}</section>`;
 }
 function list(){
  const a=[...S.tx].sort((x,y)=>y.date.localeCompare(x.date)||y.id.localeCompare(x.id)).slice(0,100);
