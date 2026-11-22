@@ -291,7 +291,7 @@ function home(){
  const recentHtml=recent.length?recent.map(t=>{
   const sale=t.type==="sale",title=sale?(String(t.qty)+"× "+esc(t.name)):esc(t.cat);
   const meta=esc(t.date)+(sale?" · "+esc(t.platform):t.note?" · "+esc(t.note):"");
-  const amount=sale?rp(t.qty*t.price-(t.fee||0)):rp(t.amount);
+  const amount=sale?rp(t.qty*t.price-(t.fee||0)-(t.tax||0)):rp(t.amount);
   return `<div class="li"><div style="min-width:0"><div class="home-recent-name">${sale?"↗ ":"↙ "}${title}</div><div class="home-recent-meta">${meta}</div></div><div class="home-recent-amount ${sale?"pos":"neg"}">${sale?"+":"−"}${amount}</div></div>`;
  }).join(""):`<div class="home-empty">Belum ada transaksi. Mulai catat penjualan atau belanja pertamamu.</div>`;
  $("#app").innerHTML=`
@@ -360,7 +360,7 @@ function report(){
  '<div class="metric-grid"><div class="metric-card"><div class="metric-label"><span class="metric-icon">🧾</span>Penjualan kotor</div><b class="metric-value">'+rp(M.gross)+'</b></div><div class="metric-card"><div class="metric-label"><span class="metric-icon">🏷️</span>Potongan platform</div><b class="metric-value">'+rp(M.fee)+'</b></div></div>'+
  '<div class="section-title"><h2>Tren 6 bulan</h2><small>Pendapatan & laba</small></div><section class="panel"><div class="report-chart">'+data.map((v,i)=>'<div><div class="bars-pair"><i style="height:'+Math.max(2,v.net/mx*100)+'%;background:var(--pr)"></i><i style="height:'+Math.max(2,Math.max(0,v.profit)/mx*100)+'%;background:var(--gr)"></i></div>'+MON[+months[i].slice(5)-1]+'</div>').join("")+'</div><div class="report-legend"><span><i class="legend-dot"></i>Pendapatan bersih</span><span><i class="legend-dot profit"></i>Laba bersih</span></div></section>'+
  '<div class="section-title"><h2>Rincian laba rugi</h2><small>'+MONF[mo-1]+' '+y+'</small></div><section class="panel">'+
- row("Penjualan kotor",rp(M.gross))+row("Potongan platform","−"+rp(M.fee))+row("Pendapatan bersih",rp(M.net),"total")+
+ row("Penjualan kotor",rp(M.gross))+row("Potongan platform","−"+rp(M.fee))+row("Pendapatan bersih sebelum pajak",rp(M.net),"total")+row("Pajak dipotong dari penjualan","−"+rp(M.tax))+row("Uang diterima",rp(M.cash),"total")+
  row("Bahan baku","−"+rp(M.by["Bahan baku"]||0))+row("Kemasan & perlengkapan","−"+rp(M.by["Kemasan & perlengkapan"]||0))+
  row("Laba kotor ("+pct+"%)",rp(gk),"total")+other.map(c=>row(esc(c),"−"+rp(M.by[c]||0))).join("")+
  row("Laba bersih",rp(M.profit),"total "+(M.profit<0?"neg":"pos"))+'</section><p class="filter-note">Perhitungan mengikuti transaksi yang sudah tersimpan. Potongan platform dihitung terpisah dari belanja.</p>';
