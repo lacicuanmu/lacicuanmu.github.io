@@ -242,6 +242,31 @@ nav button{font-size:11px}
  .manage-copy small{font-size:11px}
 }
 
+
+/* Identitas warna per menu */
+:root:not([data-theme="dark"])[data-page="home"]{
+ --bg:#EDF1EB;--pr:#718779;--pl:#DCE4DA;--line:#E0E7DE;
+}
+:root:not([data-theme="dark"])[data-page="list"]{
+ --bg:#F0F2EC;--pr:#657D6D;--pl:#DCE4DA;--line:#DDE4DA;
+}
+:root:not([data-theme="dark"])[data-page="rep"]{
+ --bg:#F5F3EC;--pr:#A18448;--pl:#F3E9D2;--line:#E8E5DC;
+}
+:root:not([data-theme="dark"])[data-page="mgr"]{
+ --bg:#EEECE5;--pr:#817D70;--pl:#E8E5DC;--line:#DFDCD2;
+}
+:root[data-page="rep"]:not([data-theme="dark"]) .report-hero{
+ background:linear-gradient(145deg,#F3E9D2 0%,#E9DFC6 100%);
+ color:#463F31;box-shadow:0 12px 28px rgba(110,91,54,.09);
+}
+:root[data-page="rep"]:not([data-theme="dark"]) .report-hero .eyebrow,
+:root[data-page="rep"]:not([data-theme="dark"]) .report-hero .hint,
+:root[data-page="rep"]:not([data-theme="dark"]) .report-hero .mini span{color:#766B55}
+:root[data-page="rep"]:not([data-theme="dark"]) .report-hero .mini{border-top-color:rgba(90,75,48,.18)}
+:root[data-page="mgr"]:not([data-theme="dark"]) .manage-group{color:#716D61}
+:root[data-page="mgr"]:not([data-theme="dark"]) .manage-icon{background:#E8E5DC}
+
 </style>
 </head>
 <body>
@@ -287,6 +312,7 @@ const inMonth=m=>S.tx.filter(t=>t.date.slice(0,7)===m);
 function newestFirst(list){return list.map((t,i)=>({t,i})).sort((a,b)=>b.t.date.localeCompare(a.t.date)||String(b.t.createdAt||"").localeCompare(String(a.t.createdAt||""))||b.i-a.i).map(x=>x.t)}
 
 function render(){
+ document.documentElement.dataset.page=tab;
  applyRec();
  $("#nav").innerHTML=[["home","🏠","Beranda"],["list","🧾","Riwayat"],["add","＋",""],["rep","📊","Laporan"],["mgr","⚙️","Kelola"]]
  .map(([k,i,l])=>k==="add"?`<button class="plus" onclick="openAdd()">${i}</button>`:`<button class="${tab===k?"on":""}" onclick="tab='${k}';render()"><span>${i}</span>${l}</button>`).join("");
