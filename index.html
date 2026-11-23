@@ -925,7 +925,22 @@ window.cloudPush=function(){if(!ses)return;ls(DK,'1');stat('wait');clearTimeout(
 window.cloudSync=syncNow;
 window.hideLg=()=>lg.classList.remove('show');
 window.skipLg=()=>{ls(XK,'1');lg.classList.remove('show')};
-window.doLogout=()=>{ses=null;ls(SK,null);ls(MK,null);ls(DK,null);lg.classList.remove('show');stat('none')};
+window.doLogout=async function(){
+  if(busy){alert('Sinkronisasi masih berjalan. Tunggu sampai selesai, lalu coba keluar lagi.');return}
+  clearTimeout(timer);
+  if(ls(DK)==='1'){
+   if(!navigator.onLine){alert('Ada perubahan yang belum tersinkron. Sambungkan internet dan sinkronkan dulu agar data tidak hilang.');return}
+   busy=true;stat('wait');
+   try{await push();if(ls(DK)==='1')throw new Error('Masih ada perubahan yang belum tersinkron.')}
+   catch(e){clearTimeout(timer);busy=false;stat(navigator.onLine?'err':'off');alert('Logout dibatalkan agar data yang belum tersinkron tidak hilang. '+(e.message||''));return}
+   busy=false;
+  }
+  clearTimeout(timer);ses=null;ls(SK,null);ls(MK,null);ls(DK,null);
+  try{localStorage.removeItem(KEY)}catch(e){}
+  S=JSON.parse(JSON.stringify(def));norm();localRevision++;render();
+  const viewer=document.getElementById('evidenceViewer');if(viewer)viewer.remove();
+  lg.classList.remove('show');stat('none');
+ };
 const SEC="background:none;color:var(--tx);border:1px solid var(--pl,var(--ln,#ddd))";
 function showLogin(msg){
  lg.innerHTML=`<div><h2>Masuk untuk simpan data online</h2><div style='opacity:.7;font-size:14px'>Data tersimpan di akun, jadi aman saat ganti HP.</div><label>Email</label><input id='lge' type='email' autocomplete='email'><label>Password (min. 6 karakter)</label><input id='lgp' type='password' autocomplete='current-password'><div class='e' id='lgm'>${msg||''}</div><button class='btn' style='width:100%' onclick='doAuth(0)'>Masuk</button><button class='btn' style='width:100%;margin-top:10px;${SEC}' onclick='doAuth(1)'>Daftar akun baru</button><button style='display:block;margin:16px auto 0;background:none;border:0;color:var(--mu);font-size:14px' onclick='skipLg()'>Lanjut tanpa login</button></div>`;
