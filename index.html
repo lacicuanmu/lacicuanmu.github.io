@@ -8,7 +8,7 @@
 <link rel="manifest" href="manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 <link rel="icon" href="icons/icon-192.png">
 <link rel="apple-touch-icon" href="icons/icon-192.png">
@@ -267,9 +267,51 @@ nav button{font-size:11px}
 :root[data-page="mgr"]:not([data-theme="dark"]) .manage-group{color:#716D61}
 :root[data-page="mgr"]:not([data-theme="dark"]) .manage-icon{background:#E8E5DC}
 
+
+/* Animated Laci Cuanmu welcome screen */
+#brand-splash{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:22px;padding:28px;background:#F5F3EC;color:#303A35;opacity:1;visibility:visible;transition:opacity .55s ease,visibility .55s ease}
+#brand-splash.out{opacity:0;visibility:hidden;pointer-events:none}
+#brand-splash .brand-art{width:min(54vw,210px);height:auto;overflow:visible;filter:drop-shadow(0 15px 18px rgba(48,58,53,.13))}
+#brand-splash .drawer{transform-origin:50% 72%;animation:drawer-float 2.4s ease-in-out infinite}
+#brand-splash .coin{transform-box:fill-box;transform-origin:center;animation:coin-bob 1.65s ease-in-out infinite}
+#brand-splash .coin.c2{animation-delay:.22s}
+#brand-splash .coin.c3{animation-delay:.43s}
+#brand-splash .spark{transform-box:fill-box;transform-origin:center;animation:sparkle 1.8s ease-in-out infinite}
+#brand-splash .spark.s2{animation-delay:.65s}
+#brand-splash .brand-name{font-family:"Nunito","Plus Jakarta Sans",sans-serif;font-size:clamp(27px,7vw,35px);font-weight:800;letter-spacing:-.7px;color:#303A35;animation:name-in .8s cubic-bezier(.2,.75,.25,1) both}
+#brand-splash .brand-tag{margin-top:-18px;font:600 11px/1.4 "Plus Jakarta Sans",sans-serif;letter-spacing:2.3px;text-transform:uppercase;color:#778078;animation:name-in 1s .15s both}
+@keyframes drawer-float{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-7px) rotate(1deg)}}
+@keyframes coin-bob{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-9px) rotate(8deg)}}
+@keyframes sparkle{0%,100%{opacity:.55;transform:scale(.82)}50%{opacity:1;transform:scale(1.12)}}
+@keyframes name-in{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:translateY(0)}}
+@media(prefers-reduced-motion:reduce){#brand-splash *,#brand-splash *:before{animation:none!important;transition:none!important}}
+
 </style>
 </head>
 <body>
+<div id="brand-splash" aria-label="Laci Cuanmu sedang dibuka">
+<svg class="brand-art" viewBox="0 0 240 240" role="img" aria-label="Ilustrasi laci tabungan Laci Cuanmu">
+<defs><linearGradient id="sageBg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#829889"/><stop offset="1" stop-color="#61786A"/></linearGradient><linearGradient id="ivory" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#FFFEF8"/><stop offset="1" stop-color="#E9E3D4"/></linearGradient><linearGradient id="gold" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#F8D77D"/><stop offset="1" stop-color="#C9952F"/></linearGradient></defs>
+<rect x="8" y="8" width="224" height="224" rx="48" fill="url(#sageBg)"/>
+<g class="spark" fill="#F5F3EC"><path d="M38 43l4 10 10 4-10 4-4 10-4-10-10-4 10-4z"/></g><g class="spark s2" fill="#F5F3EC"><path d="M201 42l3 8 8 3-8 3-3 8-3-8-8-3 8-3z"/></g>
+<ellipse cx="120" cy="211" rx="67" ry="7" fill="#35483D" opacity=".3"/>
+<g class="drawer">
+<rect x="54" y="53" width="132" height="151" rx="18" fill="#4A5F52" opacity=".35" transform="translate(0 4)"/>
+<rect x="52" y="48" width="136" height="154" rx="18" fill="url(#ivory)" stroke="#E5DFD1" stroke-width="2"/>
+<rect x="64" y="60" width="112" height="42" rx="12" fill="#F5F3EC"/>
+<circle cx="94" cy="78" r="4" fill="#34483D"/><circle cx="146" cy="78" r="4" fill="#34483D"/><path d="M105 88q15 13 30 0" fill="none" stroke="#52695A" stroke-width="4" stroke-linecap="round"/>
+<rect x="64" y="108" width="112" height="38" rx="8" fill="#52695A"/>
+<g fill="url(#gold)" stroke="#B9872D" stroke-width="1.2"><circle cx="86" cy="119" r="12"/><circle cx="111" cy="116" r="12"/><circle cx="136" cy="118" r="12"/><circle cx="159" cy="120" r="11"/></g>
+<g fill="#9B7026" font-size="11" font-weight="900" text-anchor="middle"><text x="86" y="123">$</text><text x="111" y="120">$</text><text x="136" y="122">$</text><text x="159" y="124">$</text></g>
+<rect x="61" y="137" width="118" height="30" rx="8" fill="url(#ivory)" stroke="#E5DFD1"/><rect x="99" y="149" width="42" height="6" rx="3" fill="#61786A"/>
+<rect x="61" y="172" width="118" height="23" rx="7" fill="url(#ivory)" stroke="#E5DFD1"/><rect x="100" y="180" width="40" height="5" rx="2.5" fill="#61786A"/>
+</g>
+<g class="coin c1"><circle cx="37" cy="116" r="12" fill="url(#gold)" stroke="#B9872D"/><text x="37" y="120" text-anchor="middle" font-size="11" font-weight="900" fill="#93651F">$</text></g>
+<g class="coin c2"><circle cx="202" cy="125" r="11" fill="url(#gold)" stroke="#B9872D"/><text x="202" y="129" text-anchor="middle" font-size="10" font-weight="900" fill="#93651F">$</text></g>
+<g class="coin c3"><circle cx="42" cy="174" r="8" fill="url(#gold)" stroke="#B9872D"/><text x="42" y="177" text-anchor="middle" font-size="8" font-weight="900" fill="#93651F">$</text></g>
+</svg>
+<div class="brand-name">Laci Cuanmu</div><div class="brand-tag">Catat · Kelola · Bertumbuh</div>
+</div>
 <div id="app"></div>
 <nav id="nav"></nav>
 <div class="sheet" id="sheet"><div id="sheetBody"></div></div>
@@ -946,6 +988,9 @@ window.cloudInit=function(){
 render();
 initTheme();
 cloudInit();
+const brandSplash=document.getElementById("brand-splash");
+if(brandSplash){setTimeout(()=>{brandSplash.classList.add("out");setTimeout(()=>brandSplash.remove(),650)},1750);}
+
 
 // Browser bisa memulihkan halaman dari back-forward cache setelah bukti asli dibuka.
 // Render ulang agar Beranda membaca state terbaru saat pengguna kembali ke aplikasi.
