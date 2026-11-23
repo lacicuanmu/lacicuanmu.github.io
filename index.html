@@ -889,6 +889,12 @@ window.cloudInit=function(){
 render();
 initTheme();
 cloudInit();
+
+// Browser bisa memulihkan halaman dari back-forward cache setelah bukti asli dibuka.
+// Render ulang agar Beranda membaca state terbaru saat pengguna kembali ke aplikasi.
+window.addEventListener("pageshow",function(event){
+ if(event.persisted)render();
+});
 </script>
 </body>
 </html>
