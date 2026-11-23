@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Laci Cuanmu</title>
-<meta name="theme-color" content="#245b45">
+<meta name="theme-color" content="#61786A">
 <link rel="manifest" href="manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,14 +14,15 @@
 <link rel="apple-touch-icon" href="icons/icon-192.png">
 <style>
 :root{
- --bg:#f4f5f0;--card:#fff;--tx:#202a23;--mu:#7c877e;--pr:#245b45;
- --pl:#e9f0e9;--gr:#27845b;--rd:#b96a60;--line:#e5e9e3;
- --sh:0 8px 28px rgba(29,55,39,.055);--sh2:0 3px 12px rgba(29,55,39,.045);
+ --bg:#F5F3EC;--card:#FFFEFA;--tx:#303A35;--mu:#778078;--pr:#61786A;
+ --sage:#718779;--pl:#DCE4DA;--gold:#C29A3C;--gold-soft:#F3E2AF;
+ --gr:#39815E;--rd:#B96A60;--line:#E8E5DC;
+ --sh:0 8px 28px rgba(48,58,53,.065);--sh2:0 3px 12px rgba(48,58,53,.05);
  color-scheme:light
 }
 :root[data-theme="dark"]{
- --bg:#121a15;--card:#1d2921;--tx:#edf3ed;--mu:#a2afa5;--pr:#a7c9ae;
- --pl:#2a3b30;--gr:#83c99a;--rd:#f08c7c;--line:#35453a;
+ --bg:#171D19;--card:#222B25;--tx:#F0F2EC;--mu:#A9B2AA;--pr:#AFC2B2;
+ --sage:#AFC2B2;--pl:#303E34;--gold:#D5B66B;--gold-soft:#4A4029;--gr:#83C99A;--rd:#F08C7C;--line:#39463D;
  --sh:0 8px 28px rgba(0,0,0,.18);--sh2:0 3px 12px rgba(0,0,0,.13);color-scheme:dark
 }
 *{box-sizing:border-box}
@@ -38,7 +39,7 @@ small{font-size:13px}
 .grid,.metric-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
 .stat{min-width:0;padding:17px;border:1px solid var(--line);border-radius:21px;background:var(--card);color:var(--mu);font-size:13px;box-shadow:var(--sh2)}
 .stat b{display:block;margin-top:8px;color:var(--tx);font-size:22px;line-height:1.25;letter-spacing:-.65px;overflow-wrap:anywhere}
-.btn{min-height:48px;padding:12px 17px;border:0;border-radius:16px;background:var(--pr);color:#fff;font-size:14px;font-weight:750;box-shadow:0 5px 13px rgba(36,91,69,.13);transition:transform .15s,filter .15s}
+.btn{min-height:48px;padding:12px 17px;border:0;border-radius:16px;background:var(--pr);color:#fff;font-size:14px;font-weight:750;box-shadow:0 5px 13px rgba(97,120,106,.18);transition:transform .15s,filter .15s}
 .btn:active{transform:scale(.98);filter:brightness(.97)}
 .btn.sec{background:var(--pl);color:var(--pr);box-shadow:none}
 .btn.full{width:100%}.btn.del{min-height:32px;padding:5px 9px;background:transparent;color:var(--rd);box-shadow:none;font-size:12px}
@@ -50,7 +51,7 @@ label{display:block;margin:17px 0 8px;color:var(--mu);font-size:14px;font-weight
 .seg button.on{background:var(--card);color:var(--pr);box-shadow:var(--sh2)}
 .chips{display:flex;flex-wrap:wrap;gap:9px}
 .chip{min-height:44px;padding:10px 15px;border:1px solid var(--line);border-radius:999px;background:var(--card);color:var(--tx);font-size:14px;font-weight:700}
-.chip.on{border-color:#afc2b2;background:var(--pl);color:var(--pr)}
+.chip.on{border-color:#B8C8BA;background:var(--pl);color:var(--pr)}
 .li{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px 0;border-bottom:1px solid var(--line)}
 .li:last-child{border-bottom:0}.li small{display:block;margin-top:4px;color:var(--mu);font-size:13px}
 .pos{color:var(--gr)}.neg{color:var(--rd)}.sum{font-weight:800}
@@ -82,7 +83,7 @@ label{display:block;margin:17px 0 8px;color:var(--mu);font-size:14px;font-weight
 .tx-meta{overflow:hidden;margin-top:5px;color:var(--mu);font-size:13px;text-overflow:ellipsis;white-space:nowrap}
 .tx-side{flex-shrink:0;text-align:right}.tx-amount{font-size:16px;font-weight:800;white-space:nowrap}
 .tx-side .btn.del{display:block;margin:4px 0 0 auto;min-height:27px;padding:3px 8px;border:1px solid var(--line);border-radius:9px;color:var(--mu);font-size:11px}
-.report-hero,.hero{margin:0 0 15px;padding:25px 22px;border:0;border-radius:28px;background:linear-gradient(145deg,#28634b 0%,#194633 72%,#143a2d 100%);color:#fff;box-shadow:0 15px 34px rgba(27,77,54,.17)}
+.report-hero,.hero{margin:0 0 15px;padding:25px 22px;border:0;border-radius:28px;background:linear-gradient(145deg,#829889 0%,#61786A 72%,#4F6558 100%);color:#fff;box-shadow:0 15px 34px rgba(79,101,88,.19)}
 .report-hero .eyebrow{font-size:13px;font-weight:800;letter-spacing:.06em;color:rgba(255,255,255,.75)}
 .report-hero .value,.big{margin:8px 0;font-size:40px;line-height:1.15;font-weight:800;letter-spacing:-1.8px;overflow-wrap:anywhere}
 .report-hero .hint{color:rgba(255,255,255,.75);font-size:14px}
