@@ -266,15 +266,21 @@ const MON=["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Agu","Sep","Okt","Nov","De
 const MONF=["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
 let tab="home",rep=today().slice(0,7),listFilter="all",localRevision=0;
 
+// Normalisasi nilai penjualan agar transaksi OCR dan manual memakai dasar yang sama.
+const saleGross=t=>Number(t.originalGross!=null?t.originalGross:t.qty*t.price)||0;
+const saleDiscount=t=>Number(t.discount)||0;
+const saleRevenue=t=>Math.max(0,saleGross(t)-saleDiscount(t));
 function calc(list){
- let gross=0,fee=0,tax=0,porsi=0,buy=0,by={};
+ let gross=0,discount=0,revenue=0,fee=0,tax=0,porsi=0,buy=0,by={};
  S.cats.forEach(c=>by[c]=0);
  list.forEach(t=>{
-  if(t.type==="sale"){gross+=t.qty*t.price;fee+=t.fee||0;tax+=t.tax||0;porsi+=t.qty}
-  else{buy+=t.amount;by[t.cat]=(by[t.cat]||0)+t.amount}
+  if(t.type==="sale"){
+   gross+=saleGross(t);discount+=saleDiscount(t);revenue+=saleRevenue(t);
+   fee+=Number(t.fee)||0;tax+=Number(t.tax)||0;porsi+=Number(t.qty)||0;
+  }else{const amount=Number(t.amount)||0;buy+=amount;by[t.cat]=(by[t.cat]||0)+amount}
  });
- const net=gross-fee,cash=net-tax;
- return{gross,fee,tax,net,cash,porsi,buy,by,profit:net-buy};
+ const net=revenue-fee,cash=net-tax;
+ return{gross,discount,revenue,fee,tax,net,cash,porsi,buy,by,profit:net-buy};
 }
 const inMonth=m=>S.tx.filter(t=>t.date.slice(0,7)===m);
 function newestFirst(list){return list.map((t,i)=>({t,i})).sort((a,b)=>b.t.date.localeCompare(a.t.date)||String(b.t.createdAt||"").localeCompare(String(a.t.createdAt||""))||b.i-a.i).map(x=>x.t)}
@@ -328,7 +334,7 @@ function home(){
 function list(){
  const all=newestFirst(S.tx);
  const a=listFilter==="all"?all:all.filter(t=>t.type===listFilter);
- const sales=all.filter(t=>t.type==="sale").reduce((n,t)=>n+t.qty*t.price,0);
+ const sales=all.filter(t=>t.type==="sale").reduce((n,t)=>n+saleGross(t),0);
  const buys=all.filter(t=>t.type==="buy").reduce((n,t)=>n+t.amount,0);
  const tabs=[["all","Semua"],["sale","Penjualan"],["buy","Belanja"]].map(x=>'<button class="page-tab '+(listFilter===x[0]?"active":"")+'" onclick="listFilter=\''+x[0]+'\';render()">'+x[1]+'</button>').join("");
  const rows=a.length?a.map(t=>{
@@ -362,7 +368,7 @@ function report(){
  '<div class="metric-grid"><div class="metric-card"><div class="metric-label"><span class="metric-icon">🧾</span>Penjualan kotor</div><b class="metric-value">'+rp(M.gross)+'</b></div><div class="metric-card"><div class="metric-label"><span class="metric-icon">🏷️</span>Potongan platform</div><b class="metric-value">'+rp(M.fee)+'</b></div></div>'+
  '<div class="section-title"><h2>Tren 6 bulan</h2><small>Pendapatan & laba</small></div><section class="panel"><div class="report-chart">'+data.map((v,i)=>'<div><div class="bars-pair"><i style="height:'+Math.max(2,v.net/mx*100)+'%;background:var(--pr)"></i><i style="height:'+Math.max(2,Math.max(0,v.profit)/mx*100)+'%;background:var(--gr)"></i></div>'+MON[+months[i].slice(5)-1]+'</div>').join("")+'</div><div class="report-legend"><span><i class="legend-dot"></i>Pendapatan bersih</span><span><i class="legend-dot profit"></i>Laba bersih</span></div></section>'+
  '<div class="section-title"><h2>Rincian laba rugi</h2><small>'+MONF[mo-1]+' '+y+'</small></div><section class="panel">'+
- row("Penjualan kotor",rp(M.gross))+row("Potongan platform","−"+rp(M.fee))+row("Pendapatan bersih sebelum pajak",rp(M.net),"total")+row("Pajak dipotong dari penjualan","−"+rp(M.tax))+row("Uang diterima",rp(M.cash),"total")+
+ row("Penjualan kotor",rp(M.gross))+row("Diskon penjualan","−"+rp(M.discount))+row("Penjualan setelah diskon",rp(M.revenue),"total")+row("Potongan platform","−"+rp(M.fee))+row("Pendapatan setelah platform",rp(M.net),"total")+row("Pajak dipotong dari penjualan","−"+rp(M.tax))+row("Uang diterima",rp(M.cash),"total")+
  row("Bahan baku","−"+rp(M.by["Bahan baku"]||0))+row("Kemasan & perlengkapan","−"+rp(M.by["Kemasan & perlengkapan"]||0))+
  row("Laba kotor ("+pct+"%)",rp(gk),"total")+other.map(c=>row(esc(c),"−"+rp(M.by[c]||0))).join("")+
  row("Laba bersih",rp(M.profit),"total "+(M.profit<0?"neg":"pos"))+'</section><p class="filter-note">Perhitungan mengikuti transaksi yang sudah tersimpan. Potongan platform dihitung terpisah dari belanja.</p>';
@@ -520,7 +526,7 @@ function savePrice(){const n=P.name.trim();if(!n||!P.price||!P.date)return alert
 function delPrice(){if(confirm('Hapus bahan ini?')){S.prices=S.prices.filter(x=>x.id!==P.id);save();shut();render()}}
 const TA='width:100%;height:200px;background:var(--card);color:var(--tx);border:1.5px solid var(--pl);border-radius:14px;padding:10px;font:12px monospace';
 function copyEl(id){const e=$('#'+id);e.select();const ok=()=>alert('Tersalin');try{navigator.clipboard.writeText(e.value).then(ok,()=>{try{document.execCommand('copy');ok()}catch(x){alert('Tahan teks lalu pilih Salin')}})}catch(x){try{document.execCommand('copy');ok()}catch(y){alert('Tahan teks lalu pilih Salin')}}}
-function openCsv(){const Q=String.fromCharCode(34),q=v=>Q+String(v==null?'':v).split(Q).join(Q+Q)+Q;const rows=[['Tanggal','Jenis','Produk/Kategori','Jumlah','Platform','Nominal kotor','Potongan platform','Pajak dipotong','Uang diterima','Keterangan'],...[...S.tx].sort((a,b)=>a.date.localeCompare(b.date)).map(t=>t.type==='sale'?[t.date,'Penjualan',t.name,t.qty,t.platform,t.qty*t.price,t.fee||0,t.tax||0,t.qty*t.price-(t.fee||0)-(t.tax||0),t.note||'']:[t.date,'Belanja',t.cat,'','',t.amount,'', '',t.amount,t.note||''])];
+function openCsv(){const Q=String.fromCharCode(34),q=v=>Q+String(v==null?'':v).split(Q).join(Q+Q)+Q;const rows=[['Tanggal','Jenis','Produk/Kategori','Jumlah','Platform','Nominal kotor','Diskon','Pajak','Potongan platform','Nilai setelah diskon','Pendapatan setelah platform','Uang diterima/dibayar','Keterangan'],...[...S.tx].sort((a,b)=>a.date.localeCompare(b.date)).map(t=>t.type==='sale'?[t.date,'Penjualan',t.name,t.qty,t.platform,saleGross(t),saleDiscount(t),t.tax||0,t.fee||0,saleRevenue(t),saleRevenue(t)-(t.fee||0),saleRevenue(t)-(t.fee||0)-(t.tax||0),t.note||'']:[t.date,'Belanja',t.cat,'','',t.gross!=null?t.gross:t.amount,t.discount||0,t.tax||0,0,Math.max(0,(Number(t.gross!=null?t.gross:t.amount)||0)-(Number(t.discount)||0)), '',t.amount,t.note||''])];
  open(hd('Ekspor CSV')+`<label>Semua transaksi (${S.tx.length})</label><textarea id='csv' readonly style='${TA}'></textarea><button class='btn full' style='margin-top:12px' data-i='csv' onclick='copyEl(this.dataset.i)'>Salin ke clipboard</button><div style='font-size:13px;opacity:.7;margin-top:10px'>Tempel ke Excel atau Google Sheets.</div>`);
  $('#csv').value=rows.map(r=>r.map(q).join(',')).join(String.fromCharCode(10))}
 function openBackup(){open(hd('Cadangkan')+`<label>Salin kode ini dan simpan di tempat aman</label><textarea id='bk' readonly style='${TA}'></textarea><button class='btn full' style='margin-top:12px' data-i='bk' onclick='copyEl(this.dataset.i)'>Salin kode cadangan</button><label style='margin-top:26px'>Pulihkan: tempel kode cadangan</label><textarea id='rs' style='${TA}'></textarea><button class='btn sec full' style='margin-top:12px' onclick='doRestore()'>Pulihkan data</button><div style='font-size:13px;opacity:.7;margin-top:10px'>Memulihkan mengganti semua data di perangkat ini.</div>`);$('#bk').value=JSON.stringify(S)}
