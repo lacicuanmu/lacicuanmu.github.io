@@ -1011,6 +1011,14 @@ const brandSplash=document.getElementById("brand-splash");
 if(brandSplash){setTimeout(()=>{brandSplash.classList.add("out");setTimeout(()=>brandSplash.remove(),650)},1750);}
 
 
+// Cache app shell so the installed PWA can open while offline.
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", function () {
+    navigator.serviceWorker.register("/sw.js", { updateViaCache: "none" })
+      .catch(function (error) { console.warn("Service worker registration failed:", error); });
+  });
+}
+
 // Browser bisa memulihkan halaman dari back-forward cache setelah bukti asli dibuka.
 // Render ulang agar Beranda membaca state terbaru saat pengguna kembali ke aplikasi.
 window.addEventListener("pageshow",function(event){
