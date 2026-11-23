@@ -816,11 +816,15 @@ window.archiveEvidence=async function(file,txId){
 };
 window.openEvidence=async function(evidence){
  if(!evidence||evidence.bucket!=="transaction-evidence"||!evidence.path)return alert("Referensi bukti tidak valid.");
+ // Buka tab kosong langsung dari klik pengguna agar tidak diblokir saat URL selesai diminta.
+ const proofTab=window.open("about:blank","_blank");
+ if(!proofTab)return alert("Browser memblokir tab bukti. Izinkan pop-up untuk Laci Cuanmu lalu coba lagi.");
+ proofTab.opener=null;
  try{await ensure();if(!ses)throw new Error("Silakan masuk ke akun terlebih dahulu.");
  const r=await fetch(U+"/storage/v1/object/sign/"+evidence.bucket+"/"+evidence.path,{method:"POST",headers:{apikey:K,Authorization:"Bearer "+ses.at,"Content-Type":"application/json"},body:JSON.stringify({expiresIn:300})});
  const j=await r.json();if(!r.ok)throw new Error(j.message||"Gagal membuka bukti.");const signed=j.signedURL||j.signedUrl;if(!signed)throw new Error("URL bukti tidak tersedia.");
- window.location.href=signed.startsWith("http")?signed:U+"/storage/v1"+signed
- }catch(e){alert("Bukti belum bisa dibuka: "+(e.message||"kesalahan koneksi"))}
+ proofTab.location.replace(signed.startsWith("http")?signed:U+"/storage/v1"+signed);
+ }catch(e){proofTab.close();alert("Bukti belum bisa dibuka: "+(e.message||"kesalahan koneksi"))}
 };
 window.cloudPush=function(){if(!ses)return;ls(DK,'1');stat('wait');clearTimeout(timer);timer=setTimeout(push2,1500)};
 window.cloudSync=syncNow;
