@@ -816,15 +816,30 @@ window.archiveEvidence=async function(file,txId){
 };
 window.openEvidence=async function(evidence){
  if(!evidence||evidence.bucket!=="transaction-evidence"||!evidence.path)return alert("Referensi bukti tidak valid.");
- // Buka tab kosong langsung dari klik pengguna agar tidak diblokir saat URL selesai diminta.
- const proofTab=window.open("about:blank","_blank");
- if(!proofTab)return alert("Browser memblokir tab bukti. Izinkan pop-up untuk Laci Cuanmu lalu coba lagi.");
- proofTab.opener=null;
- try{await ensure();if(!ses)throw new Error("Silakan masuk ke akun terlebih dahulu.");
- const r=await fetch(U+"/storage/v1/object/sign/"+evidence.bucket+"/"+evidence.path,{method:"POST",headers:{apikey:K,Authorization:"Bearer "+ses.at,"Content-Type":"application/json"},body:JSON.stringify({expiresIn:300})});
- const j=await r.json();if(!r.ok)throw new Error(j.message||"Gagal membuka bukti.");const signed=j.signedURL||j.signedUrl;if(!signed)throw new Error("URL bukti tidak tersedia.");
- proofTab.location.replace(signed.startsWith("http")?signed:U+"/storage/v1"+signed);
- }catch(e){proofTab.close();alert("Bukti belum bisa dibuka: "+(e.message||"kesalahan koneksi"))}
+ let viewer=document.getElementById("evidenceViewer");
+ if(viewer)viewer.remove();
+ viewer=document.createElement("div");viewer.id="evidenceViewer";
+ viewer.style.cssText="position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.88);display:flex;flex-direction:column;padding:12px;box-sizing:border-box";
+ viewer.innerHTML='<div style="display:flex;align-items:center;justify-content:space-between;color:white;padding:8px 2px 14px"><b>BUKTI TRANSAKSI</b><button id="closeEvidence" style="border:0;border-radius:10px;padding:10px 15px;font-size:15px">Tutup ✕</button></div><div id="evidenceContent" style="background:white;border-radius:12px;overflow:auto;flex:1;display:flex;align-items:center;justify-content:center;color:#333">Memuat bukti asli…</div>';
+ document.body.appendChild(viewer);
+ viewer.querySelector("#closeEvidence").onclick=()=>viewer.remove();
+ try{
+  await ensure();if(!ses)throw new Error("Silakan masuk ke akun terlebih dahulu.");
+  const r=await fetch(U+"/storage/v1/object/sign/"+evidence.bucket+"/"+evidence.path,{method:"POST",headers:{apikey:K,Authorization:"Bearer "+ses.at,"Content-Type":"application/json"},body:JSON.stringify({expiresIn:300})});
+  const j=await r.json();if(!r.ok)throw new Error(j.message||"Gagal membuka bukti.");
+  const signed=j.signedURL||j.signedUrl;if(!signed)throw new Error("URL bukti tidak tersedia.");
+  const url=signed.startsWith("http")?signed:U+"/storage/v1"+signed;
+  const content=viewer.querySelector("#evidenceContent");
+  const type=(evidence.mime||"").toLowerCase();
+  if(type.startsWith("image/")){
+   const img=document.createElement("img");img.src=url;img.alt="Bukti transaksi asli";img.style.cssText="max-width:100%;max-height:100%;object-fit:contain";content.appendChild(img);
+  }else{
+   const frame=document.createElement("iframe");frame.src=url;frame.title="Bukti transaksi asli";frame.style.cssText="width:100%;height:100%;min-height:70vh;border:0;background:white";content.appendChild(frame);
+  }
+ }catch(e){
+  const content=viewer.querySelector("#evidenceContent");
+  if(content)content.textContent="Bukti belum bisa dibuka: "+(e.message||"kesalahan koneksi");
+ }
 };
 window.cloudPush=function(){if(!ses)return;ls(DK,'1');stat('wait');clearTimeout(timer);timer=setTimeout(push2,1500)};
 window.cloudSync=syncNow;
