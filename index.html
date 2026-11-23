@@ -900,7 +900,7 @@ window.openEvidence=async function(evidence){
  if(viewer)viewer.remove();
  viewer=document.createElement("div");viewer.id="evidenceViewer";
  viewer.style.cssText="position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.88);display:flex;flex-direction:column;padding:12px;box-sizing:border-box";
- viewer.innerHTML='<div style="display:flex;align-items:center;justify-content:space-between;color:white;padding:8px 2px 14px"><b>BUKTI TRANSAKSI</b><button id="closeEvidence" style="border:0;border-radius:10px;padding:10px 15px;font-size:15px">Tutup ✕</button></div><div id="evidenceContent" style="background:white;border-radius:12px;overflow:auto;flex:1;display:flex;align-items:center;justify-content:center;color:#333">Memuat bukti asli…</div>';
+ viewer.innerHTML='<div style="display:flex;align-items:center;justify-content:space-between;color:white;padding:8px 2px 14px"><b>BUKTI TRANSAKSI</b><button id="closeEvidence" style="border:0;border-radius:10px;padding:10px 15px;font-size:15px">Tutup ✕</button></div><div id="evidenceContent" style="background:white;border-radius:12px;overflow:hidden;flex:1;min-width:0;min-height:0;display:flex;align-items:center;justify-content:center;color:#333">Memuat bukti asli…</div>';
  document.body.appendChild(viewer);
  viewer.querySelector("#closeEvidence").onclick=()=>viewer.remove();
  try{
@@ -912,7 +912,7 @@ window.openEvidence=async function(evidence){
   const content=viewer.querySelector("#evidenceContent");
   const type=(evidence.mime||"").toLowerCase();
   if(type.startsWith("image/")){
-   const img=document.createElement("img");img.src=url;img.alt="Bukti transaksi asli";img.style.cssText="max-width:100%;max-height:100%;object-fit:contain";content.appendChild(img);
+   const img=document.createElement("img");img.src=url;img.alt="Bukti transaksi asli";img.style.cssText="display:block;width:100%;height:100%;max-width:100%;max-height:100%;object-fit:contain;flex:0 1 auto";content.appendChild(img);
   }else{
    const frame=document.createElement("iframe");frame.src=url;frame.title="Bukti transaksi asli";frame.style.cssText="width:100%;height:100%;min-height:70vh;border:0;background:white";content.appendChild(frame);
   }
