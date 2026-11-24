@@ -971,7 +971,8 @@ window.cloudInit=function(){
  pill=document.createElement('button');pill.id='cl';pill.onclick=()=>ses?(ls(DK)==='1'?syncNow():showAcc()):showLogin();
  document.body.insertAdjacentElement('afterbegin',pill);
  lg=document.createElement('div');lg.id='lg';document.body.appendChild(lg);
- addEventListener('online',()=>{if(ses&&ls(DK)==='1')push2()});
+ addEventListener('offline',()=>{if(ses)stat('off')});
+ addEventListener('online',()=>{if(ses){stat('wait');if(ls(DK)==='1')push2();else syncNow()}});
  document.addEventListener('visibilitychange',()=>{if(!document.hidden&&ses)syncNow()});
  if(ses){stat('wait');syncNow()}else{stat('none');if(!ls(XK))showLogin()}
 };
