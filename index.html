@@ -323,7 +323,9 @@ const def={name:"Usaha Saya",hide:false,
  cats:["Bahan baku","Kemasan & perlengkapan","Operasional"],tx:[]};
 let S;try{S=JSON.parse(localStorage.getItem(KEY))||def}catch(e){S=def}
 norm();
-const save=()=>{localRevision++;try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}if(window.cloudPush)window.cloudPush()};
+let localSaveWarningShown=false;
+const persistLocal=()=>{try{localStorage.setItem(KEY,JSON.stringify(S));localSaveWarningShown=false;return true}catch(e){if(!localSaveWarningShown){localSaveWarningShown=true;alert('Peringatan: penyimpanan data di HP gagal. Perubahan mungkin belum aman di perangkat ini. Jika Anda sudah login dan internet tersedia, aplikasi akan mencoba menyimpan ke cloud. Pastikan status Tersinkron sebelum menutup aplikasi. Periksa ruang penyimpanan HP bila masalah berulang.')}return false}};
+const save=()=>{localRevision++;const ok=persistLocal();if(window.cloudPush)window.cloudPush();return ok};
 const $=s=>document.querySelector(s);
 const rp=n=>"Rp"+Math.round(n).toLocaleString("id-ID");
 const mask=n=>S.hide?"Rp ••••••":rp(n);
@@ -604,7 +606,7 @@ async function downloadXlsx(){try{const X=await loadXlsx(),rows=exportRows(),ws=
 function downloadCsv(){const rows=exportRows(),Q=String.fromCharCode(34),csv=rows.map(r=>r.map(v=>Q+exportCell(v).split(Q).join(Q+Q)+Q).join(';')).join('\r\n'),blob=new Blob(['\uFEFF',csv],{type:'text/csv;charset=utf-8;'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='laci-cuanmu-transaksi-'+today()+'.csv';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500)}
 function openCsv(){open(hd('Ekspor data transaksi')+'<label>Semua transaksi ('+S.tx.length+')</label><button class="btn full" style="margin-top:8px" onclick="copyExcel()">Salin untuk Excel (Android &amp; komputer)</button><button class="btn sec full" style="margin-top:10px" onclick="downloadCsv()">Unduh file CSV</button><button class="btn full" style="margin-top:10px" onclick="downloadXlsx()">Unduh Excel (.xlsx)</button><label>Pratinjau data CSV</label><textarea id="csv" readonly style="'+TA+'"></textarea><div style="font-size:13px;opacity:.7;margin-top:10px">Salin untuk Excel memakai pemisah tab agar data langsung terbagi ke kolom saat ditempel di sel A1. File CSV memakai pemisah titik koma (;) agar lebih cocok dengan pengaturan regional Excel Indonesia. File Excel (.xlsx) menyimpan data dalam kolom terpisah dan menyediakan lebar kolom yang lebih nyaman.</div>');$('#csv').value=exportRows().map(r=>r.map(v=>String(v==null?'':v)).join(',')).join(String.fromCharCode(10))}
 function openBackup(){open(hd('Cadangkan')+`<label>Salin kode ini dan simpan di tempat aman</label><textarea id='bk' readonly style='${TA}'></textarea><button class='btn full' style='margin-top:12px' data-i='bk' onclick='copyEl(this.dataset.i)'>Salin kode cadangan</button><label style='margin-top:26px'>Pulihkan: tempel kode cadangan</label><textarea id='rs' style='${TA}'></textarea><button class='btn sec full' style='margin-top:12px' onclick='doRestore()'>Pulihkan data</button><div style='font-size:13px;opacity:.7;margin-top:10px'>Memulihkan mengganti semua data di perangkat ini.</div>`);$('#bk').value=JSON.stringify(S)}
-function doRestore(){let d;try{d=JSON.parse($('#rs').value.trim())}catch(e){return alert('Kode tidak valid')}if(!d||!Array.isArray(d.tx)||!Array.isArray(d.products))return alert('Kode tidak valid');if(!confirm('Ganti semua data sekarang dengan cadangan ini?'))return;S=d;norm();save();shut();render();alert('Data berhasil dipulihkan')}
+function doRestore(){let d;try{d=JSON.parse($('#rs').value.trim())}catch(e){return alert('Kode tidak valid')}if(!d||!Array.isArray(d.tx)||!Array.isArray(d.products))return alert('Kode tidak valid');if(!confirm('Ganti semua data sekarang dengan cadangan ini?'))return;S=d;norm();const saved=save();shut();render();if(saved)alert('Data berhasil dipulihkan')}
 function setTheme(t){localStorage.setItem("lcm-theme",t);document.documentElement.dataset.theme=t==="auto"?"":t;const e=$("#th");if(e)e.querySelectorAll("button").forEach((b,i)=>b.classList.toggle("on",["auto","light","dark"][i]===t))}
 function initTheme(){const t=localStorage.getItem("lcm-theme")||"light";document.documentElement.dataset.theme=t==="auto"?"":t;const e=$("#th");if(e)e.querySelectorAll("button").forEach((b,i)=>b.classList.toggle("on",["auto","light","dark"][i]===t))}
 function addCat(){const n=prompt("Nama kategori baru");if(n&&n.trim()){S.cats.push(n.trim());save();render()}}
@@ -866,7 +868,7 @@ async function push(){
  ls(MK,JSON.stringify({uid:ses.uid,at}));
  if(localRevision===revision)ls(DK,null);else{ls(DK,'1');clearTimeout(timer);timer=setTimeout(push2,300)}
 }
-function take(row){S=row.data;if(typeof norm==='function')norm();try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}ls(MK,JSON.stringify({uid:ses.uid,at:row.updated_at}));ls(DK,null);render()}
+function take(row){S=row.data;if(typeof norm==='function')norm();persistLocal();ls(MK,JSON.stringify({uid:ses.uid,at:row.updated_at}));ls(DK,null);render()}
 async function syncNow(){
  if(!ses){showLogin();return}
  if(busy)return;busy=true;stat('wait');const revision=localRevision;
