@@ -529,7 +529,7 @@ label{font-size:11px;margin:12px 0 5px}input,select{min-height:43px;padding:9px 
 .seg{padding:4px;border-radius:12px}.seg button{min-height:39px;font-size:12px;border-radius:9px}.chip{min-height:34px;padding:7px 10px;font-size:11px;border-radius:11px}
 .page-tabs{gap:7px;padding:3px 0 9px}.page-tab{min-height:35px;padding:8px 12px;font-size:11px}
 .home-head.compact-home{align-items:center;margin:6px 1px 15px}.compact-home small{display:block;color:var(--mu);font-size:9px;font-weight:800;letter-spacing:.13em}.compact-home h1{font-size:26px;letter-spacing:-.9px;margin:2px 0}.compact-home span{font-size:9px;color:var(--mu)}.compact-home> b{padding:8px 10px;background:var(--pl);color:var(--pr);border-radius:10px;font-size:10px}
-.overview-v3{padding:16px 16px 13px;border-radius:18px;background:linear-gradient(135deg,#28533D,#193D2C);color:#fff;margin-bottom:17px}
+.overview-v3{padding:16px 16px 13px;border-radius:18px;background:linear-gradient(135deg,#28533D,#193D2C);color:#fff;margin-bottom:17px}.sync-status-slot{display:flex;justify-content:flex-end;align-items:center;min-height:25px;margin:-8px 1px 17px}.sync-status-slot #cl{margin:0}
 .overview-label{display:flex;justify-content:space-between;align-items:center;font-size:9px;font-weight:800;letter-spacing:.13em;color:rgba(255,255,255,.72)}
 .overview-label .reduceMotionToggle{width:3.1em}.overview-value{display:block;margin-top:12px;font-size:clamp(27px,7vw,34px);line-height:1.12;letter-spacing:-1px}
 .overview-v3>small{display:block;margin-top:4px;color:rgba(255,255,255,.68);font-size:9px}
@@ -655,7 +655,7 @@ function render(){
  applyRec();
  $("#nav").innerHTML=[["home","⌂","Beranda"],["list","▤","Riwayat"],["add","＋",""],["rep","▥","Laporan"],["mgr","⚙","Kelola"]]
  .map(([k,i,l])=>k==="add"?`<button class="plus nav-add" aria-label="Tambah transaksi" onclick="openAdd()">${i}</button>`:`<button class="nav-item ${tab===k?"on":""}" aria-label="${l}" onclick="tab='${k}';render()"><span class="nav-icon">${i}</span><small>${l}</small></button>`).join("");
- ({home,list,rep:report,mgr:manage})[tab]();window.scrollTo(0,0);
+ ({home,list,rep:report,mgr:manage})[tab]();if(window.placeSyncPill)window.placeSyncPill();window.scrollTo(0,0);
 }
 function home(){
  const m=today().slice(0,7),M=calc(inMonth(m)),T=calc(S.tx.filter(t=>t.date===today())),mi=+m.slice(5)-1,recent=newestFirst(S.tx).slice(0,4);
@@ -664,6 +664,7 @@ function home(){
  '<section class="overview-v3"><div class="overview-label">LABA BERSIH BULAN INI'+
  '<label type="checkbox" class="reduceMotionToggle st-reduceMotionToggleBtn" for="reduceMotionToggleVisibility" title="Tampilkan atau sembunyikan nominal"><input class="reduceMotionToggleInput" id="reduceMotionToggleVisibility" type="checkbox" role="switch" aria-label="Tampilkan nominal" '+(S.hide?"checked":"")+' onchange="S.hide=this.checked;save();render()"><svg stroke-width="0" stroke="currentColor" fill="currentColor" viewBox="0 0 18 18" height="18" width="18" aria-hidden="true"><mask id="lineMaskVisibility"><rect fill="white" height="18" width="18"></rect><rect fill="black" style="rotate:30deg" height="16" width="4.1" y="-5" x="9.807" class="line"></rect></mask><rect style="rotate:30deg" height="13" width="1.3" y="-3.3" x="11.3" class="line"></rect><g mask="url(#lineMaskVisibility)"><circle style="--_toCenterXOffset:5.76px;--_appearOffset:-.1s" fill="none" stroke-width=".1" r="2.95" cy="9" cx="3.24" class="ballTrace"></circle><circle style="--_toCenterXOffset:3px;--_appearOffset:.02s" fill="none" stroke-width=".2" r="2.9" cy="9" cx="6" class="ballTrace"></circle><circle style="--_toCenterXOffset:0px;--_appearOffset:.07s" fill="none" stroke-width=".3" r="2.8" cy="9" cx="9" class="ballTrace"></circle><circle style="--_toCenterXOffset:-2.75px;--_appearOffset:.13s" fill="none" stroke-width=".4" r="2.75" cy="9" cx="11.75" class="ballTrace"></circle><circle style="--_toCenterXOffset:-5.7px" r="3" cy="9" cx="14.7" class="ball"></circle></g></svg></label></div>'+
  '<strong class="overview-value">'+mask(M.profit)+'</strong><small>'+MONF[mi]+' '+m.slice(0,4)+' · '+M.porsi+' porsi tercatat</small><div class="overview-metrics"><div><small>Pendapatan bersih</small><b>'+mask(M.net)+'</b></div><div><small>Total belanja</small><b>'+mask(M.buy)+'</b></div><div><small>Penjualan</small><b>'+M.porsi+' <i>porsi</i></b></div></div></section>'+
+ '<div class="sync-status-slot" id="sync-status-slot"></div>'+
  '<section class="quick-v3"><div class="v3-heading"><b>Catat aktivitas</b><small>Akses cepat</small></div><div class="v3-actions"><button onclick="openAdd(\'sale\')"><i>↗</i><span><b>Penjualan</b><small>Tambah pemasukan</small></span><em>＋</em></button><button onclick="openAdd(\'buy\')"><i>↙</i><span><b>Belanja</b><small>Tambah pengeluaran</small></span><em>＋</em></button></div></section>'+
  '<section class="today-v3"><div class="v3-heading"><b>Hari ini</b><small>'+today().split("-").reverse().join("/")+'</small></div><div class="today-metrics"><div><small>Penjualan bersih</small><b>'+mask(T.net)+'</b></div><div><small>Belanja</small><b>'+mask(T.buy)+'</b></div><div><small>Laba</small><b>'+mask(T.profit)+'</b></div></div></section>'+
  '<section class="feed-v3"><div class="v3-heading"><b>Transaksi terbaru</b><button onclick="tab=\'list\';render()">Lihat semua →</button></div>'+recentHtml+'</section>';
@@ -1213,7 +1214,7 @@ window.cloudInit=function(){
  st.textContent='#cl{display:block;margin:0 0 8px auto;border:1px solid var(--pl,var(--ln,#ddd));background:var(--card,var(--sf,#fff));color:var(--tx);border-radius:999px;padding:5px 12px;font:12px system-ui,sans-serif;cursor:pointer}#lg{position:fixed;inset:0;z-index:50;background:var(--bg);display:none;align-items:center;justify-content:center;padding:24px}#lg.show{display:flex}#lg>div{width:100%;max-width:380px}#lg h2{margin:0 0 6px}#lg .e{color:#c0392b;font-size:13px;min-height:18px;margin:8px 0}';
  document.head.appendChild(st);
  pill=document.createElement('button');pill.id='cl';pill.onclick=()=>ses?(ls(DK)==='1'?syncNow():showAcc()):showLogin();
- document.body.insertAdjacentElement('afterbegin',pill);
+ window.placeSyncPill=()=>{const slot=document.getElementById('sync-status-slot');if(tab==='home'&&slot)slot.appendChild(pill);else document.body.insertAdjacentElement('afterbegin',pill)};window.placeSyncPill();
  lg=document.createElement('div');lg.id='lg';document.body.appendChild(lg);
  addEventListener('offline',()=>{if(ses)stat('off')});
  addEventListener('online',()=>{if(ses){stat('wait');if(ls(DK)==='1')push2();else syncNow()}});
