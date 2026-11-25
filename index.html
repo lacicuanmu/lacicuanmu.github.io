@@ -304,6 +304,139 @@ nav button{font-size:11px}
 @keyframes name-in{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:translateY(0)}}
 @media(prefers-reduced-motion:reduce){#brand-splash *,#brand-splash *:before{animation:none!important;transition:none!important}}
 
+
+/* Laci Cuanmu — visual refresh: warm editorial fintech */
+:root{
+ --bg:#F6F2E9;--card:#FFFCF5;--tx:#26372D;--mu:#788278;--pr:#234B37;
+ --sage:#78917C;--pl:#E4EBDD;--gold:#C69A55;--gold-soft:#F3E6C9;
+ --gr:#347A51;--rd:#B96552;--line:#E8E1D4;
+ --sh:0 10px 28px rgba(36,55,43,.075);--sh2:0 4px 13px rgba(36,55,43,.055);
+ color-scheme:light
+}
+:root[data-theme="dark"]{
+ --bg:#151D18;--card:#202B23;--tx:#F2F0E8;--mu:#A8B3A8;--pr:#A8C2AA;
+ --sage:#A8C2AA;--pl:#2D3C31;--gold:#D7B978;--gold-soft:#49402D;
+ --gr:#83C99A;--rd:#F08C7C;--line:#39483D;
+ --sh:0 10px 28px rgba(0,0,0,.2);--sh2:0 4px 13px rgba(0,0,0,.15);color-scheme:dark
+}
+body{max-width:560px;padding:20px 16px calc(118px + env(safe-area-inset-bottom,0px));background:var(--bg)}
+h1,h2,.page-title,.home-brand{letter-spacing:-.85px}
+.card,.panel,.metric-card,.home-recent,.panel-flat{border-color:var(--line);box-shadow:var(--sh)}
+.card,.panel{border-radius:25px;padding:19px}
+.page-head{align-items:center;margin:8px 2px 21px}
+.page-kicker{font-size:11px;letter-spacing:.14em;color:var(--sage)}
+.page-title{font-size:34px;line-height:1.12}
+.page-subtitle{font-size:13px;max-width:31ch}
+.page-pill,.home-month{border:0;background:var(--pl);color:var(--pr);font-size:11px}
+.section-title,.home-section-head{margin:25px 2px 13px}
+.section-title h2,.home-section-head h2{font-size:18px}
+.section-title small,.home-section-head small{font-size:11px}
+.home-head{align-items:center;margin:5px 2px 20px}
+.home-greet{font-size:13px;color:var(--mu)}
+.home-brand{font-size:31px;letter-spacing:-1.1px}
+.home-month{padding:9px 12px}
+.home-hero,.report-hero,.hero{
+ background:linear-gradient(145deg,#315B43 0%,#234B37 62%,#193B2B 100%);
+ border-radius:28px;box-shadow:0 17px 34px rgba(28,67,45,.19)
+}
+.home-hero{padding:23px 21px 20px;margin-bottom:17px}
+.home-hero:before{top:-110px;right:-85px;width:220px;height:220px;border-color:rgba(255,255,255,.13)}
+.home-eyebrow{font-size:10px;letter-spacing:.16em}
+.home-month-name{font-size:14px}
+.home-hero-main{padding:21px 0 18px}
+.home-hero-label{font-size:14px}
+.home-amount{font-size:clamp(34px,8.5vw,43px)}
+.home-hero-note,.home-hero-metric span{font-size:12px}
+.home-hero-metric b{font-size:18px}
+.home-actions{gap:10px}
+.home-action{min-height:94px;padding:14px 12px;border-radius:21px;gap:10px}
+.home-action-icon{width:43px;height:43px;flex-basis:43px;border-radius:15px}
+.home-action strong{font-size:13px}
+.home-action small{font-size:11px}
+.home-today-grid{gap:10px}
+.home-today-card{padding:14px;border-radius:20px}
+.home-today-top{font-size:12px}
+.home-today-icon{width:32px;height:32px}
+.home-today-card b{font-size:20px}
+.home-recent{border-radius:22px;padding:5px 16px}
+.home-recent .li{padding:14px 0}
+.home-recent-name{font-size:13px}
+.home-recent-meta{font-size:11px}
+.home-recent-amount{font-size:13px}
+.metric-card{padding:15px;border-radius:21px}
+.metric-label{font-size:11px;gap:7px}
+.metric-icon{width:32px;height:32px;flex-basis:32px;border-radius:12px}
+.metric-value{font-size:19px}
+.page-tabs{gap:7px;padding:2px 1px 13px}
+.page-tab{min-height:40px;padding:9px 15px;border:0;background:var(--pl);font-size:12px}
+.page-tab.active{background:var(--pr);color:#fff}
+.panel-flat{padding:5px 15px;border-radius:22px}
+.tx-row{gap:10px;padding:14px 0}
+.tx-symbol{width:42px;height:42px;flex-basis:42px;border-radius:14px;font-size:18px}
+.tx-title{font-size:13px}
+.tx-meta{font-size:11px}
+.tx-amount{font-size:13px}
+.tx-side .btn.del{font-size:10px}
+.report-hero{padding:22px 20px}
+.report-hero .eyebrow{font-size:10px;letter-spacing:.13em}
+.report-hero .value{font-size:34px}
+.report-hero .hint,.report-hero .mini span{font-size:11px}
+.report-hero .mini b{font-size:17px}
+.report-chart{height:155px}
+.breakdown-row{font-size:12px;padding:13px 2px}
+.breakdown-row.total{font-size:14px}
+.manage-group{margin:23px 2px 10px;font-size:10px;letter-spacing:.14em}
+.manage-item{gap:11px;padding:13px 0}
+.manage-icon{width:42px;height:42px;flex-basis:42px;border-radius:14px;font-size:19px}
+.manage-copy b{font-size:13px}
+.manage-copy small{font-size:11px}
+.manage-item .btn{min-height:38px;padding:8px 12px;font-size:11px}
+.settings-theme{border-radius:14px}
+.settings-theme button{font-size:11px}
+input,select{border-radius:15px;background:var(--card)}
+label{font-size:12px}
+.btn{border-radius:15px;background:var(--pr)}
+.btn.sec{background:var(--pl);color:var(--pr)}
+.seg{border-radius:16px;background:var(--pl)}
+.seg button{font-size:13px}
+.seg button.on{background:var(--card);color:var(--pr)}
+.sheet>div{border-radius:28px 28px 0 0;background:var(--bg)}
+.sheet .btn.full{background:var(--pr)}
+nav{
+ right:0;bottom:calc(13px + env(safe-area-inset-bottom,0px));left:0;
+ width:min(430px,calc(100% - 30px));min-height:70px;
+ justify-content:space-around;gap:3px;padding:7px 9px;
+ border:1px solid rgba(220,225,213,.9);border-radius:25px;
+ background:color-mix(in srgb,var(--card) 91%,transparent);
+ box-shadow:0 12px 32px rgba(28,53,37,.2),0 2px 7px rgba(28,53,37,.07);
+ backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px)
+}
+nav .nav-item{
+ display:flex;min-width:0;flex:1;min-height:52px;
+ align-items:center;justify-content:center;gap:2px;
+ padding:5px 3px;border-radius:16px;background:transparent;
+ color:var(--mu);font-size:10px;font-weight:700
+}
+nav .nav-item .nav-icon{font-size:21px;line-height:1.1}
+nav .nav-item small{font-size:9px;line-height:1.2}
+nav .nav-item.on{background:var(--pl);color:var(--pr)}
+nav .nav-add{
+ width:54px;height:54px;min-width:54px;flex:0 0 54px;
+ margin:0 3px;border:3px solid var(--card);border-radius:19px;
+ background:var(--pr);color:#fff;font-size:30px;font-weight:400;
+ box-shadow:0 7px 17px rgba(30,74,49,.28);transform:translateY(-8px)
+}
+nav .nav-add:active{transform:translateY(-6px) scale(.97)}
+@media(max-width:380px){
+ body{padding-right:13px;padding-left:13px}
+ nav{width:calc(100% - 22px);padding:6px}
+ nav .nav-item .nav-icon{font-size:19px}
+ nav .nav-add{width:50px;height:50px;min-width:50px;flex-basis:50px}
+ .home-action{padding:12px 10px;gap:8px}
+ .home-action-icon{width:38px;height:38px;flex-basis:38px}
+}
+@media(prefers-reduced-motion:reduce){nav *,nav *:before{transition:none!important}}
+
 </style>
 </head>
 <body>
@@ -376,8 +509,8 @@ function newestFirst(list){return list.map((t,i)=>({t,i})).sort((a,b)=>b.t.date.
 function render(){
  document.documentElement.dataset.page=tab;
  applyRec();
- $("#nav").innerHTML=[["home","🏠","Beranda"],["list","🧾","Riwayat"],["add","＋",""],["rep","📊","Laporan"],["mgr","⚙️","Kelola"]]
- .map(([k,i,l])=>k==="add"?`<button class="plus" onclick="openAdd()">${i}</button>`:`<button class="${tab===k?"on":""}" onclick="tab='${k}';render()"><span>${i}</span>${l}</button>`).join("");
+ $("#nav").innerHTML=[["home","⌂","Beranda"],["list","▤","Riwayat"],["add","＋",""],["rep","▥","Laporan"],["mgr","⚙","Kelola"]]
+ .map(([k,i,l])=>k==="add"?`<button class="plus nav-add" aria-label="Tambah transaksi" onclick="openAdd()">${i}</button>`:`<button class="nav-item ${tab===k?"on":""}" aria-label="${l}" onclick="tab='${k}';render()"><span class="nav-icon">${i}</span><small>${l}</small></button>`).join("");
  ({home,list,rep:report,mgr:manage})[tab]();window.scrollTo(0,0);
 }
 function home(){
