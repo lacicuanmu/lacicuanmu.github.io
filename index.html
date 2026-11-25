@@ -121,6 +121,20 @@ label{display:block;margin:17px 0 8px;color:var(--mu);font-size:14px;font-weight
 .home-eyebrow{color:rgba(255,255,255,.72);font-size:13px;font-weight:800;letter-spacing:.13em;text-transform:uppercase}
 .home-month-name{margin-top:5px;color:rgba(255,255,255,.92);font-size:17px;font-weight:700}
 .home-hero .eye{width:48px;height:48px;border:1px solid rgba(255,255,255,.22);border-radius:16px;background:rgba(255,255,255,.15);color:white;font-size:21px}
+.home-visibility-toggle{position:relative;display:inline-flex;width:88px;height:43px;flex:0 0 88px;align-items:center;justify-content:center;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.home-visibility-toggle .toggle-input{position:absolute;inset:0;z-index:2;width:100%;height:100%;min-height:0;margin:0;padding:0;opacity:0;cursor:pointer}
+.home-visibility-toggle .toggle{display:block;width:100%;height:100%;overflow:visible;pointer-events:none}
+.home-visibility-toggle .toggle-background{fill:rgba(255,255,255,.19);transition:fill .3s ease}
+.home-visibility-toggle .toggle-icon{fill:#fff;transition:opacity .25s ease,transform .35s ease}
+.home-visibility-toggle .toggle-icon.on{opacity:0;transform:translateX(5px)}
+.home-visibility-toggle .toggle-icon.off{opacity:1}
+.home-visibility-toggle .toggle-circle-center,.home-visibility-toggle .toggle-circle{fill:#fff;transition:transform .4s cubic-bezier(.2,.8,.2,1)}
+.home-visibility-toggle:focus-within{outline:3px solid rgba(255,255,255,.55);outline-offset:4px;border-radius:18px}
+.home-visibility-toggle .toggle-input:checked+.toggle .toggle-background{fill:rgba(255,255,255,.34)}
+.home-visibility-toggle .toggle-input:checked+.toggle .toggle-icon.on{opacity:1;transform:translateX(0)}
+.home-visibility-toggle .toggle-input:checked+.toggle .toggle-icon.off{opacity:0}
+.home-visibility-toggle:active .toggle{transform:scale(.97)}
+
 .home-hero-main{padding:25px 0 20px}.home-hero-label{color:rgba(255,255,255,.76);font-size:17px;font-weight:650}
 .home-amount{margin:7px 0;font-size:clamp(37px,9vw,46px);line-height:1.12;font-weight:800;letter-spacing:-2px;overflow-wrap:anywhere}
 .home-hero-note{color:rgba(255,255,255,.73);font-size:15px}
@@ -379,7 +393,23 @@ function home(){
  </header>
  <section class="home-hero">
   <div class="home-hero-top"><div><div class="home-eyebrow">Ringkasan bulanan</div><div class="home-month-name">${MONF[mi]} ${m.slice(0,4)}</div></div>
-   <button class="eye" aria-label="Sembunyikan atau tampilkan nominal" onclick="S.hide=!S.hide;save();render()">${S.hide?"🙈":"👀"}</button>
+   <label class="home-visibility-toggle" title="Tampilkan atau sembunyikan nominal">
+    <input type="checkbox" class="toggle-input" role="switch" aria-label="Tampilkan nominal" ${!S.hide?"checked":""} onchange="S.hide=!this.checked;save();render()">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 292 142" class="toggle" aria-hidden="true">
+      <path d="M71 142C31.7878 142 0 110.212 0 71C0 31.7878 31.7878 0 71 0C110 0 119 30 146 30C173 30 182 0 221 0C260 0 292 31.7878 292 71C292 110.212 260.212 142 221 142C181.788 142 173 112 146 112C119 112 110.212 142 71 142Z" class="toggle-background"></path>
+      <rect rx="6" height="64" width="12" y="39" x="64" class="toggle-icon on"></rect>
+      <path d="M221 91C232.046 91 241 82.0457 241 71C241 59.9543 232.046 51 221 51C209.954 51 201 59.9543 201 71C201 82.0457 209.954 91 221 91ZM221 103C238.673 103 253 88.6731 253 71C253 53.3269 238.673 39 221 39C203.327 39 189 53.3269 189 71C189 88.6731 203.327 103 221 103Z" fill-rule="evenodd" class="toggle-icon off"></path>
+      <g filter="url('#goo')">
+        <rect fill="#fff" rx="29" height="58" width="116" y="42" x="13" class="toggle-circle-center"></rect>
+        <rect fill="#fff" rx="58" height="114" width="114" y="14" x="14" class="toggle-circle left"></rect>
+        <rect fill="#fff" rx="58" height="114" width="114" y="14" x="164" class="toggle-circle right"></rect>
+      </g>
+      <filter id="goo">
+        <feGaussianBlur stdDeviation="10" result="blur" in="SourceGraphic"></feGaussianBlur>
+        <feColorMatrix result="goo" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" mode="matrix" in="blur"></feColorMatrix>
+      </filter>
+    </svg>
+  </label>
   </div>
   <div class="home-hero-main"><div class="home-hero-label">Estimasi laba bersih</div><div class="home-amount">${mask(M.profit)}</div><div class="home-hero-note">${M.porsi?M.porsi+" porsi tercatat bulan ini":"Belum ada penjualan bulan ini"}</div></div>
   <div class="home-hero-bottom">
