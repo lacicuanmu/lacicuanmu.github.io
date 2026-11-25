@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Laci Cuanmu</title>
-<meta name="theme-color" content="#61786A">
+<meta name="theme-color" content="#234B37">
 <link rel="manifest" href="manifest.json?v=5">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -436,6 +436,52 @@ nav .nav-add:active{transform:translateY(-6px) scale(.97)}
  .home-action-icon{width:38px;height:38px;flex-basis:38px}
 }
 @media(prefers-reduced-motion:reduce){nav *,nav *:before{transition:none!important}}
+
+
+/* Visual correction v2 — apply one consistent palette across every section */
+html,body{background:#F6F2E9}
+:root:not([data-theme="dark"])[data-page="home"],
+:root:not([data-theme="dark"])[data-page="list"],
+:root:not([data-theme="dark"])[data-page="rep"],
+:root:not([data-theme="dark"])[data-page="mgr"]{
+ --bg:#F6F2E9;--card:#FFFCF5;--tx:#26372D;--mu:#788278;
+ --pr:#234B37;--sage:#78917C;--pl:#E4EBDD;
+ --gold:#C69A55;--gold-soft:#F3E6C9;--gr:#347A51;--rd:#B96552;--line:#E8E1D4;
+ --sh:0 10px 28px rgba(36,55,43,.075);--sh2:0 4px 13px rgba(36,55,43,.055)
+}
+:root[data-theme="dark"]{--bg:#151D18;--card:#202B23;--tx:#F2F0E8;--mu:#A8B3A8;--pr:#A8C2AA;--sage:#A8C2AA;--pl:#2D3C31;--gold:#D7B978;--gold-soft:#49402D;--gr:#83C99A;--rd:#F08C7C;--line:#39483D}
+html,body{background:var(--bg);color:var(--tx)}
+.home-hero,.report-hero,.hero{
+ background:linear-gradient(145deg,#315B43 0%,#234B37 62%,#193B2B 100%);
+ color:#fff;border-radius:28px;box-shadow:0 17px 34px rgba(28,67,45,.19)
+}
+.home-hero{padding:25px 22px 21px}
+.home-action{border-color:var(--line);background:var(--card);color:var(--tx);box-shadow:var(--sh2)}
+.home-action.primary{border-color:#234B37;background:#234B37;color:#fff}
+.home-action-icon{background:#E4EBDD;color:#234B37}
+.home-action.primary .home-action-icon{background:rgba(255,255,255,.16);color:#fff}
+.home-today-card,.metric-card,.panel,.panel-flat,.home-recent{background:var(--card);border-color:var(--line);box-shadow:var(--sh2)}
+.page-pill,.home-month{background:var(--pl);border-color:transparent;color:var(--pr)}
+.page-tab{background:var(--card);border-color:var(--line);color:var(--mu)}
+.page-tab.active{background:var(--pr);border-color:var(--pr);color:#fff}
+.tx-symbol,.metric-icon,.manage-icon{background:var(--pl);color:var(--pr)}
+.btn{background:var(--pr);color:#fff}
+.btn.sec{background:var(--pl);color:var(--pr)}
+:root[data-page="rep"]:not([data-theme="dark"]) .report-hero{
+ background:linear-gradient(145deg,#315B43 0%,#234B37 62%,#193B2B 100%);
+ color:#fff;box-shadow:0 17px 34px rgba(28,67,45,.19)
+}
+:root[data-page="rep"]:not([data-theme="dark"]) .report-hero .eyebrow,
+:root[data-page="rep"]:not([data-theme="dark"]) .report-hero .hint,
+:root[data-page="rep"]:not([data-theme="dark"]) .report-hero .mini span{color:rgba(255,255,255,.75)}
+:root[data-page="rep"]:not([data-theme="dark"]) .report-hero .mini{border-top-color:rgba(255,255,255,.2)}
+:root[data-page="mgr"]:not([data-theme="dark"]) .manage-group{color:var(--mu)}
+:root[data-page="mgr"]:not([data-theme="dark"]) .manage-icon{background:var(--pl);color:var(--pr)}
+nav{align-items:center;min-height:78px;padding:8px 10px}
+nav .nav-item,nav .nav-add{align-self:center}
+nav .nav-add{position:relative;top:-7px;margin-top:0;margin-bottom:0;transform:none}
+nav .nav-add:active{transform:scale(.97)}
+@media(max-width:380px){nav{min-height:74px}nav .nav-add{top:-7px}}
 
 </style>
 </head>
