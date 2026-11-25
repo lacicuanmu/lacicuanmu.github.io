@@ -398,7 +398,7 @@ function home(){
  <section class="home-hero">
   <div class="home-hero-top"><div><div class="home-eyebrow">Ringkasan bulanan</div><div class="home-month-name">${MONF[mi]} ${m.slice(0,4)}</div></div>
    <label type="checkbox" class="reduceMotionToggle st-reduceMotionToggleBtn" for="reduceMotionToggleVisibility" title="Tampilkan atau sembunyikan nominal">
-    <input class="reduceMotionToggleInput" id="reduceMotionToggleVisibility" type="checkbox" role="switch" aria-label="Tampilkan nominal" ${!S.hide?"checked":""} onchange="S.hide=!this.checked;save();render()">
+    <input class="reduceMotionToggleInput" id="reduceMotionToggleVisibility" type="checkbox" role="switch" aria-label="Tampilkan nominal" ${S.hide?"checked":""} onchange="S.hide=this.checked;save();render()">
     <svg stroke-width="0" stroke="currentColor" fill="currentColor" viewBox="0 0 18 18" height="18" width="18" aria-hidden="true">
       <mask id="lineMaskVisibility">
         <rect fill="white" height="18" width="18"></rect>
