@@ -1,4 +1,4 @@
-const CACHE_NAME = "laci-cuanmu-shell-v1";
+const CACHE_NAME = "laci-cuanmu-shell-v2";
 const CORE_FILES = [
   "/",
   "/index.html",
