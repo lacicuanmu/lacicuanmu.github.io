@@ -519,6 +519,68 @@ nav .nav-add:active{transform:scale(.97)}
 .sheet>div{background:var(--bg);border-radius:28px 28px 0 0}.sheet h2{font-size:22px;letter-spacing:-.5px}.sheet label{display:block;margin:16px 0 7px;font-size:11px;font-weight:800;color:var(--tx)}.sheet input,.sheet select,.sheet textarea{width:100%;min-height:47px;padding:12px 13px;border:1px solid var(--line);border-radius:14px;background:var(--card);color:var(--tx);font:inherit}.sheet .chips{display:flex;flex-wrap:wrap;gap:7px}.sheet .chip{border-radius:13px;background:var(--card);border:1px solid var(--line);color:var(--mu);font-size:11px}.sheet .chip.on{background:var(--pl);border-color:var(--sage);color:var(--pr)}.sheet .seg{padding:4px;border-radius:15px;background:var(--pl)}.sheet .seg button{border-radius:12px}.sheet .seg button.on{background:var(--pr);color:#fff}.sheet .btn.full{min-height:49px;border-radius:15px;background:var(--pr);color:#fff;font-weight:800}.sheet .btn.sec.full{background:var(--pl);color:var(--pr);border:1px solid var(--line)}
 .sheet .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.sheet .grid .btn{min-height:58px;padding:12px 9px;white-space:normal;line-height:1.3;text-align:center}.sheet .grid .btn.sec{background:var(--pl);color:var(--pr);border:1px solid var(--line)}
 @media(max-width:380px){.home-brand{font-size:29px}.home-hero{padding:21px 17px}.home-action{padding:12px 9px;gap:8px}.home-action-icon{width:36px;height:36px;flex-basis:36px}.home-action strong{font-size:11px}.metric-value{font-size:15px}.page-title{font-size:32px}}
+
+/* Compact editorial fintech redesign */
+body{font-size:13px;line-height:1.48;padding:16px 16px calc(112px + env(safe-area-inset-bottom,0px))}
+h1{font-size:28px;letter-spacing:-.8px}h2{font-size:17px}small{font-size:10px}
+.page-head{margin:7px 1px 17px;align-items:flex-end}.page-kicker{font-size:10px;letter-spacing:.14em;margin-bottom:5px}.page-title{font-size:29px;line-height:1.1}.page-subtitle{font-size:12px;margin-top:5px}.page-pill{font-size:10px;padding:8px 11px}
+.btn{min-height:39px;padding:9px 12px;font-size:12px;border-radius:11px}.card,.panel{padding:14px;border-radius:17px;margin-bottom:11px}
+label{font-size:11px;margin:12px 0 5px}input,select{min-height:43px;padding:9px 11px;font-size:13px;border-radius:11px}
+.seg{padding:4px;border-radius:12px}.seg button{min-height:39px;font-size:12px;border-radius:9px}.chip{min-height:34px;padding:7px 10px;font-size:11px;border-radius:11px}
+.page-tabs{gap:7px;padding:3px 0 9px}.page-tab{min-height:35px;padding:8px 12px;font-size:11px}
+.home-head.compact-home{align-items:center;margin:6px 1px 15px}.compact-home small{display:block;color:var(--mu);font-size:9px;font-weight:800;letter-spacing:.13em}.compact-home h1{font-size:26px;letter-spacing:-.9px;margin:2px 0}.compact-home span{font-size:9px;color:var(--mu)}.compact-home> b{padding:8px 10px;background:var(--pl);color:var(--pr);border-radius:10px;font-size:10px}
+.overview-v3{padding:16px 16px 13px;border-radius:18px;background:linear-gradient(135deg,#28533D,#193D2C);color:#fff;margin-bottom:17px}
+.overview-label{display:flex;justify-content:space-between;align-items:center;font-size:9px;font-weight:800;letter-spacing:.13em;color:rgba(255,255,255,.72)}
+.overview-label .reduceMotionToggle{width:3.1em}.overview-value{display:block;margin-top:12px;font-size:clamp(27px,7vw,34px);line-height:1.12;letter-spacing:-1px}
+.overview-v3>small{display:block;margin-top:4px;color:rgba(255,255,255,.68);font-size:9px}
+.overview-metrics{display:grid;grid-template-columns:1fr 1fr .7fr;gap:8px;margin-top:13px;padding-top:11px;border-top:1px solid rgba(255,255,255,.2)}
+.overview-metrics>div{min-width:0}.overview-metrics small{display:block;color:rgba(255,255,255,.68);font-size:8px}.overview-metrics b{display:block;margin-top:4px;font-size:12px;overflow-wrap:anywhere}.overview-metrics i{font-size:8px;font-style:normal;font-weight:500}
+.v3-heading{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 1px 8px}.v3-heading>b{font-size:14px}.v3-heading>small{font-size:9px;color:var(--mu)}.v3-heading button{border:0;background:none;color:var(--pr);font:700 10px inherit}
+.quick-v3,.today-v3,.feed-v3{margin:0 1px 17px}.v3-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.v3-actions>button{display:flex;align-items:center;gap:8px;min-width:0;padding:9px;border:1px solid var(--line);border-radius:13px;background:var(--card);color:var(--tx);text-align:left}
+.v3-actions>button>i{display:grid;width:30px;height:30px;flex:0 0 30px;place-items:center;border-radius:9px;background:var(--pl);color:var(--pr);font-size:14px;font-style:normal}
+.v3-actions>button>span{min-width:0;flex:1}.v3-actions b{display:block;font-size:11px}.v3-actions small{display:block;color:var(--mu);font-size:9px;line-height:1.3}.v3-actions em{font-style:normal;color:var(--sage);font-size:13px}
+.today-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));padding:9px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.today-metrics>div{min-width:0;padding:0 7px;border-right:1px solid var(--line)}.today-metrics>div:first-child{padding-left:0}.today-metrics>div:last-child{border:0}
+.today-metrics small{display:block;color:var(--mu);font-size:8px}.today-metrics b{display:block;margin-top:4px;font-size:11px;overflow-wrap:anywhere}
+.feed-row{display:flex;align-items:center;gap:9px;padding:10px 0;border-top:1px solid var(--line)}.feed-row>i,.history-line>i{display:grid;width:31px;height:31px;flex:0 0 31px;place-items:center;border-radius:9px;background:var(--pl);color:var(--pr);font-style:normal;font-size:14px}
+.feed-row>i.buy,.history-line>i.buy{background:#F1E8D9;color:#927449}.feed-row>span{min-width:0;flex:1}.feed-row b{display:block;font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.feed-row small{display:block;color:var(--mu);font-size:9px;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.feed-row strong{font-size:11px;white-space:nowrap}
+.history-totals{display:flex;align-items:center;gap:13px;padding:11px 0;border-block:1px solid var(--line)}.history-totals>div{min-width:0;flex:1}.history-totals small{display:block;color:var(--mu);font-size:9px}.history-totals b{display:block;font-size:14px;margin-top:3px;overflow-wrap:anywhere}.history-totals>i{height:32px;border-left:1px solid var(--line)}
+.history-heading{margin-top:17px}.history-stream{border-top:1px solid var(--line)}.history-day{padding:12px 0 5px;color:var(--mu);font-size:9px;font-weight:800}
+.history-line{display:flex;align-items:center;gap:8px;padding:10px 0;border-bottom:1px solid var(--line)}.history-line>i{width:33px;height:33px;flex-basis:33px}
+.history-info{min-width:0;flex:1}.history-info>b{display:block;font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.history-info>small{display:block;margin-top:2px;color:var(--mu);font-size:9px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.history-info>div{display:flex;gap:9px;margin-top:4px}.history-info button,.history-line aside button{padding:0;border:0;background:none;color:var(--sage);font:600 9px "Plus Jakarta Sans",sans-serif}
+.history-line aside{text-align:right;flex:0 0 auto}.history-line aside>b{display:block;font-size:11px;white-space:nowrap}.history-line aside button{margin-top:4px;color:var(--mu)}
+.period-line{display:flex;align-items:center;justify-content:space-between;padding:8px 0;margin-bottom:14px;border-block:1px solid var(--line)}
+.period-line button{width:32px;height:32px;border:0;border-radius:9px;background:var(--pl);color:var(--pr);font-size:19px}.period-line>div{text-align:center}.period-line small{display:block;color:var(--mu);font-size:8px;letter-spacing:.12em}.period-line b{display:block;font-size:12px;margin-top:3px}
+.report-overview{padding:16px;border-radius:18px;background:linear-gradient(135deg,#28533D,#193D2C);color:#fff}.report-overview>small{font-size:9px;letter-spacing:.12em;color:rgba(255,255,255,.7);font-weight:800}
+.report-overview>strong{display:block;margin:8px 0 3px;font-size:clamp(27px,7vw,34px);letter-spacing:-1px}.report-overview>span{font-size:9px;color:rgba(255,255,255,.7)}
+.report-overview>div{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px;padding-top:10px;border-top:1px solid rgba(255,255,255,.2)}
+.report-overview p{margin:0}.report-overview p small{display:block;color:rgba(255,255,255,.68);font-size:9px}.report-overview p b{display:block;margin-top:3px;font-size:13px}
+.report-facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin:12px 0 17px;padding:10px 0;border-block:1px solid var(--line)}
+.report-facts>div{min-width:0;padding:0 7px;border-right:1px solid var(--line)}.report-facts>div:first-child{padding-left:0}.report-facts>div:last-child{border:0}
+.report-facts small{display:block;color:var(--mu);font-size:8px}.report-facts b{display:block;margin-top:4px;font-size:10px;overflow-wrap:anywhere}
+.chart-v3{padding:9px 11px;border:1px solid var(--line);border-radius:14px;background:var(--card)}.chart-v3 .report-chart{height:125px}.chart-v3 .report-chart>div{font-size:9px}.chart-v3 .report-legend{font-size:9px;margin-top:9px}
+.statement-v3{padding:0 11px;border:1px solid var(--line);border-radius:14px;background:var(--card)}
+.statement-line{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid var(--line);font-size:10px}
+.statement-line b{font-size:10px;white-space:nowrap}.statement-line.subtotal{font-weight:800;background:color-mix(in srgb,var(--pl) 35%,transparent)}.statement-line.final{padding:12px 0;font-size:12px;font-weight:850}.statement-line:last-child{border:0}
+.manage-label{margin:19px 1px 7px;font-size:9px;font-weight:850;letter-spacing:.13em;color:var(--sage)}
+.identity-row{display:flex;align-items:center;justify-content:space-between;padding:11px 13px;border-radius:12px;background:var(--pl);margin-bottom:14px}
+.identity-row small{display:block;color:var(--mu);font-size:8px;letter-spacing:.12em}.identity-row b{display:block;margin-top:3px;font-size:12px}.identity-row button{border:0;background:none;color:var(--pr);font:700 10px "Plus Jakarta Sans",sans-serif}
+.manage-block{padding:0 11px;margin-bottom:9px;border:1px solid var(--line);border-radius:14px;background:var(--card)}
+.manage-row{display:flex;align-items:center;gap:9px;padding:10px 0;border-bottom:1px solid var(--line)}.manage-row:last-child{border-bottom:0}
+.manage-row>i{display:grid;width:30px;height:30px;flex:0 0 30px;place-items:center;border-radius:9px;background:var(--pl);color:var(--pr);font-style:normal;font-size:14px}
+.manage-row>span{min-width:0;flex:1}.manage-row b{display:block;font-size:11px}.manage-row small{display:block;color:var(--mu);font-size:9px;margin-top:2px}
+.manage-row .btn{min-height:30px;padding:6px 9px;font-size:9px}.manage-separator{height:1px;background:var(--line);margin:2px 0}
+.settings-theme{display:flex;gap:5px;padding:4px;background:var(--pl);border-radius:11px;margin:8px 0}
+.settings-theme button{flex:1;padding:8px 5px;border:0;border-radius:8px;background:transparent;color:var(--mu);font-size:10px;font-weight:750}.settings-theme button.on{background:var(--card);color:var(--pr)}
+#sheet>div{border-radius:21px 21px 0 0}#sheetBody{padding:15px 15px calc(20px + env(safe-area-inset-bottom,0px))}
+#sheetBody h2{font-size:18px!important}#sheetBody label{font-size:11px;margin:11px 0 5px}
+#sheetBody input,#sheetBody select{min-height:42px;font-size:13px;border-radius:10px}#sheetBody .chip{min-height:33px;padding:7px 9px;font-size:11px}
+#sheetBody .seg button{min-height:38px;font-size:12px}#sheetBody .card{padding:10px;border-radius:12px}
+#sheetBody .btn.full{min-height:43px;font-size:12px}#sheetBody .filter-note{font-size:10px;line-height:1.5}
+@media(max-width:380px){.compact-home h1{font-size:23px}.overview-value{font-size:26px}.overview-metrics b{font-size:10px}.history-line aside>b{font-size:10px}}
+
 </style>
 </head>
 <body>
@@ -596,76 +658,22 @@ function render(){
  ({home,list,rep:report,mgr:manage})[tab]();window.scrollTo(0,0);
 }
 function home(){
- const m=today().slice(0,7),M=calc(inMonth(m)),T=calc(S.tx.filter(t=>t.date===today()));
- const mi=+m.slice(5)-1;
- const recent=newestFirst(S.tx).slice(0,3);
- const recentHtml=recent.length?recent.map(t=>{
-  const sale=t.type==="sale",title=sale?(String(t.qty)+"× "+esc(t.name)):esc(t.cat);
-  const meta=esc(t.date)+(sale?" · "+esc(t.platform):t.note?" · "+esc(t.note):"");
-  const amount=sale?rp(t.qty*t.price-(t.fee||0)-(t.tax||0)):rp(t.amount);
-  return `<div class="li"><div style="min-width:0"><div class="home-recent-name">${sale?"↗ ":"↙ "}${title}</div><div class="home-recent-meta">${meta}</div></div><div class="home-recent-amount ${sale?"pos":"neg"}">${sale?"+":"−"}${amount}</div></div>`;
- }).join(""):`<div class="home-empty">Belum ada transaksi. Mulai catat penjualan atau belanja pertamamu.</div>`;
- $("#app").innerHTML=`
- <header class="home-head">
-  <div><span class="home-greet">Halo, selamat datang di</span><h1 class="home-brand">${esc(S.name)}</h1></div>
-  <span class="home-month">${MON[mi].toUpperCase()} ${m.slice(0,4)}</span>
- </header>
- <section class="home-hero">
-  <div class="home-hero-top"><div><div class="home-eyebrow">Ringkasan bulanan</div><div class="home-month-name">${MONF[mi]} ${m.slice(0,4)}</div></div>
-   <label type="checkbox" class="reduceMotionToggle st-reduceMotionToggleBtn" for="reduceMotionToggleVisibility" title="Tampilkan atau sembunyikan nominal">
-    <input class="reduceMotionToggleInput" id="reduceMotionToggleVisibility" type="checkbox" role="switch" aria-label="Tampilkan nominal" ${S.hide?"checked":""} onchange="S.hide=this.checked;save();render()">
-    <svg stroke-width="0" stroke="currentColor" fill="currentColor" viewBox="0 0 18 18" height="18" width="18" aria-hidden="true">
-      <mask id="lineMaskVisibility">
-        <rect fill="white" height="18" width="18"></rect>
-        <rect fill="black" style="rotate:30deg" height="16" width="4.1" y="-5" x="9.807" class="line"></rect>
-      </mask>
-      <rect style="rotate:30deg" height="13" width="1.3" y="-3.3" x="11.3" class="line"></rect>
-      <g mask="url(#lineMaskVisibility)">
-        <circle style="--_toCenterXOffset:5.76px;--_appearOffset:-.1s" fill="none" stroke-width=".1" r="2.95" cy="9" cx="3.24" class="ballTrace"></circle>
-        <circle style="--_toCenterXOffset:3px;--_appearOffset:.02s" fill="none" stroke-width=".2" r="2.9" cy="9" cx="6" class="ballTrace"></circle>
-        <circle style="--_toCenterXOffset:0px;--_appearOffset:.07s" fill="none" stroke-width=".3" r="2.8" cy="9" cx="9" class="ballTrace"></circle>
-        <circle style="--_toCenterXOffset:-2.75px;--_appearOffset:.13s" fill="none" stroke-width=".4" r="2.75" cy="9" cx="11.75" class="ballTrace"></circle>
-        <circle style="--_toCenterXOffset:-5.7px" r="3" cy="9" cx="14.7" class="ball"></circle>
-      </g>
-    </svg>
-  </label>
-  </div>
-  <div class="home-hero-main"><div class="home-hero-label">Estimasi laba bersih</div><div class="home-amount">${mask(M.profit)}</div><div class="home-hero-note">${M.porsi?M.porsi+" porsi tercatat bulan ini":"Belum ada penjualan bulan ini"}</div></div>
-  <div class="home-hero-bottom">
-   <div class="home-hero-metric"><span>Pendapatan bersih</span><b>${mask(M.net)}</b></div>
-   <div class="home-hero-metric"><span>Total belanja</span><b>${mask(M.buy)}</b></div>
-  </div>
- </section>
- <div class="home-section-head"><h2>Aksi cepat</h2><small>Catat aktivitas usaha</small></div>
- <div class="home-actions">
-  <button class="home-action primary" onclick="openAdd('sale')"><span class="home-action-icon">↗</span><span><strong>Catat penjualan</strong><small>Tambah pemasukan</small></span></button>
-  <button class="home-action" onclick="openAdd('buy')"><span class="home-action-icon">↙</span><span><strong>Catat belanja</strong><small>Tambah pengeluaran</small></span></button>
- </div>
- <div class="home-section-head"><h2>Aktivitas hari ini</h2><small>${today().split("-").reverse().join("/")}</small></div>
- <div class="home-today-grid">
-  <div class="home-today-card"><div class="home-today-top"><span class="home-today-icon">💰</span>Penjualan bersih</div><b>${mask(T.net)}</b></div>
-  <div class="home-today-card"><div class="home-today-top"><span class="home-today-icon">🛒</span>Total belanja</div><b>${mask(T.buy)}</b></div>
-  <div class="home-today-card"><div class="home-today-top"><span class="home-today-icon">📈</span>Laba hari ini</div><b>${mask(T.profit)}</b></div>
-  <div class="home-today-card"><div class="home-today-top"><span class="home-today-icon">📦</span>Porsi terjual</div><b>${T.porsi} porsi</b></div>
- </div>
- <div class="home-section-head"><h2>Transaksi terbaru</h2><button class="home-see-all" onclick="tab='list';render()">Lihat semua →</button></div>
- <section class="home-recent">${recentHtml}</section>`;
+ const m=today().slice(0,7),M=calc(inMonth(m)),T=calc(S.tx.filter(t=>t.date===today())),mi=+m.slice(5)-1,recent=newestFirst(S.tx).slice(0,4);
+ const recentHtml=recent.length?recent.map(t=>{const sale=t.type==="sale",title=sale?(t.qty+"× "+esc(t.name)):esc(t.cat),meta=esc(t.date)+(sale?" · "+esc(t.platform):t.note?" · "+esc(t.note):""),amount=sale?rp(t.qty*t.price-(t.fee||0)-(t.tax||0)):rp(t.amount);return '<div class="feed-row"><i class="'+(sale?"sale":"buy")+'">'+(sale?"↗":"↙")+'</i><span><b>'+title+'</b><small>'+meta+'</small></span><strong class="'+(sale?"pos":"neg")+'">'+(sale?"+":"−")+amount+'</strong></div>'}).join(""):'<div class="empty-state">Belum ada transaksi. Mulai catat aktivitas usahamu.</div>';
+ $("#app").innerHTML='<header class="home-head compact-home"><div><small>RUANG USAHAMU</small><h1>'+esc(S.name)+'</h1><span>'+today().split("-").reverse().join("/")+'</span></div><b>'+MON[mi]+' '+m.slice(0,4)+'</b></header>'+
+ '<section class="overview-v3"><div class="overview-label">LABA BERSIH BULAN INI'+
+ '<label type="checkbox" class="reduceMotionToggle st-reduceMotionToggleBtn" for="reduceMotionToggleVisibility" title="Tampilkan atau sembunyikan nominal"><input class="reduceMotionToggleInput" id="reduceMotionToggleVisibility" type="checkbox" role="switch" aria-label="Tampilkan nominal" '+(S.hide?"checked":"")+' onchange="S.hide=this.checked;save();render()"><svg stroke-width="0" stroke="currentColor" fill="currentColor" viewBox="0 0 18 18" height="18" width="18" aria-hidden="true"><mask id="lineMaskVisibility"><rect fill="white" height="18" width="18"></rect><rect fill="black" style="rotate:30deg" height="16" width="4.1" y="-5" x="9.807" class="line"></rect></mask><rect style="rotate:30deg" height="13" width="1.3" y="-3.3" x="11.3" class="line"></rect><g mask="url(#lineMaskVisibility)"><circle style="--_toCenterXOffset:5.76px;--_appearOffset:-.1s" fill="none" stroke-width=".1" r="2.95" cy="9" cx="3.24" class="ballTrace"></circle><circle style="--_toCenterXOffset:3px;--_appearOffset:.02s" fill="none" stroke-width=".2" r="2.9" cy="9" cx="6" class="ballTrace"></circle><circle style="--_toCenterXOffset:0px;--_appearOffset:.07s" fill="none" stroke-width=".3" r="2.8" cy="9" cx="9" class="ballTrace"></circle><circle style="--_toCenterXOffset:-2.75px;--_appearOffset:.13s" fill="none" stroke-width=".4" r="2.75" cy="9" cx="11.75" class="ballTrace"></circle><circle style="--_toCenterXOffset:-5.7px" r="3" cy="9" cx="14.7" class="ball"></circle></g></svg></label></div>'+
+ '<strong class="overview-value">'+mask(M.profit)+'</strong><small>'+MONF[mi]+' '+m.slice(0,4)+' · '+M.porsi+' porsi tercatat</small><div class="overview-metrics"><div><small>Pendapatan bersih</small><b>'+mask(M.net)+'</b></div><div><small>Total belanja</small><b>'+mask(M.buy)+'</b></div><div><small>Penjualan</small><b>'+M.porsi+' <i>porsi</i></b></div></div></section>'+
+ '<section class="quick-v3"><div class="v3-heading"><b>Catat aktivitas</b><small>Akses cepat</small></div><div class="v3-actions"><button onclick="openAdd(\'sale\')"><i>↗</i><span><b>Penjualan</b><small>Tambah pemasukan</small></span><em>＋</em></button><button onclick="openAdd(\'buy\')"><i>↙</i><span><b>Belanja</b><small>Tambah pengeluaran</small></span><em>＋</em></button></div></section>'+
+ '<section class="today-v3"><div class="v3-heading"><b>Hari ini</b><small>'+today().split("-").reverse().join("/")+'</small></div><div class="today-metrics"><div><small>Penjualan bersih</small><b>'+mask(T.net)+'</b></div><div><small>Belanja</small><b>'+mask(T.buy)+'</b></div><div><small>Laba</small><b>'+mask(T.profit)+'</b></div></div></section>'+
+ '<section class="feed-v3"><div class="v3-heading"><b>Transaksi terbaru</b><button onclick="tab=\'list\';render()">Lihat semua →</button></div>'+recentHtml+'</section>';
 }
 function list(){
- const all=newestFirst(S.tx);
- const a=listFilter==="all"?all:all.filter(t=>t.type===listFilter);
- const sales=all.filter(t=>t.type==="sale").reduce((n,t)=>n+saleGross(t),0);
- const buys=all.filter(t=>t.type==="buy").reduce((n,t)=>n+t.amount,0);
+ const all=newestFirst(S.tx),a=listFilter==="all"?all:all.filter(t=>t.type===listFilter),sales=all.filter(t=>t.type==="sale").reduce((n,t)=>n+saleGross(t),0),buys=all.filter(t=>t.type==="buy").reduce((n,t)=>n+t.amount,0);
  const tabs=[["all","Semua"],["sale","Penjualan"],["buy","Belanja"]].map(x=>'<button class="page-tab '+(listFilter===x[0]?"active":"")+'" onclick="listFilter=\''+x[0]+'\';render()">'+x[1]+'</button>').join("");
- const rows=a.length?a.map(t=>{
-  const sale=t.type==="sale",title=sale?(t.qty+"× "+esc(t.name)):esc(t.cat);
-  const meta=esc(t.date)+" · "+(sale?esc(t.platform)+(t.fee?" · platform "+rp(t.fee):"")+(t.tax?" · pajak "+rp(t.tax):""):esc(t.note||"Belanja usaha"));
-  const amount=sale?t.qty*t.price-(t.fee||0)-(t.tax||0):t.amount;
-  return '<div class="tx-row"><div class="tx-symbol">'+(sale?"↗":"↙")+'</div><div class="tx-main"><div class="tx-title">'+title+'</div><div class="tx-meta">'+meta+'</div><button class="btn del" style="margin:5px 0 0;padding:2px 0" onclick="editRemark(\''+t.id+'\')">Keterangan · '+(t.note?'Edit':'Tambah')+'</button>'+(t.evidence?'<button class="btn del" style="margin:5px 0 0;padding:2px 0" onclick="openEvidenceByTx(\''+t.id+'\')">Lihat bukti asli</button>':'')+'</div><div class="tx-side"><div class="tx-amount '+(sale?"pos":"neg")+'">'+(sale?"+":"−")+rp(amount)+'</div><button class="btn del" onclick="delTx(\''+t.id+'\')">Hapus</button></div></div>';
- }).join(""):'<div class="empty-state"><strong>Belum ada transaksi di kategori ini</strong>Transaksi yang kamu catat akan muncul di sini.</div>';
- $("#app").innerHTML='<header class="page-head"><div><span class="page-kicker">AKTIVITAS USAHA</span><h1 class="page-title">Riwayat</h1><div class="page-subtitle">Pantau semua transaksi yang sudah dicatat.</div></div><span class="page-pill">'+all.length+' transaksi</span></header>'+
- '<div class="metric-grid"><div class="metric-card"><div class="metric-label"><span class="metric-icon">↗</span>Penjualan kotor</div><b class="metric-value">'+rp(sales)+'</b></div><div class="metric-card"><div class="metric-label"><span class="metric-icon">↙</span>Total belanja</div><b class="metric-value">'+rp(buys)+'</b></div></div>'+
- '<div class="section-title"><h2>Semua aktivitas</h2><small>Terbaru dahulu</small></div><div class="page-tabs">'+tabs+'</div><section class="panel-flat">'+rows+'</section>';
+ let last="";const rows=a.length?a.map(t=>{const sale=t.type==="sale",title=sale?(t.qty+"× "+esc(t.name)):esc(t.cat),meta=sale?esc(t.platform)+(t.fee?" · biaya "+rp(t.fee):"")+(t.tax?" · pajak "+rp(t.tax):""):esc(t.note||"Belanja usaha"),amount=sale?t.qty*t.price-(t.fee||0)-(t.tax||0):t.amount,date=t.date!==last?'<div class="history-day">'+esc(t.date.split("-").reverse().join("/"))+'</div>':"";last=t.date;return date+'<div class="history-line"><i class="'+(sale?"sale":"buy")+'">'+(sale?"↗":"↙")+'</i><div class="history-info"><b>'+title+'</b><small>'+meta+'</small><div><button onclick="editRemark(\''+t.id+'\')">Keterangan · '+(t.note?'Edit':'Tambah')+'</button>'+(t.evidence?'<button onclick="openEvidenceByTx(\''+t.id+'\')">Bukti</button>':"")+'</div></div><aside><b class="'+(sale?"pos":"neg")+'">'+(sale?"+":"−")+rp(amount)+'</b><button onclick="delTx(\''+t.id+'\')">Hapus</button></aside></div>'}).join(""):'<div class="empty-state"><strong>Belum ada transaksi</strong>Catatan penjualan dan belanja akan muncul di sini.</div>';
+ $("#app").innerHTML='<header class="page-head"><div><span class="page-kicker">AKTIVITAS USAHA</span><h1 class="page-title">Riwayat</h1><div class="page-subtitle">Seluruh catatan transaksi usahamu.</div></div><span class="page-pill">'+all.length+' catatan</span></header>'+
+ '<div class="history-totals"><div><small>Penjualan kotor</small><b>'+rp(sales)+'</b></div><i></i><div><small>Total belanja</small><b>'+rp(buys)+'</b></div></div><div class="v3-heading history-heading"><b>Aktivitas</b><small>Terbaru dahulu</small></div><div class="page-tabs">'+tabs+'</div><section class="history-stream">'+rows+'</section>';
 }
 function delTx(id){if(confirm('Hapus transaksi ini?')){const t=S.tx.find(x=>x.id===id);if(t&&t.rid){const r=S.rec.find(x=>x.id===t.rid)||S.staff.find(x=>x.id===t.rid);if(r){r.skip=r.skip||[];r.skip.push(t.rm)}}S.tx=S.tx.filter(x=>x.id!==id);save();render()}}
 function editRemark(id){
@@ -676,46 +684,31 @@ function openEvidenceByTx(id){const t=S.tx.find(x=>x.id===id);if(!t||!t.evidence
 function saveRemark(id){const t=S.tx.find(x=>x.id===id);if(!t)return;t.note=$("#remark").value.trim();save();close();render()}
 
 function report(){
- const [y,mo]=rep.split("-").map(Number),months=[];
- for(let i=5;i>=0;i--){const d=new Date(y,mo-1-i,1);months.push(d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0"))}
- const data=months.map(m=>calc(inMonth(m))),mx=Math.max(1,...data.map(d=>Math.max(d.net,Math.abs(d.profit))));
- const M=calc(inMonth(rep)),gk=M.net-(M.by["Bahan baku"]||0)-(M.by["Kemasan & perlengkapan"]||0);
- const other=S.cats.filter(c=>c!=="Bahan baku"&&c!=="Kemasan & perlengkapan"),pct=M.net>0?Math.round(gk/M.net*100):0;
- const row=(a,b,cls)=>'<div class="breakdown-row '+(cls||"")+'"><span>'+a+'</span><b>'+b+'</b></div>';
- $("#app").innerHTML='<header class="page-head"><div><span class="page-kicker">ANALISIS KEUANGAN</span><h1 class="page-title">Laporan</h1><div class="page-subtitle">Lihat performa dan kesehatan usaha.</div></div><span class="page-pill">Bulanan</span></header>'+
- '<section class="panel" style="padding:10px 13px"><div class="row"><button class="btn sec" onclick="shift(-1)">‹</button><b style="font-size:13px">'+MONF[mo-1]+' '+y+'</b><button class="btn sec" onclick="shift(1)">›</button></div></section>'+
- '<section class="report-hero"><div class="eyebrow">ESTIMASI LABA BERSIH</div><div class="value">'+rp(M.profit)+'</div><div class="hint">'+M.porsi+' porsi tercatat · '+MONF[mo-1]+' '+y+'</div><div class="mini"><div><span>Pendapatan bersih</span><b>'+rp(M.net)+'</b></div><div><span>Total belanja</span><b>'+rp(M.buy)+'</b></div></div></section>'+
- '<div class="metric-grid"><div class="metric-card"><div class="metric-label"><span class="metric-icon">🧾</span>Penjualan kotor</div><b class="metric-value">'+rp(M.gross)+'</b></div><div class="metric-card"><div class="metric-label"><span class="metric-icon">🏷️</span>Potongan platform</div><b class="metric-value">'+rp(M.fee)+'</b></div></div>'+
- '<div class="section-title"><h2>Tren 6 bulan</h2><small>Pendapatan & laba</small></div><section class="panel"><div class="report-chart">'+data.map((v,i)=>'<div><div class="bars-pair"><i style="height:'+Math.max(2,v.net/mx*100)+'%;background:var(--pr)"></i><i style="height:'+Math.max(2,Math.max(0,v.profit)/mx*100)+'%;background:var(--gr)"></i></div>'+MON[+months[i].slice(5)-1]+'</div>').join("")+'</div><div class="report-legend"><span><i class="legend-dot"></i>Pendapatan bersih</span><span><i class="legend-dot profit"></i>Laba bersih</span></div></section>'+
- '<div class="section-title"><h2>Rincian laba rugi</h2><small>'+MONF[mo-1]+' '+y+'</small></div><section class="panel">'+
- row("Penjualan kotor",rp(M.gross))+row("Diskon penjualan","−"+rp(M.discount))+row("Penjualan setelah diskon",rp(M.revenue),"total")+row("Potongan platform","−"+rp(M.fee))+row("Pendapatan setelah platform",rp(M.net),"total")+row("Pajak dipotong dari penjualan","−"+rp(M.tax))+row("Uang diterima",rp(M.cash),"total")+
- row("Bahan baku","−"+rp(M.by["Bahan baku"]||0))+row("Kemasan & perlengkapan","−"+rp(M.by["Kemasan & perlengkapan"]||0))+
- row("Laba kotor ("+pct+"%)",rp(gk),"total")+other.map(c=>row(esc(c),"−"+rp(M.by[c]||0))).join("")+
- row("Laba bersih",rp(M.profit),"total "+(M.profit<0?"neg":"pos"))+'</section><p class="filter-note">Perhitungan mengikuti transaksi yang sudah tersimpan. Potongan platform dihitung terpisah dari belanja.</p>';
+ const [y,mo]=rep.split("-").map(Number),months=[];for(let i=5;i>=0;i--){const d=new Date(y,mo-1-i,1);months.push(d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0"))}
+ const data=months.map(m=>calc(inMonth(m))),mx=Math.max(1,...data.map(d=>Math.max(d.net,Math.abs(d.profit)))),M=calc(inMonth(rep)),gk=M.net-(M.by["Bahan baku"]||0)-(M.by["Kemasan & perlengkapan"]||0),other=S.cats.filter(c=>c!=="Bahan baku"&&c!=="Kemasan & perlengkapan"),pct=M.net>0?Math.round(gk/M.net*100):0,row=(a,b,cls)=>'<div class="statement-line '+(cls||"")+'"><span>'+a+'</span><b>'+b+'</b></div>';
+ $("#app").innerHTML='<header class="page-head"><div><span class="page-kicker">ANALISIS KEUANGAN</span><h1 class="page-title">Laporan</h1><div class="page-subtitle">Ringkasan performa usaha.</div></div><span class="page-pill">Bulanan</span></header>'+
+ '<div class="period-line"><button onclick="shift(-1)">‹</button><div><small>PERIODE LAPORAN</small><b>'+MONF[mo-1]+' '+y+'</b></div><button onclick="shift(1)">›</button></div>'+
+ '<section class="report-overview"><small>ESTIMASI LABA BERSIH</small><strong>'+rp(M.profit)+'</strong><span>'+M.porsi+' porsi tercatat</span><div><p><small>Pendapatan bersih</small><b>'+rp(M.net)+'</b></p><p><small>Total belanja</small><b>'+rp(M.buy)+'</b></p></div></section>'+
+ '<div class="report-facts"><div><small>Penjualan kotor</small><b>'+rp(M.gross)+'</b></div><div><small>Diskon & potongan</small><b>'+rp(M.discount+M.fee)+'</b></div><div><small>Pajak</small><b>'+rp(M.tax)+'</b></div></div>'+
+ '<div class="v3-heading"><b>Tren 6 bulan</b><small>Pendapatan & laba</small></div><section class="chart-v3"><div class="report-chart">'+data.map((v,i)=>'<div><div class="bars-pair"><i style="height:'+Math.max(2,v.net/mx*100)+'%;background:var(--pr)"></i><i style="height:'+Math.max(2,Math.max(0,v.profit)/mx*100)+'%;background:var(--gr)"></i></div>'+MON[+months[i].slice(5)-1]+'</div>').join("")+'</div><div class="report-legend"><span><i class="legend-dot"></i>Pendapatan bersih</span><span><i class="legend-dot profit"></i>Laba bersih</span></div></section>'+
+ '<div class="v3-heading"><b>Rincian laba rugi</b><small>'+MONF[mo-1]+' '+y+'</small></div><section class="statement-v3">'+row("Penjualan kotor",rp(M.gross))+row("Diskon penjualan","−"+rp(M.discount))+row("Penjualan setelah diskon",rp(M.revenue),"subtotal")+row("Potongan platform","−"+rp(M.fee))+row("Pendapatan setelah platform",rp(M.net),"subtotal")+row("Pajak dipotong dari penjualan","−"+rp(M.tax))+row("Uang diterima",rp(M.cash),"subtotal")+row("Bahan baku","−"+rp(M.by["Bahan baku"]||0))+row("Kemasan & perlengkapan","−"+rp(M.by["Kemasan & perlengkapan"]||0))+row("Laba kotor ("+pct+"%)",rp(gk),"subtotal")+other.map(c=>row(esc(c),"−"+rp(M.by[c]||0))).join("")+row("Laba bersih",rp(M.profit),"final")+'</section><p class="filter-note">Perhitungan mengikuti transaksi yang sudah tersimpan. Potongan platform dihitung terpisah dari belanja.</p>';
 }
 function shift(n){const [y,m]=rep.split("-").map(Number);const d=new Date(y,m-1+n,1);rep=d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0");render()}
 function manage(){
- const theme=localStorage.getItem("lcm-theme")||"light";
- const item=(ico,title,desc,action,label)=>'<div class="manage-item"><span class="manage-icon">'+ico+'</span><div class="manage-copy"><b>'+title+'</b><small>'+desc+'</small></div><button class="btn sec" onclick="'+action+'">'+(label||"Kelola")+'</button></div>';
- const products=S.products.map(p=>'<div class="manage-item"><span class="manage-icon item-icon">'+(/minum|kopi|teh|jus|es/i.test(p.name)?"🥤":/makan|nasi|ayam|roti|kue|snack/i.test(p.name)?"🍱":"📦")+'</span><div class="manage-copy"><b>'+esc(p.name)+'</b><small>Jual '+rp(p.price)+' · HPP '+rp(p.cost)+'</small></div><button class="btn sec" onclick="editProd(\''+p.id+'\')">Edit</button></div>').join("");
- const plats=S.platforms.map(p=>'<div class="manage-item"><span class="manage-icon item-icon">'+(/shopee/i.test(p.name)?"🛍️":/gofood/i.test(p.name)?"🟢":/grab/i.test(p.name)?"🛵":/whatsapp/i.test(p.name)?"💬":"🌐")+'</span><div class="manage-copy"><b>'+esc(p.name)+'</b><small>Potongan '+p.fee+'%</small></div><button class="btn sec" onclick="editPlat(\''+p.id+'\')">Edit</button></div>').join("");
- const rec=S.rec.map(r=>'<div class="manage-item"><span class="manage-icon item-icon">🔁</span><div class="manage-copy"><b>'+esc(r.name)+'</b><small>'+rp(r.amount)+' · tiap tanggal '+r.day+'</small></div><button class="btn sec" onclick="editRec(\''+r.id+'\')">Edit</button></div>').join("");
- const staff=S.staff.map(x=>'<div class="manage-item"><span class="manage-icon item-icon">👤</span><div class="manage-copy"><b>'+esc(x.name)+'</b><small>'+rp(x.salary)+' · tiap tanggal '+x.day+'</small></div><button class="btn sec" onclick="editStaff(\''+x.id+'\')">Edit</button></div>').join("");
- const prices=S.prices.map(p=>{const l=p.h[p.h.length-1];return '<div class="manage-item"><span class="manage-icon item-icon">🧾</span><div class="manage-copy"><b>'+esc(p.name)+'</b><small>'+rp(l.price)+'/'+esc(p.unit)+' · '+l.date+'</small></div><button class="btn sec" onclick="editPrice(\''+p.id+'\')">Update</button></div>'}).join("");
- $("#app").innerHTML='<header class="page-head"><div><span class="page-kicker">PENGATURAN USAHA</span><h1 class="page-title">Kelola</h1><div class="page-subtitle">Atur kebutuhan operasional dan data usahamu.</div></div><span class="page-pill">Pengaturan</span></header>'+
- '<section class="panel"><div class="manage-item" style="padding-top:2px"><span class="manage-icon">🏪</span><div class="manage-copy"><b>Identitas usaha</b><small>Nama yang tampil di beranda</small></div></div><label>Nama usaha / pemilik</label><input value="'+esc(S.name)+'" onchange="S.name=this.value;save();render()"></section>'+
- '<div class="manage-group">Produk & penjualan</div><section class="panel">'+item("📦","Produk & HPP",S.products.length+" produk · atur harga jual dan modal","editProd()","Tambah")+(products||'<div class="empty-state">Belum ada produk.</div>')+'</section>'+
- '<section class="panel">'+item("🛵","Platform & potongan",S.platforms.length+" platform · atur biaya layanan","editPlat()","Tambah")+plats+'</section>'+
- '<section class="panel"><div class="manage-item" style="padding-top:2px"><span class="manage-icon">🧺</span><div class="manage-copy"><b>Kategori belanja</b><small>Kelompokkan pengeluaran usaha</small></div><button class="btn sec" onclick="addCat()">Tambah</button></div><div class="chips">'+S.cats.map(c=>'<span class="chip">'+esc(c)+'</span>').join("")+'</div></section>'+
- '<div class="manage-group">Operasional usaha</div><section class="panel">'+item("🔁","Biaya rutin otomatis",S.rec.length+" biaya rutin terjadwal","editRec()","Tambah")+(rec||'<div class="empty-state">Belum ada biaya rutin.</div>')+'</section>'+
- '<section class="panel">'+item("👥","Karyawan & gaji",S.staff.length+" karyawan terdaftar","editStaff()","Tambah")+(staff||'<div class="empty-state">Belum ada karyawan.</div>')+'</section>'+
- '<section class="panel">'+item("🧾","Harga bahan",S.prices.length+" bahan dipantau","editPrice()","Tambah")+(prices||'<div class="empty-state">Belum ada riwayat harga bahan.</div>')+'</section>'+
- '<div class="manage-group">Catatan usaha</div><section class="panel">'+item("🗒️","Catatan usaha",S.notes.length+" catatan · supplier, tagihan, pengingat, dan ide","editNote()","Tambah")+notesSummaryHtml()+'</section>'+
- '<div class="manage-group">Keuangan & pajak</div><section class="panel">'+item("🧾","Kewajiban pajak",S.tax.length+" catatan pajak · kelola tagihan dan pembayaran","editTax()","Tambah")+taxSummaryHtml()+'</section>'+
- '<div class="manage-group">Tampilan & data</div><section class="panel"><div class="manage-item" style="padding-top:2px"><span class="manage-icon">🎨</span><div class="manage-copy"><b>Tampilan aplikasi</b><small>Pilih mode sesuai kenyamananmu</small></div></div><div class="settings-theme" id="th"><button class="'+(theme==="auto"?"on":"")+'" onclick="setTheme(\'auto\')">Otomatis</button><button class="'+(theme==="light"?"on":"")+'" onclick="setTheme(\'light\')">Terang</button><button class="'+(theme==="dark"?"on":"")+'" onclick="setTheme(\'dark\')">Gelap</button></div></section>'+
- '<section class="panel">'+item("📤","Ekspor laporan","Salin seluruh transaksi ke format CSV","openCsv()","Ekspor")+item("💾","Cadangkan & pulihkan","Simpan atau pulihkan data dari kode cadangan","openBackup()","Buka")+'</section>'+
- '<button class="btn del full" onclick="if(confirm(\'Hapus semua data?\')){S=JSON.parse(JSON.stringify(def));save();render()}">Hapus semua data</button>';
+ const theme=localStorage.getItem("lcm-theme")||"light",item=(ico,title,desc,action,label)=>'<div class="manage-row"><i>'+ico+'</i><span><b>'+title+'</b><small>'+desc+'</small></span><button class="btn sec" onclick="'+action+'">'+(label||"Kelola")+'</button></div>';
+ const products=S.products.map(p=>'<div class="manage-row"><i>□</i><span><b>'+esc(p.name)+'</b><small>Jual '+rp(p.price)+' · HPP '+rp(p.cost)+'</small></span><button class="btn sec" onclick="editProd(\''+p.id+'\')">Edit</button></div>').join("");
+ const plats=S.platforms.map(p=>'<div class="manage-row"><i>↗</i><span><b>'+esc(p.name)+'</b><small>Potongan '+p.fee+'%</small></span><button class="btn sec" onclick="editPlat(\''+p.id+'\')">Edit</button></div>').join("");
+ const rec=S.rec.map(x=>'<div class="manage-row"><i>↻</i><span><b>'+esc(x.name)+'</b><small>'+rp(x.amount)+' · tiap tanggal '+x.day+'</small></span><button class="btn sec" onclick="editRec(\''+x.id+'\')">Edit</button></div>').join("");
+ const staff=S.staff.map(x=>'<div class="manage-row"><i>○</i><span><b>'+esc(x.name)+'</b><small>'+rp(x.salary)+' · tiap tanggal '+x.day+'</small></span><button class="btn sec" onclick="editStaff(\''+x.id+'\')">Edit</button></div>').join("");
+ const prices=S.prices.map(p=>{const l=p.h[p.h.length-1];return '<div class="manage-row"><i>≋</i><span><b>'+esc(p.name)+'</b><small>'+rp(l.price)+'/'+esc(p.unit)+' · '+l.date+'</small></span><button class="btn sec" onclick="editPrice(\''+p.id+'\')">Update</button></div>'}).join("");
+ $("#app").innerHTML='<header class="page-head"><div><span class="page-kicker">PENGATURAN USAHA</span><h1 class="page-title">Kelola</h1><div class="page-subtitle">Data dan operasional bisnis.</div></div></header>'+
+ '<section class="identity-row"><span><small>NAMA USAHA</small><b>'+esc(S.name)+'</b></span><button onclick="editBusinessName()">Ubah</button></section>'+
+ '<div class="manage-label">PRODUK & PENJUALAN</div><section class="manage-block">'+item("□","Produk & HPP",S.products.length+" produk · harga jual dan modal","editProd()","Tambah")+products+'<div class="manage-separator"></div>'+item("↗","Platform & potongan",S.platforms.length+" platform · biaya layanan","editPlat()","Tambah")+plats+'<div class="manage-separator"></div>'+item("▦","Kategori belanja","Kelompokkan pengeluaran usaha","addCat()","Tambah")+'<div class="chips">'+S.cats.map(c=>'<span class="chip">'+esc(c)+'</span>').join("")+'</div></section>'+
+ '<div class="manage-label">OPERASIONAL</div><section class="manage-block">'+item("↻","Biaya rutin otomatis",S.rec.length+" biaya terjadwal","editRec()","Tambah")+rec+'<div class="manage-separator"></div>'+item("○","Karyawan & gaji",S.staff.length+" karyawan terdaftar","editStaff()","Tambah")+staff+'<div class="manage-separator"></div>'+item("≋","Harga bahan",S.prices.length+" bahan dipantau","editPrice()","Tambah")+prices+'</section>'+
+ '<div class="manage-label">CATATAN & KEWAJIBAN</div><section class="manage-block">'+item("▤","Catatan usaha",S.notes.length+" catatan tersimpan","editNote()","Tambah")+notesSummaryHtml()+'<div class="manage-separator"></div>'+item("▧","Kewajiban pajak",S.tax.length+" catatan pajak","editTax()","Tambah")+taxSummaryHtml()+'</section>'+
+ '<div class="manage-label">TAMPILAN & DATA</div><section class="manage-block">'+item("◐","Tampilan aplikasi","Pilih mode tampilan","void(0)","")+ '<div class="settings-theme" id="th"><button class="'+(theme==="auto"?"on":"")+'" onclick="setTheme(\'auto\')">Otomatis</button><button class="'+(theme==="light"?"on":"")+'" onclick="setTheme(\'light\')">Terang</button><button class="'+(theme==="dark"?"on":"")+'" onclick="setTheme(\'dark\')">Gelap</button></div><div class="manage-separator"></div>'+item("⇧","Ekspor laporan","Salin transaksi ke format CSV","openCsv()","Ekspor")+item("▣","Cadangkan & pulihkan","Simpan atau pulihkan data","openBackup()","Buka")+'</section><button class="btn del full" onclick="if(confirm(\'Hapus semua data?\')){S=JSON.parse(JSON.stringify(def));save();render()}">Hapus semua data</button>';
 }
+function editBusinessName(){const name=prompt("Nama usaha / pemilik",S.name);if(name!==null&&name.trim()){S.name=name.trim();save();render()}}
 function shut(){$('#sheet').classList.remove('show')}
 document.close=()=>shut();
 function norm(){S.products=S.products||[];S.platforms=S.platforms||[];S.tx=S.tx||[];S.rec=S.rec||[];S.staff=S.staff||[];S.prices=S.prices||[];S.tax=S.tax||[];S.notes=S.notes||[];S.cats=S.cats||[];['Transportasi','Gaji karyawan'].forEach(c=>{if(!S.cats.includes(c))S.cats.push(c)})}
