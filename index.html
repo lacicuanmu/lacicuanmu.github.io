@@ -6714,7 +6714,7 @@
         window.placeSyncPill = () => {
           const slot = document.getElementById('home-sync-slot');
           if (tab === 'home' && slot) slot.appendChild(pill);
-          else document.body.insertAdjacentElement('afterbegin', pill)
+          else pill.remove()
         };
         window.placeSyncPill();
         lg = document.createElement('div');
